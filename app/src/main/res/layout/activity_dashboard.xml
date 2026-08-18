@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/seller_bg_light">
+
+    <!-- Offline Banner (Always at top, usually gone) -->
+    <include
+        android:id="@+id/layoutOfflineBanner"
+        layout="@layout/layout_offline_banner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeRefresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="0dp">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/homeContent"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:paddingBottom="80dp"
+            android:clipToPadding="false"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Header -->
+                <include
+                    android:id="@+id/layoutHeader"
+                    layout="@layout/layout_dashboard_header" />
+
+                <!-- Onboarding Banner -->
+                <include
+                    android:id="@+id/layoutOnboarding"
+                    layout="@layout/layout_onboarding_banner"
+                    android:visibility="gone"
+                    tools:visibility="visible" />
+
+                <!-- Content Wrapper (padding for rest of screen) -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp"
+                    android:paddingTop="16dp"
+                    android:paddingBottom="24dp">
+
+                    <!-- Time Range Toggle -->
+                    <com.google.android.material.button.MaterialButtonToggleGroup
+                        android:id="@+id/toggleTimeRange"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        app:singleSelection="true"
+                        app:checkedButton="@+id/btnToday"
+                        app:selectionRequired="true">
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btnToday"
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Today"
+                            android:textAllCaps="false"
+                            android:textColor="@color/seller_text_primary"
+                            app:strokeColor="@color/seller_border" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn7Days"
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="7 days"
+                            android:textAllCaps="false"
+                            android:textColor="@color/seller_text_primary"
+                            app:strokeColor="@color/seller_border" />
+
+                        <com.google.android.material.button.MaterialButton
+                            android:id="@+id/btn30Days"
+                            style="?attr/materialButtonOutlinedStyle"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="30 days"
+                            android:textAllCaps="false"
+                            android:textColor="@color/seller_text_primary"
+                            app:strokeColor="@color/seller_border" />
+                    </com.google.android.material.button.MaterialButtonToggleGroup>
+
+                    <!-- Stats Grid -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:baselineAligned="false"
+                        android:layout_marginBottom="16dp">
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginEnd="8dp">
+                            <include
+                                android:id="@+id/cardOrdersStat"
+                                layout="@layout/layout_stat_card" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:layout_marginStart="8dp">
+                            <include
+                                android:id="@+id/cardRevenueStat"
+                                layout="@layout/layout_stat_card" />
+                        </FrameLayout>
+
+                    </LinearLayout>
+
+                    <!-- Wallet Row -->
+                    <include
+                        android:id="@+id/cardWalletRow"
+                        layout="@layout/layout_wallet_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp" />
+
+                    <!-- Action Needed Container -->
+                    <LinearLayout
+                        android:id="@+id/llActionNeededContainer"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginBottom="8dp" />
+
+                    <!-- Quick Actions Label -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Quick actions"
+                        android:textColor="@color/seller_text_primary"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginBottom="12dp" />
+
+                    <!-- Quick Actions Grid -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="4"
+                        android:baselineAligned="false"
+                        android:layout_marginBottom="24dp">
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+                            <include
+                                android:id="@+id/btnQuickAddProduct"
+                                layout="@layout/layout_quick_action_tile" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+                            <include
+                                android:id="@+id/btnQuickOrders"
+                                layout="@layout/layout_quick_action_tile" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+                            <include
+                                android:id="@+id/btnQuickSupport"
+                                layout="@layout/layout_quick_action_tile" />
+                        </FrameLayout>
+
+                        <FrameLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1">
+                            <include
+                                android:id="@+id/btnQuickAnalytics"
+                                layout="@layout/layout_quick_action_tile" />
+                        </FrameLayout>
+                    </LinearLayout>
+
+                    <!-- Recent Orders Header -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:gravity="center_vertical"
+                        android:layout_marginBottom="12dp">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Recent orders"
+                            android:textColor="@color/seller_text_primary"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvViewAllOrders"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="View all"
+                            android:textColor="@color/seller_primary"
+                            android:textSize="14sp"
+                            android:textStyle="bold"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="4dp"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:foreground="?attr/selectableItemBackground" />
+                    </LinearLayout>
+
+                    <!-- Recent Orders List -->
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvRecentOrders"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false"
+                        tools:listitem="@layout/item_seller_order"
+                        android:visibility="gone" />
+
+                    <!-- Empty State -->
+                    <include
+                        android:id="@+id/layoutEmptyOrders"
+                        layout="@layout/layout_empty_state"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <!-- More Content -->
+    <include
+        android:id="@+id/moreContent"
+        layout="@layout/layout_more_options"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:layout_above="@id/bottomNavigation" />
+
+    <!-- Bottom Navigation -->
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:background="#FFFFFF"
+        app:menu="@menu/menu_seller_bottom_nav"
+        app:itemIconTint="@color/bottom_nav_color"
+        app:itemTextColor="@color/bottom_nav_color"
+        app:labelVisibilityMode="labeled" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

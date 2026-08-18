@@ -1,0 +1,74 @@
+{
+  "en": {
+    "meta": {
+      "title": "Terms of Service",
+      "lastUpdated": "2026-06-01",
+      "version": "1.0"
+    },
+    "sections": {
+      "s1": {
+        "heading": "1. Acceptance of Terms",
+        "paragraphs": ["By accessing or using ANGA9, you agree to be bound by these Terms of Service. If you do not agree, please do not use our platform."]
+      },
+      "s2": {
+        "heading": "2. Use of the Platform",
+        "paragraphs": ["You agree to use ANGA9 only for lawful purposes."],
+        "listIntro": "You must not:",
+        "list": ["Misuse or attempt to hack the platform", "Submit false or misleading information", "Use ANGA9 for any fraudulent activity", "Violate any applicable laws or regulations"]
+      },
+      "s3": {
+        "heading": "3. Orders and Payments",
+        "paragraphs": ["All orders placed on ANGA9 are subject to product availability. We reserve the right to cancel orders in case of pricing errors or unavailability.", "Payments are processed securely via Razorpay. We do not store your payment card details."]
+      },
+      "s4": {
+        "heading": "4. Returns and Refunds",
+        "paragraphs": ["Our return policy allows returns within 7 days of delivery for eligible items. Refunds are processed within 5-7 business days after the return is approved."],
+        "listIntro": "Items are not eligible for return if:",
+        "list": ["They have been used or damaged by the buyer", "Original packaging is missing", "The return window has expired"]
+      },
+      "s5": {
+        "heading": "5. Seller Responsibility",
+        "paragraphs": ["Sellers on ANGA9 are independent businesses. ANGA9 is not responsible for the quality, safety, or legality of items listed by sellers. Disputes between buyers and sellers will be mediated by ANGA9 in good faith."]
+      },
+      "s6": {
+        "heading": "6. Account Termination",
+        "paragraphs": ["We reserve the right to suspend or terminate accounts that violate these terms, engage in fraudulent activity, or misuse the platform."]
+      },
+      "s7": {
+        "heading": "7. Contact Us",
+        "paragraphs": ["For any questions about these Terms, contact us at mailto:support@anga9.com or visit /contact"]
+      }
+    }
+  },
+  "hi": {
+    "meta": {
+      "title": "सेवा की शर्तें",
+      "lastUpdated": "2026-06-01",
+      "version": "1.0"
+    },
+    "sections": {
+      "s1": {
+        "heading": "1. शर्तों की स्वीकृति",
+        "paragraphs": ["ANGA9 का उपयोग करके, आप इन सेवा शर्तों से बाध्य होने के लिए सहमत होते हैं।"]
+      },
+      "s2": {
+        "heading": "2. प्लेटफॉर्म का उपयोग",
+        "paragraphs": ["आप ANGA9 का उपयोग केवल कानूनी उद्देश्यों के लिए करने के लिए सहमत हैं।"],
+        "listIntro": "आपको नहीं करना चाहिए:",
+        "list": ["प्लेटफॉर्म को हैक करने का प्रयास करें", "गलत या भ्रामक जानकारी सबमिट करें", "किसी धोखाधड़ी गतिविधि के लिए ANGA9 का उपयोग करें"]
+      },
+      "s3": {
+        "heading": "3. ऑर्डर और भुगतान",
+        "paragraphs": ["ANGA9 पर दिए गए सभी ऑर्डर उत्पाद उपलब्धता के अधीन हैं। भुगतान Razorpay के माध्यम से सुरक्षित रूप से प्रोसेस किए जाते हैं।"]
+      },
+      "s4": {
+        "heading": "4. रिटर्न और रिफंड",
+        "paragraphs": ["हमारी रिटर्न नीति डिलीवरी के 7 दिनों के भीतर पात्र वस्तुओं के लिए रिटर्न की अनुमति देती है।"]
+      },
+      "s5": {
+        "heading": "5. संपर्क करें",
+        "paragraphs": ["इन शर्तों के बारे में किसी भी प्रश्न के लिए, mailto:support@anga9.com पर संपर्क करें।"]
+      }
+    }
+  }
+}

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/wizardProgressBarLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:orientation="horizontal"
+    android:paddingHorizontal="16dp"
+    android:paddingBottom="12dp">
+
+    <!-- Step 1 -->
+    <View
+        android:id="@+id/progressStep1"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:layout_weight="1"
+        android:background="@color/wizard_accent" />
+
+    <View
+        android:layout_width="4dp"
+        android:layout_height="match_parent" />
+
+    <!-- Step 2 -->
+    <View
+        android:id="@+id/progressStep2"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:layout_weight="1"
+        android:background="@color/wizard_accent"
+        android:alpha="0.3" />
+
+    <View
+        android:layout_width="4dp"
+        android:layout_height="match_parent" />
+
+    <!-- Step 3 -->
+    <View
+        android:id="@+id/progressStep3"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:layout_weight="1"
+        android:background="@color/wizard_accent"
+        android:alpha="0.3" />
+
+    <View
+        android:layout_width="4dp"
+        android:layout_height="match_parent" />
+
+    <!-- Step 4 -->
+    <View
+        android:id="@+id/progressStep4"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:layout_weight="1"
+        android:background="@color/wizard_accent"
+        android:alpha="0.3" />
+
+    <View
+        android:layout_width="4dp"
+        android:layout_height="match_parent" />
+
+    <!-- Step 5 -->
+    <View
+        android:id="@+id/progressStep5"
+        android:layout_width="0dp"
+        android:layout_height="4dp"
+        android:layout_weight="1"
+        android:background="@color/wizard_accent"
+        android:alpha="0.3" />
+
+</LinearLayout>

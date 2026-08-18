@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+
+    <application
+        android:name=".SellerApplication"
+        android:allowBackup="false"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.ANGA_SellerSide">
+
+        <!-- Splash -->
+        <activity
+            android:name=".SplashActivity"
+            android:exported="true"
+            android:theme="@style/SplashTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <!-- Phase 1 - Language Selection (new) -->
+        <activity android:name=".auth.LanguageSelectionActivity" android:exported="false" />
+
+        <!-- Auth Flow -->
+<activity android:name=".auth.SellerPhoneLoginActivity" android:exported="false" />
+        <activity android:name=".auth.SellerOtpVerifyActivity" android:exported="false" />
+        <activity android:name=".auth.SellerRegistrationActivity" android:exported="false" />
+        <activity android:name=".auth.KycStatusActivity" android:exported="false" />
+
+        <!-- Main App - Dashboard -->
+        <activity android:name=".ui.dashboard.DashboardActivity" android:exported="false" />
+        <activity android:name=".ui.notifications.NotificationsActivity" android:exported="false" />
+
+        <!-- Phase 4 - Product Management -->
+        <activity
+            android:name=".MVVM.ui.products.MyProductsActivity"
+            android:exported="false" />
+        <activity
+            android:name=".MVVM.ui.products.BulkEditActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".MVVM.ui.products.BulkUploadActivity" android:exported="false" />
+        <activity android:name=".MVVM.ui.support.MyTicketsActivity" android:exported="false" />
+        <activity android:name=".MVVM.ui.products.AddEditProductActivity" android:exported="false" />
+        <activity android:name=".ui.inventory.InventoryActivity" android:exported="false" />
+
+        <!-- Phase 5 - Order Management -->
+        <activity android:name=".ui.orders.MyOrdersActivity" android:exported="false" />
+        <activity android:name=".ui.orders.OrderDetailActivity" android:exported="false" />
+
+        <!-- Phase 6 - Wallet -->
+        <activity android:name=".ui.wallet.EarningsActivity" android:exported="false" />
+        <activity android:name=".ui.wallet.PayoutsActivity" android:exported="false" />
+        <activity android:name=".ui.wallet.BankDetailsActivity" android:exported="false" />
+
+        <!-- Phase 7 - Analytics -->
+        <activity android:name=".ui.analytics.AnalyticsActivity" android:exported="false" />
+
+        <!-- Phase 8 - Profile -->
+        <activity android:name=".ui.profile.SellerProfileActivity" android:exported="false" />
+        <activity android:name=".ui.profile.EditBusinessActivity" android:exported="false" />
+        <activity android:name=".ui.profile.BankDetailsActivity" android:exported="false" />
+        <activity android:name=".ui.profile.DeliveryZonesActivity" android:exported="false" />
+        <activity android:name=".ui.profile.NotificationSettingsActivity" android:exported="false" />
+        <activity android:name=".ui.profile.HelpSupportActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+
+        <!-- Help & Support — Phase 5 -->
+        <activity android:name=".ui.support.HelpArticlesActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+
+        <activity android:name=".ui.support.HelpArticleDetailActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+
+        <activity android:name=".ui.support.MyTicketsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+
+        <activity android:name=".ui.support.CreateTicketActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity android:name=".ui.support.TicketDetailActivity"
+            android:exported="false"
+            android:launchMode="singleTop"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+
+        <!-- Phase 9 - B2B Features -->
+        <activity android:name=".ui.b2b.SellerStorefrontActivity" android:exported="false" />
+        <activity android:name=".ui.storefront.StorefrontActivity" android:exported="false" />
+        <activity android:name=".ui.b2b.RepeatBuyersActivity" android:exported="false" />
+
+        <!-- Disputes -->
+        <activity android:name=".ui.disputes.SellerDisputesActivity" android:exported="false" />
+
+        <!-- Promotional Deals -->
+        <activity android:name=".ui.deals.PromotionalDealsActivity" android:exported="false" />
+        <activity android:name=".ui.deals.CreateDealActivity" 
+                  android:exported="false" 
+                  android:theme="@style/Theme.MaterialComponents.Light.NoActionBar" 
+                  android:windowSoftInputMode="adjustResize" />
+        <activity android:name=".ui.disputes.SellerDisputeDetailActivity" android:exported="false" />
+
+        <!-- Reviews -->
+        <activity android:name=".ui.reviews.SellerReviewsActivity" android:exported="false" />
+
+        <!-- Phase 3 - Returns Management -->
+        <activity android:name=".ui.returns.MyReturnsActivity" android:exported="false" />
+        <activity android:name=".ui.returns.ReturnDetailActivity" android:exported="false" />
+
+        <!-- Phase 8 - Support -->
+        <activity android:name=".ui.support.SupportHomeActivity" android:exported="false" />
+        <activity android:name=".ui.support.RaiseTicketActivity" android:exported="false" />
+        <activity android:name=".ui.ads.AdPreviewActivity" android:exported="false" />
+        <activity android:name=".ui.ads.AdProductPickerActivity" android:exported="false" />
+        <activity android:name=".ui.ads.RequestAdActivity" android:exported="false" />
+        <activity android:name=".ui.ads.MyAdsActivity" android:exported="false" />
+        <activity android:name=".ui.ads.CreateAdActivity" android:exported="false" />
+
+        <!-- FileProvider for PDF invoice sharing -->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+
+        <!-- FCM -->
+        <service
+            android:name=".utils.SellerFcmService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <!-- Chatbot Activity — Phase 2 (Chat with Anga) -->
+        <activity
+            android:name=".ui.chatbot.ChatbotActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:windowSoftInputMode="adjustResize" />
+
+        <activity
+            android:name=".MVVM.ui.products.AddProductWizardActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize" />
+
+
+            <!-- Legal Activity - Privacy Policy + Terms of Service -->
+        <activity
+            android:name=".ui.legal.LegalActivity"
+            android:exported="false"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+
+    </application>
+
+</manifest>
+
+
+

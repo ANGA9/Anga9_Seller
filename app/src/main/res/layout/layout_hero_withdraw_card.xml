@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_withdraw_hero_card"
+    android:padding="16dp">
+
+    <!-- Top Row: Icon and Status Pill -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+
+        <!-- Icon Badge -->
+        <FrameLayout
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/bg_rounded_8dp_light_blue">
+            <ImageView
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_wallet"
+                app:tint="#2851C4"/>
+        </FrameLayout>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+        <!-- Status Pill -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="AVAILABLE"
+            android:textColor="#2851C4"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:background="@drawable/bg_pill_light_blue" />
+
+    </LinearLayout>
+
+    <!-- Amount and Label -->
+    <TextView
+        android:id="@+id/tvAvailableAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="₹0"
+        android:textColor="#1A1D23"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Ready to withdraw"
+        android:textColor="#5B6472"
+        android:textSize="12sp" />
+
+    <!-- Withdraw Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnWithdraw"
+        android:layout_width="match_parent"
+        android:layout_height="38dp"
+        android:layout_marginTop="16dp"
+        android:text="Withdraw"
+        android:textSize="14sp"
+        android:textColor="#9AA1AC"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
+        app:backgroundTint="#EFF1F5"
+        app:cornerRadius="8dp" />
+
+</LinearLayout>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ANGA9 Seller</string>
+
+    <!-- Language Selection -->
+    <string name="select_language">உங்கள் மொழியை தேர்ந்தெடுக்கவும்</string>
+    <string name="select_language_subtitle">Apni bhasha chunein</string>
+    <string name="btn_continue">தொடரவும்</string>
+
+    <!-- Auth -->
+    <string name="enter_phone_title">உங்கள் மொபைல் எண்ணை உள்ளிடவும்</string>
+    <string name="enter_phone_subtitle">OTP மூலம் சரிபார்க்கப்படும்</string>
+    <string name="btn_get_otp">OTP பெறவும்</string>
+    <string name="otp_sent_to">OTP அனுப்பப்பட்டது</string>
+    <string name="btn_change">மாற்றவும்</string>
+    <string name="resend_otp_in">OTP மீண்டும் அனுப்பவும்</string>
+    <string name="btn_resend_otp">OTP மீண்டும் அனுப்பவும்</string>
+    <string name="btn_verify">சரிபார்த்து தொடரவும்</string>
+    <string name="terms_text">தொடர்வதன் மூலம் நீங்கள் எங்கள் Terms of Service மற்றும் Privacy Policy ஐ ஒப்புக்கொள்கிறீர்கள்</string>
+
+    <!-- Registration Steps -->
+    <string name="step_of">படி %1$d / %2$d</string>
+    <string name="what_is_your_name">உங்கள் பெயர் என்ன?</string>
+    <string name="name_hint">முழு பெயர்</string>
+    <string name="name_as_per_id">Aadhaar / PAN படி</string>
+    <string name="tell_us_business">உங்கள் வணிகத்தைப் பற்றி சொல்லுங்கள்</string>
+    <string name="shop_name_hint">கடை / வணிகத்தின் பெயர்</string>
+    <string name="what_describes_you">நீங்கள் யார்?</string>
+    <string name="manufacturer">உற்பத்தியாளர்</string>
+    <string name="wholesaler">மொத்த விற்பனையாளர்</string>
+    <string name="retailer">சில்லறை விற்பனையாளர்</string>
+    <string name="trader_distributor">வணிகர் / விநியோகஸ்தர்</string>
+    <string name="garment_type_title">நீங்கள் என்ன ஆடைகள் விற்கிறீர்கள்?</string>
+    <string name="garment_select_min">அனைத்தையும் தேர்ந்தெடுக்கவும் (குறைந்தது 1)</string>
+    <string name="mens_wear">ஆண்கள் ஆடை</string>
+    <string name="womens_wear">பெண்கள் ஆடை</string>
+    <string name="kids_wear">குழந்தைகள் ஆடை</string>
+    <string name="winter_wear">குளிர்கால ஆடை</string>
+    <string name="fabric_saree">துணி / சேலை</string>
+    <string name="inner_wear">இன்னர் வேர்</string>
+    <string name="sports_wear">விளையாட்டு ஆடை</string>
+    <string name="ethnic_wear">பாரம்பரிய ஆடை</string>
+    <string name="other">மற்றவை</string>
+    <string name="business_location_title">உங்கள் வணிகம் எங்கே உள்ளது?</string>
+    <string name="pincode_hint">பின்கோட் (6 இலக்கங்கள்)</string>
+    <string name="city_auto">நகரம் (தானாக)</string>
+    <string name="state_auto">மாநிலம் (தானாக)</string>
+    <string name="popular_hubs">முக்கிய ஆடை மையங்கள்:</string>
+    <string name="verify_business">வணிகத்தை சரிபார்க்கவும்</string>
+    <string name="gst_required_label">GST சான்றிதழ் (கட்டாயம்)</string>
+    <string name="upload_gst">GST சான்றிதழை பதிவேற்றவும்</string>
+    <string name="one_more_doc">+ இன்னொரு ஆவணம் (விருப்பத்தேர்வு)</string>
+    <string name="udyam_cert">Udyam / MSME சான்றிதழ்</string>
+    <string name="shop_establishment">கடை மற்றும் நிறுவல்</string>
+    <string name="trade_license">வர்த்தக உரிமம்</string>
+    <string name="aadhaar_card">ஆதார் அட்டை</string>
+    <string name="btn_submit_verification">சரிபார்ப்புக்கு சமர்ப்பிக்கவும்</string>
+    <string name="btn_skip_second_doc">இரண்டாவது ஆவணத்தை தவிர்க்கவும்</string>
+
+    <!-- KYC Status -->
+    <string name="registration_complete">பதிவு முடிந்தது!</string>
+    <string name="account_under_review">உங்கள் கணக்கு மதிப்பாய்வில் உள்ளது</string>
+    <string name="kyc_time_info">24-48 மணி நேரத்தில் notification வரும்</string>
+    <string name="account_created">கணக்கு உருவாக்கப்பட்டது</string>
+    <string name="kyc_under_review">KYC மதிப்பாய்வில்</string>
+    <string name="start_selling">விற்பனை தொடங்கவும்</string>
+    <string name="explore_dashboard">Dashboard பார்க்கவும்</string>
+    <string name="limited_access_note">KYC அங்கீகரிக்கப்படும் வரை வரையறுக்கப்பட்ட அணுகல்</string>
+    <string name="kyc_approved_title">KYC அங்கீகரிக்கப்பட்டது!</string>
+    <string name="kyc_approved_msg">உங்கள் கணக்கு சரிபார்க்கப்பட்டது. இப்போது விற்பனை தொடங்கவும்!</string>
+    <string name="kyc_rejected_title">KYC நிராகரிக்கப்பட்டது</string>
+    <string name="kyc_rejected_msg">காரணம்: %1$s</string>
+    <string name="btn_reupload">ஆவணங்களை மீண்டும் பதிவேற்றவும்</string>
+
+    <!-- Common -->
+    <string name="btn_next">தொடரவும்</string>
+    <string name="btn_back">திரும்பு</string>
+    <string name="btn_submit">சமர்ப்பிக்கவும்</string>
+    <string name="loading">ஏற்றுகிறது&#8230;</string>
+    <string name="error_required">இந்த புலம் தேவை</string>
+    <string name="error_invalid_gst">GST எண் தவறானது (15 எழுத்துக்கள்)</string>
+    <string name="error_invalid_pan">PAN எண் தவறானது (10 எழுத்துக்கள்)</string>
+    <string name="error_invalid_pincode">சரியான 6 இலக்க பின்கோட் உள்ளிடவும்</string>
+    <string name="error_select_garment">குறைந்தது ஒரு ஆடை வகையை தேர்ந்தெடுக்கவும்</string>
+    <string name="error_upload_gst">GST சான்றிதழை பதிவேற்றவும்</string>
+    <string name="network_error">நெட்வொர்க் பிழை. மீண்டும் முயற்சிக்கவும்.</string>
+</resources>

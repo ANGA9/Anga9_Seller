@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ANGA9 Seller</string>
+
+    <!-- Language Selection -->
+    <string name="select_language">Select Your Language</string>
+    <string name="select_language_subtitle">Apni bhasha chunein</string>
+    <string name="btn_continue">Continue</string>
+
+    <!-- Auth -->
+    <string name="enter_phone_title">Enter Your Mobile Number</string>
+    <string name="enter_phone_subtitle">We will verify via OTP</string>
+    <string name="btn_get_otp">Get OTP</string>
+    <string name="otp_sent_to">OTP sent to</string>
+    <string name="btn_change">Change</string>
+    <string name="resend_otp_in">Resend OTP in</string>
+    <string name="btn_resend_otp">Resend OTP</string>
+    <string name="btn_verify">Verify &amp; Continue</string>
+    <string name="terms_text">By continuing, you agree to our Terms of Service &amp; Privacy Policy</string>
+
+    <!-- Registration Steps -->
+    <string name="step_of">Step %1$d of %2$d</string>
+    <string name="what_is_your_name">What is your name?</string>
+    <string name="name_hint">Full Name</string>
+    <string name="name_as_per_id">As per Aadhaar / PAN</string>
+    <string name="tell_us_business">Tell us about your business</string>
+    <string name="shop_name_hint">Shop / Business Name</string>
+    <string name="what_describes_you">What best describes you?</string>
+    <string name="manufacturer">Manufacturer</string>
+    <string name="wholesaler">Wholesaler</string>
+    <string name="retailer">Retailer</string>
+    <string name="trader_distributor">Trader / Distributor</string>
+    <string name="garment_type_title">What type of garments do you sell?</string>
+    <string name="garment_select_min">Select all that apply (min 1)</string>
+    <string name="mens_wear">Men\'s Wear</string>
+    <string name="womens_wear">Women\'s Wear</string>
+    <string name="kids_wear">Kids\' Wear</string>
+    <string name="winter_wear">Winter Wear</string>
+    <string name="fabric_saree">Fabric / Saree</string>
+    <string name="inner_wear">Inner Wear</string>
+    <string name="sports_wear">Sports Wear</string>
+    <string name="ethnic_wear">Ethnic Wear</string>
+    <string name="other">Other</string>
+    <string name="business_location_title">Where is your business located?</string>
+    <string name="pincode_hint">Pincode (6 digits)</string>
+    <string name="city_auto">City (auto-detected)</string>
+    <string name="state_auto">State (auto-detected)</string>
+    <string name="popular_hubs">Popular garment hubs:</string>
+    <string name="verify_business">Verify Your Business</string>
+    <string name="gst_required_label">GST Certificate (Required)</string>
+    <string name="upload_gst">Upload GST Certificate</string>
+    <string name="one_more_doc">+ One more document (optional)</string>
+    <string name="udyam_cert">Udyam / MSME Certificate</string>
+    <string name="shop_establishment">Shop &amp; Establishment</string>
+    <string name="trade_license">Trade License</string>
+    <string name="aadhaar_card">Aadhaar Card</string>
+    <string name="btn_submit_verification">Submit for Verification</string>
+    <string name="btn_skip_second_doc">Skip second document</string>
+
+    <!-- KYC Status -->
+    <string name="registration_complete">Registration Complete!</string>
+    <string name="account_under_review">Your account is under review</string>
+    <string name="kyc_time_info">You will receive a notification within 24-48 hours</string>
+    <string name="account_created">Account Created</string>
+    <string name="kyc_under_review">KYC Under Review</string>
+    <string name="start_selling">Start Selling</string>
+    <string name="explore_dashboard">Explore Dashboard</string>
+    <string name="limited_access_note">Limited access until KYC approved</string>
+    <string name="kyc_approved_title">KYC Approved!</string>
+    <string name="kyc_approved_msg">Your account is verified. Start selling now!</string>
+    <string name="kyc_rejected_title">KYC Rejected</string>
+    <string name="kyc_rejected_msg">Reason: %1$s</string>
+    <string name="btn_reupload">Re-upload Documents</string>
+
+    <!-- Common -->
+    <string name="btn_next">Continue</string>
+    <string name="btn_back">Back</string>
+    <string name="btn_submit">Submit</string>
+    <string name="loading">Loading&#8230;</string>
+    <string name="error_required">This field is required</string>
+    <string name="error_invalid_gst">Invalid GST number (15 characters)</string>
+    <string name="error_invalid_pan">Invalid PAN number (10 characters)</string>
+    <string name="error_invalid_pincode">Enter a valid 6-digit pincode</string>
+    <string name="error_select_garment">Please select at least one garment type</string>
+    <string name="error_upload_gst">Please upload GST Certificate</string>
+    <string name="network_error">Network error. Please try again.</string>
+
+    <!-- Legacy keys (kept for backward compatibility) -->
+    <string name="enter_phone">Enter Your Mobile Number</string>
+    <string name="send_otp">Get OTP</string>
+    <string name="verify_otp">Verify OTP</string>
+    <string name="resend_otp">Resend OTP</string>
+    <string name="business_name">Business Name</string>
+    <string name="owner_name">Owner Name</string>
+    <string name="gst_number">GST Number</string>
+    <string name="pan_number">PAN Number</string>
+    <string name="submit_for_review">Submit for Review</string>
+    <string name="kyc_pending_title">Verification Pending</string>
+    <string name="kyc_pending_msg">Your application is under review. You will receive a response within 24-48 hours.</string>
+    <string name="kyc_approved_title_legacy">Verification Approved</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
+    <string name="submit">Submit</string>
+</resources>

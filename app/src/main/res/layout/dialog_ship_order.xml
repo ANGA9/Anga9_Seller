@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enter Shipping Details"
+        android:textSize="14sp"
+        android:textColor="#6B7280"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Courier Name"
+        android:textSize="13sp"
+        android:textColor="#374151"
+        android:layout_marginBottom="4dp" />
+
+    <EditText
+        android:id="@+id/etCourierName"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/input_background"
+        android:hint="e.g. Delhivery, Shiprocket, DTDC"
+        android:paddingHorizontal="12dp"
+        android:textSize="14sp"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tracking Number"
+        android:textSize="13sp"
+        android:textColor="#374151"
+        android:layout_marginBottom="4dp" />
+
+    <EditText
+        android:id="@+id/etTrackingNumber"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/input_background"
+        android:hint="Enter tracking number"
+        android:paddingHorizontal="12dp"
+        android:textSize="14sp" />
+
+</LinearLayout>

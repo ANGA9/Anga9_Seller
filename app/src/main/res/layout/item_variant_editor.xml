@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    app:cardCornerRadius="10dp"
+    app:cardElevation="1dp"
+    app:cardBackgroundColor="#FAFAFA">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="12dp">
+
+        <!-- Color Row Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="10dp">
+
+            <!-- Color Swatch -->
+            <View
+                android:id="@+id/viewColorSwatch"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="@drawable/shimmer_circle_bg"
+                android:layout_marginEnd="10dp" />
+
+            <EditText
+                android:id="@+id/etColorName"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:background="@drawable/input_background"
+                android:hint="Color Name (e.g. Red)"
+                android:paddingHorizontal="10dp"
+                android:textSize="13sp"
+                android:inputType="textCapWords"
+                android:layout_marginEnd="8dp" />
+
+            <EditText
+                android:id="@+id/etColorHex"
+                android:layout_width="90dp"
+                android:layout_height="44dp"
+                android:background="@drawable/input_background"
+                android:hint="#FF0000"
+                android:paddingHorizontal="10dp"
+                android:textSize="12sp"
+                android:inputType="text"
+                android:maxLength="7"
+                android:layout_marginEnd="8dp" />
+
+            <ImageView
+                android:id="@+id/btnRemoveVariant"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_delete"
+                android:padding="4dp"
+                app:tint="#EF5350" />
+        </LinearLayout>
+
+        <!-- Size Grid Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="6dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Size"
+                android:textSize="11sp"
+                android:textColor="#78909C"
+                android:textStyle="bold"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:text="Stock"
+                android:textSize="11sp"
+                android:textColor="#78909C"
+                android:textStyle="bold"
+                android:gravity="center" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1.5"
+                android:text="Price ₹"
+                android:textSize="11sp"
+                android:textColor="#78909C"
+                android:textStyle="bold"
+                android:gravity="center" />
+        </LinearLayout>
+
+        <!-- Size Rows Container -->
+        <LinearLayout
+            android:id="@+id/llSizeRows"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" />
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>

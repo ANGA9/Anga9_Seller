@@ -1,0 +1,829 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingLeft="24dp"
+            android:paddingRight="24dp"
+            android:paddingTop="24dp"
+            android:paddingBottom="100dp">
+
+            <!-- Progress bar -->
+            <ProgressBar
+                android:id="@+id/stepProgressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:max="7"
+                android:progress="1"
+                android:progressTint="@color/seller_primary"
+                android:progressBackgroundTint="@color/seller_border_light" />
+
+            <TextView
+                android:id="@+id/tvStepLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="24dp"
+                android:text="Step 1 of 7"
+                android:textSize="12sp"
+                android:textColor="@color/seller_text_secondary" />
+
+            <!-- STEP 1: Personal Details -->
+            <LinearLayout
+                android:id="@+id/layoutStep1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Personal Details"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/seller_text_primary" />
+                    
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Full Name *"
+                    android:textSize="14sp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="@color/seller_text_primary" />
+                <EditText
+                    android:id="@+id/etFullName"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_seller_input_selector"
+                    android:hint="Enter your full name"
+                    android:inputType="textPersonName|textCapWords"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/seller_text_primary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Email Address *"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="@color/seller_text_primary" />
+                <EditText
+                    android:id="@+id/etEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_seller_input_selector"
+                    android:hint="you@example.com"
+                    android:inputType="textEmailAddress"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/seller_text_primary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Phone Number *"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="@color/seller_text_primary" />
+                <EditText
+                    android:id="@+id/etPhone"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_seller_input"
+                    android:hint="10-digit number"
+                    android:inputType="phone"
+                    android:enabled="false"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/seller_text_secondary" />
+                    
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Associated with your account. Cannot be changed here."
+                    android:textSize="12sp"
+                    android:layout_marginTop="6dp"
+                    android:textColor="@color/seller_text_secondary" />
+                    
+                <!-- Terms & Privacy Agreement -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="20dp"
+                    android:gravity="center_vertical">
+
+                    <CheckBox
+                        android:id="@+id/cbTermsAgree"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false" />
+
+                    <TextView
+                        android:id="@+id/tvTermsLink"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginStart="8dp"
+                        android:textSize="13sp"
+                        android:textColor="@color/seller_text_secondary"
+                        android:text="I agree to the Terms of Service and Privacy Policy" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- STEP 2: Business Information -->
+            <LinearLayout
+                android:id="@+id/layoutStep2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Business Information"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/seller_text_primary" />
+                    
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Business Name *"
+                    android:textSize="14sp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="@color/seller_text_primary" />
+                <EditText
+                    android:id="@+id/etBusinessName"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_seller_input_selector"
+                    android:hint="Your company or brand name"
+                    android:inputType="textCapWords"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/seller_text_primary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Business Type *"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="@color/seller_text_primary" />
+                <Spinner
+                    android:id="@+id/spinnerBusinessType"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_seller_input_selector" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Business Category"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="@color/seller_text_primary" />
+                <EditText
+                    android:id="@+id/etBusinessCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_seller_input_selector"
+                    android:hint="e.g. Electronics, Fashion, Grocery"
+                    android:inputType="text"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/seller_text_primary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Store Description"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="@color/seller_text_primary" />
+                <EditText
+                    android:id="@+id/etStoreDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="96dp"
+                    android:background="@drawable/bg_seller_input_selector"
+                    android:hint="Brief description of your business"
+                    android:inputType="textMultiLine"
+                    android:gravity="top|start"
+                    android:padding="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/seller_text_primary" />
+            </LinearLayout>
+
+            <!-- STEP 3: Business Address -->
+            <LinearLayout
+                android:id="@+id/layoutStep3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Business Address"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/seller_text_primary" />
+                    
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Address Line 1 *"
+                    android:textSize="14sp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="@color/seller_text_primary" />
+                <EditText
+                    android:id="@+id/etAddress1"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_seller_input_selector"
+                    android:hint="Building, Street"
+                    android:inputType="textPostalAddress"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/seller_text_primary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Address Line 2"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="@color/seller_text_primary" />
+                <EditText
+                    android:id="@+id/etAddress2"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_seller_input_selector"
+                    android:hint="Area, Landmark"
+                    android:inputType="textPostalAddress"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/seller_text_primary" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginEnd="8dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="City *"
+                            android:textSize="14sp"
+                            android:layout_marginBottom="6dp"
+                            android:textColor="@color/seller_text_primary" />
+                        <EditText
+                            android:id="@+id/etCity"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_seller_input_selector"
+                            android:hint="City"
+                            android:inputType="text"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:textSize="14sp"
+                            android:textColor="@color/seller_text_primary" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="8dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="State *"
+                            android:textSize="14sp"
+                            android:layout_marginBottom="6dp"
+                            android:textColor="@color/seller_text_primary" />
+                        <Spinner
+                            android:id="@+id/spinnerState"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_seller_input_selector" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal"
+                    android:baselineAligned="false">
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginEnd="8dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Pincode *"
+                            android:textSize="14sp"
+                            android:layout_marginBottom="6dp"
+                            android:textColor="@color/seller_text_primary" />
+                        <EditText
+                            android:id="@+id/etPincode"
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_seller_input_selector"
+                            android:hint="6-digit pincode"
+                            android:inputType="number"
+                            android:maxLength="6"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:textSize="14sp"
+                            android:textColor="@color/seller_text_primary" />
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:layout_marginStart="8dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Country"
+                            android:textSize="14sp"
+                            android:layout_marginBottom="6dp"
+                            android:textColor="@color/seller_text_primary" />
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="44dp"
+                            android:background="@drawable/bg_seller_input"
+                            android:text="India"
+                            android:enabled="false"
+                            android:paddingLeft="16dp"
+                            android:paddingRight="16dp"
+                            android:textSize="14sp"
+                            android:textColor="@color/seller_text_secondary" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- STEP 4: Tax & KYC -->
+            <LinearLayout
+                android:id="@+id/layoutStep4"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Tax &amp; KYC"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/seller_text_primary" />
+                    
+                <!-- GSTIN Group -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="GSTIN"
+                    android:textSize="14sp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="@color/seller_text_primary" />
+                <EditText
+                    android:id="@+id/etGstin"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_seller_input_selector"
+                    android:hint="15-character GSTIN"
+                    android:inputType="textCapCharacters"
+                    android:maxLength="15"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/seller_text_primary" />
+                <!--
+                <Button
+                    android:id="@+id/btnUploadGst"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Upload GST Document"
+                    android:textAllCaps="false"
+                    android:backgroundTint="@color/seller_border_light"
+                    android:textColor="@color/seller_primary" />
+                <TextView
+                    android:id="@+id/tvGstFileName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/success_green"
+                    android:visibility="gone" />
+                -->
+
+                <!-- PAN Group -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="PAN Number"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="@color/seller_text_primary" />
+                <EditText
+                    android:id="@+id/etPan"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_seller_input_selector"
+                    android:hint="10-character PAN"
+                    android:inputType="textCapCharacters"
+                    android:maxLength="10"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/seller_text_primary" />
+                <!--
+                <Button
+                    android:id="@+id/btnUploadPan"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Upload PAN Document"
+                    android:textAllCaps="false"
+                    android:backgroundTint="@color/seller_border_light"
+                    android:textColor="@color/seller_primary" />
+                <TextView
+                    android:id="@+id/tvPanFileName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/success_green"
+                    android:visibility="gone" />
+                -->
+
+                <!-- Aadhaar Group -->
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Aadhaar Number"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="@color/seller_text_primary" />
+                <EditText
+                    android:id="@+id/etAadhaar"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_seller_input_selector"
+                    android:hint="12-digit Aadhaar"
+                    android:inputType="number"
+                    android:maxLength="12"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/seller_text_primary" />
+                <!--
+                <Button
+                    android:id="@+id/btnUploadAadhaar"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Upload Aadhaar Document"
+                    android:textAllCaps="false"
+                    android:backgroundTint="@color/seller_border_light"
+                    android:textColor="@color/seller_primary" />
+                <TextView
+                    android:id="@+id/tvAadhaarFileName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:textSize="12sp"
+                    android:textColor="@color/success_green"
+                    android:visibility="gone" />
+                -->
+            </LinearLayout>
+
+            <!-- STEP 5: Bank Account -->
+            <LinearLayout
+                android:id="@+id/layoutStep5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Bank Account"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/seller_text_primary" />
+                    
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Account Holder Name *"
+                    android:textSize="14sp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="@color/seller_text_primary" />
+                <EditText
+                    android:id="@+id/etBankName"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_seller_input_selector"
+                    android:hint="As per bank records"
+                    android:inputType="textPersonName"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/seller_text_primary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Account Number *"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="@color/seller_text_primary" />
+                <EditText
+                    android:id="@+id/etAccountNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_seller_input_selector"
+                    android:hint="9-18 digits"
+                    android:inputType="number"
+                    android:maxLength="18"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/seller_text_primary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Confirm Account Number *"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="@color/seller_text_primary" />
+                <EditText
+                    android:id="@+id/etConfirmAccountNum"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_seller_input_selector"
+                    android:hint="Re-enter account number"
+                    android:inputType="number"
+                    android:maxLength="18"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/seller_text_primary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="IFSC Code *"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="@color/seller_text_primary" />
+                <EditText
+                    android:id="@+id/etIfsc"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_seller_input_selector"
+                    android:hint="11-character IFSC"
+                    android:inputType="textCapCharacters"
+                    android:maxLength="11"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/seller_text_primary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Bank Name"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="@color/seller_text_primary" />
+                <EditText
+                    android:id="@+id/etBankBankName"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_seller_input_selector"
+                    android:hint="e.g. HDFC Bank"
+                    android:inputType="text"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/seller_text_primary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Branch Name"
+                    android:textSize="14sp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="6dp"
+                    android:textColor="@color/seller_text_primary" />
+                <EditText
+                    android:id="@+id/etBankBranch"
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:background="@drawable/bg_seller_input_selector"
+                    android:hint="e.g. MG Road Branch"
+                    android:inputType="text"
+                    android:paddingLeft="16dp"
+                    android:paddingRight="16dp"
+                    android:textSize="14sp"
+                    android:textColor="@color/seller_text_primary" />
+            </LinearLayout>
+
+            <!-- STEP 6: Pickup Address -->
+            <LinearLayout
+                android:id="@+id/layoutStep6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Pickup Address"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/seller_text_primary" />
+                    
+                <CheckBox
+                    android:id="@+id/cbSameAsBusiness"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:text="Same as Business Address"
+                    android:checked="true"
+                    android:textColor="@color/seller_text_primary" />
+
+                <LinearLayout
+                    android:id="@+id/layoutCustomPickup"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone"
+                    android:layout_marginTop="16dp">
+                    
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Complete Pickup Address *"
+                        android:textSize="14sp"
+                        android:layout_marginBottom="6dp"
+                        android:textColor="@color/seller_text_primary" />
+                    <EditText
+                        android:id="@+id/etPickupAddress"
+                        android:layout_width="match_parent"
+                        android:layout_height="96dp"
+                        android:background="@drawable/bg_seller_input_selector"
+                        android:hint="Enter full pickup address with pincode"
+                        android:inputType="textMultiLine"
+                        android:gravity="top|start"
+                        android:padding="16dp"
+                        android:textSize="14sp"
+                        android:textColor="@color/seller_text_primary" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- STEP 7: Review & Submit -->
+            <LinearLayout
+                android:id="@+id/layoutStep7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Review &amp; Submit"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/seller_text_primary" />
+                    
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Please review your details. Once submitted, your profile will be sent for verification."
+                    android:textSize="14sp"
+                    android:textColor="@color/seller_text_secondary" />
+                    
+                <TextView
+                    android:id="@+id/tvReviewDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    android:padding="16dp"
+                    android:background="@drawable/bg_seller_input"
+                    android:text="Loading summary..."
+                    android:textSize="14sp"
+                    android:textColor="@color/seller_text_primary" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom Navigation Bar for Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@color/white"
+        android:elevation="8dp">
+
+        <Button
+            android:id="@+id/btnBack"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:text="Back"
+            android:textAllCaps="false"
+            android:textColor="@color/seller_text_primary"
+            android:backgroundTint="@color/seller_border_light"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="0dp"
+            android:layout_height="56dp"
+            android:layout_weight="1"
+            android:layout_marginStart="8dp"
+            android:text="Next"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_seller_primary" />
+    </LinearLayout>
+
+    <FrameLayout
+        android:id="@+id/loadingOverlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone">
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminateTint="@color/seller_primary"/>
+    </FrameLayout>
+</FrameLayout>

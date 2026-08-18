@@ -1,0 +1,280 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="48dp"
+        android:paddingBottom="32dp"
+        android:gravity="center_horizontal">
+
+        <!-- ANGA9 Logo -->
+        <ImageView
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:src="@drawable/ic_seller_logo"
+            android:contentDescription="ANGA9 Logo"
+            android:layout_marginBottom="32dp" />
+
+        <!-- Status Icon -->
+        <ImageView
+            android:id="@+id/ivStatusIcon"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/ic_kyc_pending" />
+
+        <!-- Status Title -->
+        <TextView
+            android:id="@+id/tvStatusTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Registration Complete!"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#1C1B1F"
+            android:layout_marginBottom="8dp" />
+
+        <!-- Status Message -->
+        <TextView
+            android:id="@+id/tvStatusMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Your account is under review"
+            android:textSize="14sp"
+            android:textColor="#6B7280"
+            android:gravity="center"
+            android:lineSpacingExtra="4dp"
+            android:layout_marginBottom="32dp" />
+
+        <!-- ── 3-Step Stepper ── -->
+        <LinearLayout
+            android:id="@+id/layoutStepper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:layout_marginBottom="32dp">
+
+            <!-- Step 1: Account Created -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/tvStep1Circle"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/stepper_circle_active"
+                    android:gravity="center"
+                    android:text="1"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Account\nCreated"
+                    android:textSize="10sp"
+                    android:textColor="#10B981"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <!-- Line 1 -->
+            <View
+                android:id="@+id/stepLine1"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="0.5"
+                android:background="#10B981" />
+
+            <!-- Step 2: KYC Under Review -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/tvStep2Circle"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/stepper_circle_active"
+                    android:gravity="center"
+                    android:text="2"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvStep2Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="KYC\nUnder Review"
+                    android:textSize="10sp"
+                    android:textColor="#F59E0B"
+                    android:gravity="center" />
+            </LinearLayout>
+
+            <!-- Line 2 -->
+            <View
+                android:id="@+id/stepLine2"
+                android:layout_width="0dp"
+                android:layout_height="2dp"
+                android:layout_weight="0.5"
+                android:background="#E5E7EB" />
+
+            <!-- Step 3: Start Selling -->
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center">
+                <TextView
+                    android:id="@+id/tvStep3Circle"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:background="@drawable/stepper_circle_inactive"
+                    android:gravity="center"
+                    android:text="3"
+                    android:textColor="#9CA3AF"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tvStep3Label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="6dp"
+                    android:text="Start\nSelling"
+                    android:textSize="10sp"
+                    android:textColor="#9CA3AF"
+                    android:gravity="center" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <!-- Submitted Documents Card (shown when pending) -->
+        <LinearLayout
+            android:id="@+id/tvSubmittedInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/card_background"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="Submitted Documents:"
+                android:textColor="#1C1B1F"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="&#10003;  Business Information"
+                android:textColor="#10B981"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:text="&#10003;  GST Certificate"
+                android:textColor="#10B981"
+                android:textSize="13sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="&#10003;  KYC Documents Uploaded"
+                android:textColor="#10B981"
+                android:textSize="13sp" />
+
+        </LinearLayout>
+
+        <!-- Rejection Reason Card (shown when rejected) -->
+        <LinearLayout
+            android:id="@+id/layoutRejectionReason"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:background="#FEF2F2"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="6dp"
+                android:text="Rejection Reason:"
+                android:textColor="#DC2626"
+                android:textSize="13sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvRejectionReason"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#DC2626"
+                android:textSize="13sp"
+                android:lineSpacingExtra="3dp" />
+
+        </LinearLayout>
+
+        <!-- Primary Action Button -->
+        <TextView
+            android:id="@+id/btnAction"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:background="@drawable/btn_primary_rounded"
+            android:gravity="center"
+            android:text="Explore Dashboard"
+            android:textColor="#FFFFFF"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginBottom="12dp" />
+
+        <!-- Limited access note (shown when pending) -->
+        <TextView
+            android:id="@+id/tvLimitedAccess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Limited access until KYC approved"
+            android:textSize="12sp"
+            android:textColor="#9CA3AF"
+            android:gravity="center"
+            android:layout_marginBottom="20dp" />
+
+        <!-- Logout -->
+        <TextView
+            android:id="@+id/btnLogout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="8dp"
+            android:text="Logout"
+            android:textColor="#9CA3AF"
+            android:textSize="14sp"
+            android:clickable="true"
+            android:focusable="true" />
+
+    </LinearLayout>
+</ScrollView>

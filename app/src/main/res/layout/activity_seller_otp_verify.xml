@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    android:paddingLeft="24dp"
+    android:paddingRight="24dp"
+    android:paddingTop="64dp"
+    android:paddingBottom="32dp">
+
+    <!-- Title -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/otp_sent_to"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:textColor="#1C1B1F" />
+
+    <!-- Phone + Change row -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="6dp"
+        android:layout_marginBottom="40dp">
+
+        <TextView
+            android:id="@+id/tvPhone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="15sp"
+            android:textColor="#6B7280"
+            android:text="+91 XXXXXXXXXX" />
+
+        <TextView
+            android:id="@+id/tvChange"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_change"
+            android:textSize="14sp"
+            android:textColor="#7C3AED"
+            android:textStyle="bold"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingLeft="8dp" />
+    </LinearLayout>
+
+    <!-- 6 OTP Boxes -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <EditText
+            android:id="@+id/etOtp1"
+            android:layout_width="44dp"
+            android:layout_height="52dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/input_background"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#1C1B1F" />
+
+        <EditText
+            android:id="@+id/etOtp2"
+            android:layout_width="44dp"
+            android:layout_height="52dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/input_background"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#1C1B1F" />
+
+        <EditText
+            android:id="@+id/etOtp3"
+            android:layout_width="44dp"
+            android:layout_height="52dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/input_background"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#1C1B1F" />
+
+        <EditText
+            android:id="@+id/etOtp4"
+            android:layout_width="44dp"
+            android:layout_height="52dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/input_background"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#1C1B1F" />
+
+        <EditText
+            android:id="@+id/etOtp5"
+            android:layout_width="44dp"
+            android:layout_height="52dp"
+            android:layout_marginRight="8dp"
+            android:background="@drawable/input_background"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#1C1B1F" />
+
+        <EditText
+            android:id="@+id/etOtp6"
+            android:layout_width="44dp"
+            android:layout_height="52dp"
+            android:background="@drawable/input_background"
+            android:gravity="center"
+            android:inputType="number"
+            android:maxLength="1"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#1C1B1F" />
+
+    </LinearLayout>
+
+    <!-- Resend timer -->
+    <TextView
+        android:id="@+id/tvResendTimer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp"
+        android:textSize="13sp"
+        android:textColor="#9CA3AF"
+        android:visibility="gone" />
+
+    <!-- Resend OTP -->
+    <TextView
+        android:id="@+id/tvResend"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:text="@string/btn_resend_otp"
+        android:textSize="14sp"
+        android:textColor="#7C3AED"
+        android:textStyle="bold"
+        android:clickable="true"
+        android:focusable="true" />
+
+    <!-- Progress -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="16dp"
+        android:visibility="gone" />
+
+    <!-- Spacer -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <!-- Verify Button -->
+    <TextView
+        android:id="@+id/btnVerify"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/btn_primary_rounded"
+        android:gravity="center"
+        android:text="@string/btn_verify"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:clickable="true"
+        android:focusable="true" />
+
+</LinearLayout>

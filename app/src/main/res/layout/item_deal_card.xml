@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="14dp"
+    android:layout_marginHorizontal="16dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="12dp"
+    app:cardElevation="0dp"
+    app:strokeWidth="1dp"
+    app:strokeColor="#E5E7EB">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="14dp">
+
+        <!-- Top Row -->
+        <TextView
+            android:id="@+id/tvProductName"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            tools:text="Wireless Noise Cancelling Headphones"
+            android:textColor="#1A1D23"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@+id/tvStatusPill"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tvDealTypePill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/shape_pill_unselected"
+            android:paddingHorizontal="6dp"
+            android:paddingVertical="3dp"
+            tools:text="Deal of the Day"
+            android:textColor="#2851C4"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvProductName" />
+
+        <TextView
+            android:id="@+id/tvStatusPill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/shape_status_active"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            tools:text="ACTIVE"
+            android:textColor="#1E7A45"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Divider -->
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginTop="12dp"
+            android:background="#EFEFF1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDealTypePill" />
+
+        <!-- Price Row -->
+        <TextView
+            android:id="@+id/tvDealPrice"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            tools:text="₹1299"
+            android:textColor="#1A1D23"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/divider1" />
+
+        <TextView
+            android:id="@+id/tvPriceMeta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:layout_marginBottom="2dp"
+            tools:text="deal price · min qty 5"
+            android:textColor="#9AA1AC"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/tvDealPrice"
+            app:layout_constraintStart_toEndOf="@+id/tvDealPrice" />
+
+        <!-- Timeline Row: Starts -->
+        <ImageView
+            android:id="@+id/ivStarts"
+            android:layout_width="13dp"
+            android:layout_height="13dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_calendar"
+            app:tint="#9AA1AC"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvDealPrice" />
+
+        <TextView
+            android:id="@+id/tvStartsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="Starts"
+            android:textColor="#5B6472"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivStarts"
+            app:layout_constraintStart_toEndOf="@+id/ivStarts"
+            app:layout_constraintTop_toTopOf="@+id/ivStarts" />
+
+        <TextView
+            android:id="@+id/tvStartsValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="13 Aug 2026, 12:20 PM"
+            android:textColor="#1A1D23"
+            android:textSize="11sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="@+id/ivStarts"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ivStarts" />
+
+        <!-- Timeline Row: Ends -->
+        <ImageView
+            android:id="@+id/ivEnds"
+            android:layout_width="13dp"
+            android:layout_height="13dp"
+            android:layout_marginTop="10dp"
+            android:src="@drawable/ic_calendar_x"
+            app:tint="#9AA1AC"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivStarts" />
+
+        <TextView
+            android:id="@+id/tvEndsLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="6dp"
+            android:text="Ends"
+            android:textColor="#5B6472"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@+id/ivEnds"
+            app:layout_constraintStart_toEndOf="@+id/ivEnds"
+            app:layout_constraintTop_toTopOf="@+id/ivEnds" />
+
+        <TextView
+            android:id="@+id/tvEndsValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tools:text="15 Aug 2026, 11:59 PM"
+            android:textColor="#1A1D23"
+            android:textSize="11sp"
+            android:textStyle="normal"
+            app:layout_constraintBottom_toBottomOf="@+id/ivEnds"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/ivEnds" />
+
+        <!-- Actions Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="34dp"
+            android:layout_marginTop="16dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivEnds">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnEdit"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                android:text="Edit"
+                android:textAllCaps="false"
+                android:textColor="#374151"
+                android:textSize="13sp"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/ic_edit"
+                app:iconPadding="6dp"
+                app:iconSize="14dp"
+                app:iconTint="#374151"
+                app:strokeColor="#D8DBE0"
+                app:strokeWidth="1dp" />
+
+            <Space
+                android:layout_width="8dp"
+                android:layout_height="match_parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnPauseResume"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                android:text="Pause"
+                android:textAllCaps="false"
+                android:textColor="#374151"
+                android:textSize="13sp"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/ic_pause"
+                app:iconPadding="6dp"
+                app:iconSize="14dp"
+                app:iconTint="#374151"
+                app:strokeColor="#D8DBE0"
+                app:strokeWidth="1dp" />
+
+            <Space
+                android:layout_width="8dp"
+                android:layout_height="match_parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnDelete"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="34dp"
+                android:layout_height="match_parent"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:padding="0dp"
+                app:cornerRadius="8dp"
+                app:icon="@drawable/ic_delete"
+                app:iconGravity="textStart"
+                app:iconPadding="0dp"
+                app:iconSize="16dp"
+                app:iconTint="#D8342A"
+                app:strokeColor="#D8DBE0"
+                app:strokeWidth="1dp" />
+
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

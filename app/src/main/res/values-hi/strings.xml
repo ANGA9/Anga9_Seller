@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ANGA9 Seller</string>
+
+    <!-- Language Selection -->
+    <string name="select_language">अपनी भाषा चुनें</string>
+    <string name="select_language_subtitle">Apni bhasha chunein</string>
+    <string name="btn_continue">आगे बढ़ें</string>
+
+    <!-- Auth -->
+    <string name="enter_phone_title">अपना मोबाइल नंबर दर्ज करें</string>
+    <string name="enter_phone_subtitle">OTP से verify होगा</string>
+    <string name="btn_get_otp">OTP प्राप्त करें</string>
+    <string name="otp_sent_to">OTP भेजा गया</string>
+    <string name="btn_change">बदलें</string>
+    <string name="resend_otp_in">OTP दोबारा भेजें</string>
+    <string name="btn_resend_otp">OTP दोबारा भेजें</string>
+    <string name="btn_verify">Verify करें और आगे बढ़ें</string>
+    <string name="terms_text">आगे बढ़कर आप हमारी Terms of Service और Privacy Policy से सहमत हैं</string>
+
+    <!-- Registration Steps -->
+    <string name="step_of">चरण %1$d / %2$d</string>
+    <string name="what_is_your_name">आपका नाम क्या है?</string>
+    <string name="name_hint">पूरा नाम</string>
+    <string name="name_as_per_id">Aadhaar / PAN के अनुसार</string>
+    <string name="tell_us_business">अपने व्यवसाय के बारे में बताएं</string>
+    <string name="shop_name_hint">दुकान / व्यवसाय का नाम</string>
+    <string name="what_describes_you">आप क्या हैं?</string>
+    <string name="manufacturer">निर्माता</string>
+    <string name="wholesaler">थोक विक्रेता</string>
+    <string name="retailer">खुदरा विक्रेता</string>
+    <string name="trader_distributor">व्यापारी / वितरक</string>
+    <string name="garment_type_title">आप कौन सा गारमेंट बेचते हैं?</string>
+    <string name="garment_select_min">सभी चुनें (कम से कम 1)</string>
+    <string name="mens_wear">पुरुष वस्त्र</string>
+    <string name="womens_wear">महिला वस्त्र</string>
+    <string name="kids_wear">बच्चों के वस्त्र</string>
+    <string name="winter_wear">शीतकालीन वस्त्र</string>
+    <string name="fabric_saree">कपड़ा / साड़ी</string>
+    <string name="inner_wear">इनर वियर</string>
+    <string name="sports_wear">स्पोर्ट्स वियर</string>
+    <string name="ethnic_wear">एथनिक वियर</string>
+    <string name="other">अन्य</string>
+    <string name="business_location_title">आपका व्यवसाय कहाँ है?</string>
+    <string name="pincode_hint">पिनकोड (6 अंक)</string>
+    <string name="city_auto">शहर (स्वतः पता चलेगा)</string>
+    <string name="state_auto">राज्य (स्वतः पता चलेगा)</string>
+    <string name="popular_hubs">प्रमुख गारमेंट हब:</string>
+    <string name="verify_business">व्यवसाय सत्यापित करें</string>
+    <string name="gst_required_label">GST प्रमाणपत्र (अनिवार्य)</string>
+    <string name="upload_gst">GST प्रमाणपत्र अपलोड करें</string>
+    <string name="one_more_doc">+ एक और दस्तावेज़ (वैकल्पिक)</string>
+    <string name="udyam_cert">Udyam / MSME प्रमाणपत्र</string>
+    <string name="shop_establishment">दुकान और स्थापना लाइसेंस</string>
+    <string name="trade_license">व्यापार लाइसेंस</string>
+    <string name="aadhaar_card">आधार कार्ड</string>
+    <string name="btn_submit_verification">सत्यापन के लिए जमा करें</string>
+    <string name="btn_skip_second_doc">दूसरा दस्तावेज़ छोड़ें</string>
+
+    <!-- KYC Status -->
+    <string name="registration_complete">पंजीकरण पूर्ण!</string>
+    <string name="account_under_review">आपका खाता समीक्षा में है</string>
+    <string name="kyc_time_info">24-48 घंटे में notification मिलेगी</string>
+    <string name="account_created">खाता बनाया गया</string>
+    <string name="kyc_under_review">KYC समीक्षा में</string>
+    <string name="start_selling">बेचना शुरू करें</string>
+    <string name="explore_dashboard">Dashboard देखें</string>
+    <string name="limited_access_note">KYC स्वीकृत होने तक सीमित पहुँच</string>
+    <string name="kyc_approved_title">KYC स्वीकृत!</string>
+    <string name="kyc_approved_msg">आपका खाता सत्यापित है। अभी बेचना शुरू करें!</string>
+    <string name="kyc_rejected_title">KYC अस्वीकृत</string>
+    <string name="kyc_rejected_msg">कारण: %1$s</string>
+    <string name="btn_reupload">दस्तावेज़ दोबारा अपलोड करें</string>
+
+    <!-- Common -->
+    <string name="btn_next">आगे बढ़ें</string>
+    <string name="btn_back">वापस</string>
+    <string name="btn_submit">जमा करें</string>
+    <string name="loading">लोड हो रहा है&#8230;</string>
+    <string name="error_required">यह फ़ील्ड आवश्यक है</string>
+    <string name="error_invalid_gst">GST नंबर गलत है (15 अक्षर)</string>
+    <string name="error_invalid_pan">PAN नंबर गलत है (10 अक्षर)</string>
+    <string name="error_invalid_pincode">6 अंकों का सही पिनकोड दर्ज करें</string>
+    <string name="error_select_garment">कम से कम एक गारमेंट प्रकार चुनें</string>
+    <string name="error_upload_gst">GST प्रमाणपत्र अपलोड करें</string>
+    <string name="network_error">नेटवर्क त्रुटि। कृपया पुनः प्रयास करें।</string>
+</resources>

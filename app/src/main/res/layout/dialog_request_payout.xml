@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tvAvailableForPayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:textColor="#4CAF50"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvMinPayoutAmount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="#666666"
+        android:layout_marginTop="2dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Payout Amount (₹)"
+        android:textSize="13sp"
+        android:textColor="#333333"
+        android:layout_marginTop="16dp" />
+
+    <EditText
+        android:id="@+id/etPayoutAmount"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:inputType="numberDecimal"
+        android:hint="Enter amount"
+        android:background="@drawable/input_background"
+        android:padding="10dp"
+        android:layout_marginTop="4dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Payment Method"
+        android:textSize="13sp"
+        android:textColor="#333333"
+        android:layout_marginTop="12dp" />
+
+    <Spinner
+        android:id="@+id/spinnerPaymentMethod"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="4dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Payment Mode"
+        android:textSize="13sp"
+        android:textColor="#333333"
+        android:layout_marginTop="12dp" />
+
+    <Spinner
+        android:id="@+id/spinnerPaymentMode"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginTop="4dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bank Account"
+        android:textSize="13sp"
+        android:textColor="#333333"
+        android:layout_marginTop="12dp" />
+
+    <TextView
+        android:id="@+id/tvBankDetailsPreview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="13sp"
+        android:textColor="#1A365D"
+        android:textStyle="bold"
+        android:background="@drawable/card_background"
+        android:padding="10dp"
+        android:layout_marginTop="4dp" />
+
+    <TextView
+        android:id="@+id/tvTdsNote"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textColor="#FFA500"
+        android:layout_marginTop="8dp"
+        android:visibility="gone" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Payout processing time: 7 working days after request."
+        android:textSize="11sp"
+        android:textColor="#999999"
+        android:layout_marginTop="8dp" />
+
+</LinearLayout>

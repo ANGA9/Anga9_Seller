@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F7F7F8">
+
+    <include layout="@layout/layout_header_stacked" />
+
+    <!-- We use a ScrollView for the main content to handle smaller screens -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <include layout="@layout/layout_file_drop_zone" />
+
+            <!-- Spacer between drop zone and instructions -->
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+
+            <include layout="@layout/layout_instructions_card" />
+            
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="24dp" />
+
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Bottom pinned action area -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:padding="16dp"
+        android:elevation="4dp">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnDownloadTemplate"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:text="Download Template"
+            android:textColor="#1A1D23"
+            android:textAllCaps="false"
+            app:icon="@drawable/ic_upload"
+            app:iconGravity="textStart"
+            app:iconTint="#1A1D23"
+            app:backgroundTint="#FFFFFF"
+            app:strokeColor="#D8DBE0"
+            app:strokeWidth="1dp"
+            app:cornerRadius="8dp" />
+    </LinearLayout>
+
+</LinearLayout>

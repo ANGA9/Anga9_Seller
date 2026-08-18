@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="80dp"
+    android:height="80dp"
+    android:viewportWidth="80"
+    android:viewportHeight="80">
+    <!-- Document body -->
+    <path android:fillColor="#E53935" android:pathData="M12,4 L52,4 L68,20 L68,76 L12,76 Z" />
+    <!-- Folded corner -->
+    <path android:fillColor="#B71C1C" android:pathData="M52,4 L52,20 L68,20 Z" />
+    <!-- P letter -->
+    <path android:fillColor="#FFFFFF" android:pathData="M22,38 L22,52 L26,52 L26,47 L29,47 C32,47 34,45 34,42.5 C34,40 32,38 29,38 Z M26,41 L29,41 C30,41 30.5,41.5 30.5,42.5 C30.5,43.5 30,44 29,44 L26,44 Z" />
+    <!-- D letter -->
+    <path android:fillColor="#FFFFFF" android:pathData="M36,38 L36,52 L41,52 C45,52 47,49.5 47,45 C47,40.5 45,38 41,38 Z M40,41 L41,41 C43,41 43.5,42.5 43.5,45 C43.5,47.5 43,49 41,49 L40,49 Z" />
+    <!-- F letter -->
+    <path android:fillColor="#FFFFFF" android:pathData="M49,38 L49,52 L53,52 L53,46.5 L58,46.5 L58,43.5 L53,43.5 L53,41 L58.5,41 L58.5,38 Z" />
+</vector>

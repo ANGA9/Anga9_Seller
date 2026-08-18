@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    android:background="@drawable/bg_ticket_card"
+    android:clickable="true"
+    android:focusable="true"
+    android:padding="12dp">
+
+    <!-- Icon Badge -->
+    <FrameLayout
+        android:id="@+id/flIconBadge"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
+        android:background="@drawable/bg_status_pill"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/ivBadgeIcon"
+            android:layout_width="18dp"
+            android:layout_height="18dp"
+            android:layout_gravity="center"
+            tools:src="@drawable/ic_clock" />
+    </FrameLayout>
+
+    <!-- Status Pill -->
+    <TextView
+        android:id="@+id/tvStatusPill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_status_pill"
+        android:paddingHorizontal="8dp"
+        android:paddingVertical="4dp"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Needs reply" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="8dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="#1A2332"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/tvStatusPill"
+        app:layout_constraintStart_toEndOf="@id/flIconBadge"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Payout delayed for order #28392" />
+
+    <!-- Meta Line -->
+    <TextView
+        android:id="@+id/tvMeta"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginEnd="16dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="#6B7280"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toStartOf="@+id/ivChevron"
+        app:layout_constraintStart_toStartOf="@id/tvTitle"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        tools:text="Payouts · #TCK-321 · 2h ago" />
+
+    <!-- Chevron -->
+    <ImageView
+        android:id="@+id/ivChevron"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/ic_chevron_right"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:tint="#94A3B8" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

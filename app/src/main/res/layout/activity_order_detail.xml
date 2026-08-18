@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#F5F7FA">
+
+    <!-- Toolbar -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="#1A365D"
+        android:gravity="center_vertical"
+        android:paddingHorizontal="16dp">
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_back"
+            android:tint="@android:color/white" />
+
+        <TextView
+            android:id="@+id/tvOrderId"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@android:color/white"
+            android:textSize="17sp"
+            android:textStyle="bold"
+            android:paddingStart="8dp" />
+
+        <TextView
+            android:id="@+id/tvOrderStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
+            android:textColor="@android:color/white"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:background="@drawable/status_chip_bg" />
+    </LinearLayout>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="12dp">
+
+            <!-- Order Info Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Order Info" android:textStyle="bold" android:textSize="14sp"
+                        android:textColor="#1A365D" android:layout_marginBottom="10dp" />
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:layout_marginBottom="6dp">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content"
+                            android:text="Date" android:textColor="#6B7280" android:textSize="13sp" />
+                        <TextView android:id="@+id/tvOrderDate" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textSize="13sp" android:textColor="#1F2937" />
+                    </LinearLayout>
+
+                    <!-- Order Type Row -->
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:layout_marginBottom="6dp">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content"
+                            android:text="Order Type" android:textColor="#6B7280" android:textSize="13sp" />
+                        <TextView android:id="@+id/tvOrderTypeRow" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textSize="13sp"
+                            android:textStyle="bold" android:textColor="#7C3AED" />
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:layout_marginBottom="6dp">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content"
+                            android:text="Payment" android:textColor="#6B7280" android:textSize="13sp" />
+                        <TextView android:id="@+id/tvPaymentMethod" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textSize="13sp" android:textColor="#1F2937" />
+                        <TextView android:text=" | " android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textColor="#6B7280" android:textSize="13sp" />
+                        <TextView android:id="@+id/tvPaymentStatus" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textSize="13sp" android:textColor="#16A34A" />
+                    </LinearLayout>
+
+                    <LinearLayout android:id="@+id/layoutPoNumber" android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:orientation="horizontal"
+                        android:layout_marginBottom="6dp" android:visibility="gone">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content"
+                            android:text="PO Number" android:textColor="#6B7280" android:textSize="13sp" />
+                        <TextView android:id="@+id/tvPoNumber" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textSize="13sp"
+                            android:textColor="#2563EB" android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout android:id="@+id/layoutTracking" android:layout_width="match_parent"
+                        android:layout_height="wrap_content" android:orientation="horizontal"
+                        android:layout_marginBottom="6dp" android:visibility="gone">
+                        <TextView android:layout_width="120dp" android:layout_height="wrap_content"
+                            android:text="Tracking" android:textColor="#6B7280" android:textSize="13sp" />
+                        <TextView android:id="@+id/tvTrackingNumber" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textSize="13sp" android:textColor="#1F2937" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Customer Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Customer Details" android:textStyle="bold" android:textSize="14sp"
+                        android:textColor="#1A365D" android:layout_marginBottom="10dp" />
+
+                    <TextView android:id="@+id/tvCustomerName" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:textSize="14sp"
+                        android:textStyle="bold" android:textColor="#1F2937" />
+
+                    <TextView android:id="@+id/tvCustomerPhone" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:textSize="13sp"
+                        android:textColor="#6B7280" android:layout_marginTop="4dp" />
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Delivery Address:" android:textSize="12sp"
+                        android:textColor="#6B7280" android:layout_marginTop="8dp" />
+
+                    <TextView android:id="@+id/tvDeliveryAddress" android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" android:textSize="13sp"
+                        android:textColor="#1F2937" android:layout_marginTop="2dp" />
+
+                    <!-- B2B Delivery Instructions -->
+                    <LinearLayout
+                        android:id="@+id/layoutDeliveryInstructions"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_marginTop="10dp"
+                        android:background="#F0F9FF"
+                        android:padding="10dp"
+                        android:visibility="gone">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="📦 Delivery Instructions"
+                            android:textColor="#1A365D"
+                            android:textSize="12sp"
+                            android:textStyle="bold"
+                            android:layout_marginBottom="6dp" />
+
+                        <TextView
+                            android:id="@+id/tvDeliveryAddressType"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:textColor="#374151"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/tvWeekendDelivery"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:textColor="#374151"
+                            android:layout_marginTop="2dp"
+                            android:visibility="gone" />
+
+                        <TextView
+                            android:id="@+id/tvDeliveryNote"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="12sp"
+                            android:textColor="#374151"
+                            android:layout_marginTop="2dp"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Items Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Order Items" android:textStyle="bold" android:textSize="14sp"
+                        android:textColor="#1A365D" android:layout_marginBottom="10dp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvItems"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Price Breakdown Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Price Breakdown" android:textStyle="bold" android:textSize="14sp"
+                        android:textColor="#1A365D" android:layout_marginBottom="10dp" />
+
+                    <include layout="@layout/row_price_item" android:id="@+id/rowItemsTotal" />
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:layout_marginBottom="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:text="Items Total" android:textColor="#6B7280" android:textSize="13sp" />
+                        <TextView android:id="@+id/tvItemsTotal" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textSize="13sp" android:textColor="#1F2937" />
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:layout_marginBottom="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:text="Bulk Discount" android:textColor="#6B7280" android:textSize="13sp" />
+                        <TextView android:id="@+id/tvBulkDiscount" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textSize="13sp" android:textColor="#EF4444" />
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:layout_marginBottom="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:text="GST" android:textColor="#6B7280" android:textSize="13sp" />
+                        <TextView android:id="@+id/tvGst" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textSize="13sp" android:textColor="#1F2937" />
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:layout_marginBottom="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:text="Delivery" android:textColor="#6B7280" android:textSize="13sp" />
+                        <TextView android:id="@+id/tvDeliveryCharges" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textSize="13sp" android:textColor="#1F2937" />
+                    </LinearLayout>
+
+                    <View android:layout_width="match_parent" android:layout_height="1dp"
+                        android:background="#E5E7EB" android:layout_marginVertical="8dp" />
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:layout_marginBottom="6dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:text="Order Total" android:textStyle="bold"
+                            android:textColor="#1F2937" android:textSize="15sp" />
+                        <TextView android:id="@+id/tvTotalAmount" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textSize="15sp"
+                            android:textStyle="bold" android:textColor="#1A365D" />
+                    </LinearLayout>
+
+                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:background="#F0FDF4"
+                        android:padding="10dp" android:layout_marginTop="4dp">
+                        <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                            android:layout_weight="1" android:text="Your Earnings (95%)"
+                            android:textColor="#16A34A" android:textStyle="bold" android:textSize="14sp" />
+                        <TextView android:id="@+id/tvSellerEarnings" android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" android:textSize="14sp"
+                            android:textStyle="bold" android:textColor="#16A34A" />
+                    </LinearLayout>
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Status History Card -->
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="2dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="16dp">
+
+                    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="Order Timeline" android:textStyle="bold" android:textSize="14sp"
+                        android:textColor="#1A365D" android:layout_marginBottom="10dp" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rvStatusHistory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:nestedScrollingEnabled="false" />
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+
+            <!-- Invoice Button -->
+            <Button
+                android:id="@+id/btnGenerateInvoice"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginBottom="10dp"
+                android:text="Download GST Invoice"
+                android:backgroundTint="#1A365D"
+                android:textColor="@android:color/white"
+                android:visibility="gone" />
+
+            <!-- Action Buttons -->
+            <LinearLayout
+                android:id="@+id/layoutActions"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="16dp"
+                android:visibility="gone">
+
+                <Button
+                    android:id="@+id/btnPrimaryAction"
+                    android:layout_width="match_parent"
+                    android:layout_height="52dp"
+                    android:backgroundTint="#2563EB"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    android:id="@+id/btnSecondaryAction"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    android:backgroundTint="#F3F4F6"
+                    android:textColor="#6B7280"
+                    android:visibility="gone" />
+
+                <Button
+                    android:id="@+id/btnRejectOrder"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_marginTop="8dp"
+                    android:text="Reject Order"
+                    android:backgroundTint="#FEE2E2"
+                    android:textColor="#EF4444"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

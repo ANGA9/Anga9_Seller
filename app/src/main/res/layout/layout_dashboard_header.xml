@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="12dp"
+    android:background="@color/seller_bg_light">
+
+    <!-- Avatar -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cvAvatar"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        app:cardCornerRadius="24dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="0dp"
+        app:cardBackgroundColor="@color/seller_primary_light"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <TextView
+            android:id="@+id/tvInitials"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            tools:text="RS"
+            android:textColor="@color/seller_primary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:fontFamily="sans-serif-medium" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:id="@+id/tvStoreName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="4dp"
+        tools:text="Ravi Stores"
+        android:textColor="@color/seller_text_primary"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:fontFamily="sans-serif-medium"
+        app:layout_constraintStart_toEndOf="@id/cvAvatar"
+        app:layout_constraintTop_toTopOf="@id/cvAvatar"
+        app:layout_constraintBottom_toTopOf="@+id/tvSellerId"
+        app:layout_constraintEnd_toStartOf="@+id/ivVerifiedBadge"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintHorizontal_bias="0.0" />
+
+    <!-- Verified Badge -->
+    <ImageView
+        android:id="@+id/ivVerifiedBadge"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="4dp"
+        android:src="@drawable/ic_baseline_verified_24"
+        app:tint="@color/seller_success"
+        android:visibility="gone"
+        tools:visibility="visible"
+        app:layout_constraintStart_toEndOf="@id/tvStoreName"
+        app:layout_constraintTop_toTopOf="@id/tvStoreName"
+        app:layout_constraintBottom_toBottomOf="@id/tvStoreName" />
+
+    <!-- Seller ID -->
+    <TextView
+        android:id="@+id/tvSellerId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        tools:text="ID: SELL-4920"
+        android:textColor="@color/seller_text_muted"
+        android:textSize="12sp"
+        app:layout_constraintStart_toEndOf="@id/cvAvatar"
+        app:layout_constraintTop_toBottomOf="@id/tvStoreName"
+        app:layout_constraintBottom_toBottomOf="@id/cvAvatar"
+        app:layout_constraintEnd_toStartOf="@+id/flNotificationContainer" />
+
+    <!-- Notification Bell -->
+    <FrameLayout
+        android:id="@+id/flNotificationContainer"
+        android:layout_width="44dp"
+        android:layout_height="44dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <ImageView
+            android:id="@+id/ivNotificationBell"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_outline_notifications_24"
+            app:tint="@color/seller_text_primary" />
+
+        <!-- Red dot badge -->
+        <View
+            android:id="@+id/vNotificationBadge"
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:layout_gravity="top|end"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/bg_circle_badge"
+            android:visibility="gone"
+            tools:visibility="visible" />
+    </FrameLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

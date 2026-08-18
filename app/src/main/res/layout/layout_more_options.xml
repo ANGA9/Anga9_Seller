@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/more_bg"
+    android:orientation="vertical">
+
+    <include layout="@layout/layout_more_header" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true"
+        android:clipToPadding="false"
+        android:paddingBottom="72dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
+
+            <!-- Profile Summary -->
+            <include
+                android:id="@+id/includeProfileSummary"
+                layout="@layout/layout_more_profile_card"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp" />
+
+            <!-- ACCOUNT Section -->
+            <include
+                android:id="@+id/labelAccount"
+                layout="@layout/layout_more_section_label" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="@color/more_card_bg"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/more_border"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include
+                        android:id="@+id/rowMyProfile"
+                        layout="@layout/layout_more_menu_row" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@color/more_divider" />
+
+                    <include
+                        android:id="@+id/rowMyStorefront"
+                        layout="@layout/layout_more_menu_row" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- BUSINESS Section -->
+            <include
+                android:id="@+id/labelBusiness"
+                layout="@layout/layout_more_section_label" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="@color/more_card_bg"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/more_border"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include
+                        android:id="@+id/rowMyAdCampaigns"
+                        layout="@layout/layout_more_menu_row" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@color/more_divider" />
+
+                    <include
+                        android:id="@+id/rowPromotionalDeals"
+                        layout="@layout/layout_more_menu_row" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@color/more_divider" />
+
+                    <include
+                        android:id="@+id/rowInventory"
+                        layout="@layout/layout_more_menu_row" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@color/more_divider" />
+
+                    <include
+                        android:id="@+id/rowRepeatBuyers"
+                        layout="@layout/layout_more_menu_row" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ORDERS AND SUPPORT Section -->
+            <include
+                android:id="@+id/labelOrdersAndSupport"
+                layout="@layout/layout_more_section_label" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="14dp"
+                app:cardBackgroundColor="@color/more_card_bg"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/more_border"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include
+                        android:id="@+id/rowMyReturns"
+                        layout="@layout/layout_more_menu_row" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@color/more_divider" />
+
+                    <include
+                        android:id="@+id/rowHelpAndSupport"
+                        layout="@layout/layout_more_menu_row" />
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- LOGOUT Section -->
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                app:cardBackgroundColor="@color/more_card_bg"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeColor="@color/more_border"
+                app:strokeWidth="1dp">
+
+                <include
+                    android:id="@+id/rowLogout"
+                    layout="@layout/layout_more_menu_row" />
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- FOOTER -->
+            <include
+                android:id="@+id/includeFooter"
+                layout="@layout/layout_more_footer" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

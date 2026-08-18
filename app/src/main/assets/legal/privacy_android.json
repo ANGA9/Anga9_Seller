@@ -1,0 +1,74 @@
+{
+  "en": {
+    "meta": {
+      "title": "Privacy Policy",
+      "lastUpdated": "2026-06-01",
+      "version": "1.0"
+    },
+    "content": {
+      "intro": [
+        { "kind": "p", "text": "This Privacy Policy describes how ANGA9 collects, uses, and protects your personal information when you use our platform." },
+        { "kind": "p", "text": "By using ANGA9, you agree to the collection and use of information in accordance with this policy." }
+      ],
+      "s1": [
+        { "kind": "h3", "text": "1. Information We Collect" },
+        { "kind": "p", "text": "We collect the following information to provide and improve our services:" },
+        { "kind": "ul", "items": ["Phone number (for authentication)", "Name and email address", "Delivery addresses", "Order history and purchase data", "Device information and usage data"] }
+      ],
+      "s2": [
+        { "kind": "h3", "text": "2. How We Use Your Information" },
+        { "kind": "p", "text": "Your information is used to:" },
+        { "kind": "ul", "items": ["Process and deliver your orders", "Send order status notifications", "Improve our platform and services", "Provide customer support", "Comply with legal obligations"] }
+      ],
+      "s3": [
+        { "kind": "h3", "text": "3. Data Sharing" },
+        { "kind": "p", "text": "We do not sell your personal data. We share data only with:" },
+        { "kind": "ul", "items": ["Sellers (to fulfill your orders)", "Delivery partners (for shipping)", "Payment processors (for secure transactions)", "Legal authorities (when required by law)"] }
+      ],
+      "s4": [
+        { "kind": "h3", "text": "4. Your Rights" },
+        { "kind": "p", "text": "You have the right to access, correct, or delete your personal data. Contact us at mailto:support@anga9.com to exercise your rights." }
+      ],
+      "s5": [
+        { "kind": "h3", "text": "5. Contact Us" },
+        { "kind": "p", "text": "For privacy-related queries, contact us at mailto:support@anga9.com" }
+      ]
+    }
+  },
+  "hi": {
+    "meta": {
+      "title": "गोपनीयता नीति",
+      "lastUpdated": "2026-06-01",
+      "version": "1.0"
+    },
+    "content": {
+      "intro": [
+        { "kind": "p", "text": "यह गोपनीयता नीति बताती है कि ANGA9 आपकी व्यक्तिगत जानकारी को कैसे एकत्र, उपयोग और सुरक्षित करता है।" },
+        { "kind": "p", "text": "ANGA9 का उपयोग करके, आप इस नीति के अनुसार जानकारी के संग्रह और उपयोग से सहमत होते हैं।" }
+      ],
+      "s1": [
+        { "kind": "h3", "text": "1. हम क्या जानकारी एकत्र करते हैं" },
+        { "kind": "p", "text": "हम निम्नलिखित जानकारी एकत्र करते हैं:" },
+        { "kind": "ul", "items": ["फोन नंबर (प्रमाणीकरण के लिए)", "नाम और ईमेल पता", "डिलीवरी पते", "ऑर्डर इतिहास और खरीद डेटा", "डिवाइस जानकारी"] }
+      ],
+      "s2": [
+        { "kind": "h3", "text": "2. आपकी जानकारी का उपयोग कैसे होता है" },
+        { "kind": "p", "text": "आपकी जानकारी का उपयोग इन कार्यों के लिए किया जाता है:" },
+        { "kind": "ul", "items": ["आपके ऑर्डर प्रोसेस और डिलीवर करना", "ऑर्डर स्टेटस नोटिफिकेशन भेजना", "हमारे प्लेटफॉर्म को बेहतर बनाना", "ग्राहक सहायता प्रदान करना"] }
+      ],
+      "s3": [
+        { "kind": "h3", "text": "3. डेटा शेयरिंग" },
+        { "kind": "p", "text": "हम आपका व्यक्तिगत डेटा नहीं बेचते। हम केवल इन के साथ डेटा साझा करते हैं:" },
+        { "kind": "ul", "items": ["विक्रेता (आपके ऑर्डर पूरे करने के लिए)", "डिलीवरी पार्टनर (शिपिंग के लिए)", "भुगतान प्रोसेसर (सुरक्षित लेनदेन के लिए)"] }
+      ],
+      "s4": [
+        { "kind": "h3", "text": "4. आपके अधिकार" },
+        { "kind": "p", "text": "आपको अपना व्यक्तिगत डेटा एक्सेस, सही या हटाने का अधिकार है। mailto:support@anga9.com पर संपर्क करें।" }
+      ],
+      "s5": [
+        { "kind": "h3", "text": "5. संपर्क करें" },
+        { "kind": "p", "text": "गोपनीयता संबंधी प्रश्नों के लिए, mailto:support@anga9.com पर हमसे संपर्क करें।" }
+      ]
+    }
+  }
+}

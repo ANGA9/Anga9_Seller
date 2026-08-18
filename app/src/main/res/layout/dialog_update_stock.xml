@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <TextView
+        android:id="@+id/tvCurrentStock"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Current Stock: 0"
+        android:textSize="14sp"
+        android:textColor="#546E7A"
+        android:layout_marginBottom="16dp" />
+
+    <EditText
+        android:id="@+id/etNewStock"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:background="@drawable/input_background"
+        android:hint="New Stock Quantity"
+        android:paddingHorizontal="12dp"
+        android:inputType="number"
+        android:textSize="16sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Setting stock to 0 will mark product as Out of Stock"
+        android:textSize="12sp"
+        android:textColor="#FF6F00" />
+
+</LinearLayout>
