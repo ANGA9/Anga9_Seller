@@ -132,7 +132,7 @@ class MyProductsActivity : AppCompatActivity() {
         adapter = SellerProductAdapter(
             products = emptyList(),
             onEditClick = { product ->
-                val intent = Intent(this, AddProductWizardActivity::class.java)
+                val intent = Intent(this, EditProductActivity::class.java)
                 intent.putExtra("product_id", product.id)
                 startActivity(intent)
             },

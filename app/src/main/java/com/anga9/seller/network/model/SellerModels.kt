@@ -113,7 +113,8 @@ data class SellerProductResponse(
     @SerializedName("created_at") val createdAt: String? = null,
     @SerializedName("updated_at") val updatedAt: String? = null,
     @SerializedName("min_order_qty") val minOrderQty: Int? = null,
-    @SerializedName("unit") val unit: String? = null
+    @SerializedName("unit") val unit: String? = null,
+    @SerializedName("commission_rate") val commissionRate: Double? = null
 )
 
 data class ProductVariantResponse(
@@ -160,17 +161,21 @@ data class ProductVariantRequest(
 data class UpdateProductRequest(
     @SerializedName("name") val name: String? = null,
     @SerializedName("description") val description: String? = null,
-    @SerializedName("base_price") val basePrice: Double? = null,  // MRP — optional in PATCH
-    @SerializedName("sale_price") val salePrice: Double? = null,  // Wholesale — never null if base_price sent
+    @SerializedName("base_price") val basePrice: Double? = null,  // MRP
+    @SerializedName("sale_price") val salePrice: Double? = null,  // Wholesale
     @SerializedName("price") val price: Double? = null,
     @SerializedName("mrp") val mrp: Double? = null,
+    @SerializedName("category_ids") val categoryIds: List<String>? = null,
     @SerializedName("category") val category: String? = null,
     @SerializedName("subcategory") val subcategory: String? = null,
     @SerializedName("images") val images: List<String>? = null,
     @SerializedName("videos") val videos: List<String>? = null,
     @SerializedName("stock") val stock: Int? = null,
+    @SerializedName("min_order_qty") val minOrderQty: Int? = null,
+    @SerializedName("unit") val unit: String? = null,
     @SerializedName("gst_rate") val gstRate: Double? = null,
     @SerializedName("hsn_code") val hsnCode: String? = null,
+    @SerializedName("tags") val tags: List<String>? = null,
     @SerializedName("is_active") val isActive: Boolean? = null
 )
 
