@@ -1,353 +1,434 @@
 package com.anga9.seller.ui.profile
 
 import android.content.Intent
-import android.net.Uri
-import com.anga9.seller.ui.legal.LegalActivity
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
-import android.widget.*
-import androidx.activity.result.contract.ActivityResultContracts
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.LinearLayout
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import coil.load
-import coil.transform.CircleCropTransformation
 import com.anga9.seller.R
-import com.anga9.seller.BaseActivity
-import com.anga9.seller.utils.TokenManager
+import com.anga9.seller.auth.SellerPhoneLoginActivity
 import com.anga9.seller.network.model.SellerProfileResponse
 import com.anga9.seller.network.model.UpdateSellerProfileRequest
+import com.anga9.seller.utils.TokenManager
 import com.anga9.seller.utils.UiState
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
-import java.util.*
 
 /**
- * Seller Profile Activity
- * Display seller profile information loaded from backend (Phase 3A).
- * Firebase removed - uses ProfileRepository via ProfileViewModel.
+ * Business Profile Activity — Seller App (Matching Web Seller Portal)
+ *
+ * Connected to live backend endpoints:
+ *   GET   /api/users/seller-profile
+ *   PATCH /api/users/seller-profile
  */
-class SellerProfileActivity : BaseActivity() {
+class SellerProfileActivity : AppCompatActivity() {
 
     private val viewModel: ProfileViewModel by viewModels()
 
-    // Views
+    // Header & Loading
     private lateinit var btnBack: ImageView
+    private lateinit var layoutStatusPill: LinearLayout
+    private lateinit var ivStatusIcon: ImageView
+    private lateinit var tvStatusText: TextView
     private lateinit var progressBar: ProgressBar
-    private lateinit var ivProfilePhoto: ImageView
-    private lateinit var layoutAvatarLetter: FrameLayout
-    private lateinit var tvAvatarLetter: TextView
-    private lateinit var btnChangePhoto: FrameLayout
-    private lateinit var tvBusinessName: TextView
-    private lateinit var tvOwnerName: TextView
-    private lateinit var tvEmail: TextView
-    private lateinit var tvPhone: TextView
-    private lateinit var tvGstNumber: TextView
-    private lateinit var tvPanNumber: TextView
-    private lateinit var tvBusinessType: TextView
-    private lateinit var tvGarmentCategories: TextView
-    private lateinit var tvLocation: TextView
-    private lateinit var layoutGarmentSection: android.view.View
-    private lateinit var tvSellerBadge: TextView
-    private lateinit var tvAccountCreated: TextView
-    private lateinit var tvKycStatus: TextView
-    private lateinit var btnEditBusiness: LinearLayout
-    private lateinit var btnBankDetails: LinearLayout
-    private lateinit var btnDeliveryZones: LinearLayout
-    private lateinit var btnNotifications: LinearLayout
-    private lateinit var btnHelpSupport: LinearLayout
-    private lateinit var btnLogout: LinearLayout
 
-    private var currentProfile: SellerProfileResponse? = null
+    // Section 1: Store Identity
+    private lateinit var etStoreName: EditText
+    private lateinit var etBusinessName: EditText
+    private lateinit var etBusinessType: EditText
+    private lateinit var etBusinessCategory: EditText
+    private lateinit var tvDescCounter: TextView
+    private lateinit var etStoreDescription: EditText
+
+    // Section 2: Identity Documents (KYC)
+    private lateinit var etGstin: EditText
+    private lateinit var etPan: EditText
+
+    // Section 3: Registered Address
+    private lateinit var etAddressLine1: EditText
+    private lateinit var etCity: EditText
+    private lateinit var etState: EditText
+    private lateinit var etPincode: EditText
+
+    // Section 4: Bank Account
+    private lateinit var etAccountHolderName: EditText
+    private lateinit var layoutAccountHolderWarning: LinearLayout
+    private lateinit var etAccountNumber: EditText
+    private lateinit var etIfscCode: EditText
+    private lateinit var etBankName: EditText
+    private lateinit var etBankBranch: EditText
+
+    // Actions
+    private lateinit var btnSaveChanges: MaterialButton
+    private lateinit var pbSaveLoading: ProgressBar
+    private lateinit var btnLogout: MaterialButton
+
+    private var currentVerificationStatus = "unverified"
+    private var ifscLookupJob: Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_seller_profile)
+
         initViews()
         setupListeners()
         observeViewModel()
-        // Load profile using no-arg method (new backend API)
+
         viewModel.loadProfile()
-        // ── Phase 5 (Multi-Brand): detect child brand context ────────────────
-        applyChildBrandContext()
     }
 
     private fun initViews() {
         btnBack = findViewById(R.id.btnBack)
+        layoutStatusPill = findViewById(R.id.layoutStatusPill)
+        ivStatusIcon = findViewById(R.id.ivStatusIcon)
+        tvStatusText = findViewById(R.id.tvStatusText)
         progressBar = findViewById(R.id.progressBar)
-        ivProfilePhoto = findViewById(R.id.ivProfilePhoto)
-        layoutAvatarLetter = findViewById(R.id.layoutAvatarLetter)
-        tvAvatarLetter = findViewById(R.id.tvAvatarLetter)
-        btnChangePhoto = findViewById(R.id.btnChangePhoto)
-        tvBusinessName = findViewById(R.id.tvBusinessName)
-        tvOwnerName = findViewById(R.id.tvOwnerName)
-        tvEmail = findViewById(R.id.tvEmail)
-        tvPhone = findViewById(R.id.tvPhone)
-        tvGstNumber = findViewById(R.id.tvGstNumber)
-        tvPanNumber = findViewById(R.id.tvPanNumber)
-        tvBusinessType = findViewById(R.id.tvBusinessType)
-        tvGarmentCategories = findViewById(R.id.tvGarmentCategories)
-        tvLocation = findViewById(R.id.tvLocation)
-        layoutGarmentSection = findViewById(R.id.layoutGarmentSection)
-        tvSellerBadge = findViewById(R.id.tvSellerBadge)
-        tvAccountCreated = findViewById(R.id.tvAccountCreated)
-        tvKycStatus = findViewById(R.id.tvKycStatus)
-        btnEditBusiness = findViewById(R.id.btnEditBusiness)
-        btnBankDetails = findViewById(R.id.btnBankDetails)
-        btnDeliveryZones = findViewById(R.id.btnDeliveryZones)
-        btnNotifications = findViewById(R.id.btnNotifications)
-        btnHelpSupport = findViewById(R.id.btnHelpSupport)
+
+        etStoreName = findViewById(R.id.etStoreName)
+        etBusinessName = findViewById(R.id.etBusinessName)
+        etBusinessType = findViewById(R.id.etBusinessType)
+        etBusinessCategory = findViewById(R.id.etBusinessCategory)
+        tvDescCounter = findViewById(R.id.tvDescCounter)
+        etStoreDescription = findViewById(R.id.etStoreDescription)
+
+        etGstin = findViewById(R.id.etGstin)
+        etPan = findViewById(R.id.etPan)
+
+        etAddressLine1 = findViewById(R.id.etAddressLine1)
+        etCity = findViewById(R.id.etCity)
+        etState = findViewById(R.id.etState)
+        etPincode = findViewById(R.id.etPincode)
+
+        etAccountHolderName = findViewById(R.id.etAccountHolderName)
+        layoutAccountHolderWarning = findViewById(R.id.layoutAccountHolderWarning)
+        etAccountNumber = findViewById(R.id.etAccountNumber)
+        etIfscCode = findViewById(R.id.etIfscCode)
+        etBankName = findViewById(R.id.etBankName)
+        etBankBranch = findViewById(R.id.etBankBranch)
+
+        btnSaveChanges = findViewById(R.id.btnSaveChanges)
+        pbSaveLoading = findViewById(R.id.pbSaveLoading)
         btnLogout = findViewById(R.id.btnLogout)
     }
 
     private fun setupListeners() {
-        btnChangePhoto.setOnClickListener {
-            pickImageLauncher.launch("image/*")
-        }
         btnBack.setOnClickListener { finish() }
-        btnEditBusiness.setOnClickListener {
-            startActivity(Intent(this, EditBusinessActivity::class.java))
+
+        // Store Description Counter
+        etStoreDescription.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val len = s?.length ?: 0
+                tvDescCounter.text = "$len / 1000"
+                if (len > 900) {
+                    tvDescCounter.setTextColor(Color.parseColor("#D97706"))
+                } else {
+                    tvDescCounter.setTextColor(Color.parseColor("#9AA1AC"))
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        // Account Holder Name Dynamic Warning styling
+        etAccountHolderName.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                updateAccountHolderStyling(s.isNullOrBlank())
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        // IFSC dynamic lookup with debounce
+        etIfscCode.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                val code = s?.toString()?.trim()?.uppercase() ?: ""
+                if (code.length == 11) {
+                    ifscLookupJob?.cancel()
+                    ifscLookupJob = lifecycleScope.launch {
+                        delay(400)
+                        viewModel.lookupIfsc(code)
+                    }
+                }
+            }
+            override fun afterTextChanged(s: Editable?) {}
+        })
+
+        // Verification Pill info dialog
+        layoutStatusPill.setOnClickListener {
+            showVerificationInfoDialog()
         }
-        btnBankDetails.setOnClickListener {
-            startActivity(Intent(this, BankDetailsActivity::class.java))
+
+        // Save Changes
+        btnSaveChanges.setOnClickListener {
+            handleSave()
         }
-        btnDeliveryZones.setOnClickListener {
-            startActivity(Intent(this, DeliveryZonesActivity::class.java))
-        }
-        btnNotifications.setOnClickListener {
-            startActivity(Intent(this, NotificationSettingsActivity::class.java))
-        }
-        btnHelpSupport.setOnClickListener {
-            startActivity(Intent(this, HelpSupportActivity::class.java))
-        }
-        // Disputes
-        findViewById<android.view.View?>(R.id.btnDisputes)?.setOnClickListener {
-            startActivity(Intent(this, com.anga9.seller.ui.disputes.SellerDisputesActivity::class.java))
-        }
-        // Reviews
-        findViewById<android.view.View?>(R.id.btnReviews)?.setOnClickListener {
-            startActivity(Intent(this, com.anga9.seller.ui.reviews.ReviewsActivity::class.java))
-        }
+
+        // Logout of Store
         btnLogout.setOnClickListener {
             showLogoutDialog()
         }
-        // Legal — Phase 3 integration
-        findViewById<android.view.View?>(R.id.btnDataPrivacy)?.setOnClickListener {
-            com.anga9.seller.ui.privacy.DataPrivacyActivity.start(this)
+    }
+
+    private fun updateAccountHolderStyling(isEmpty: Boolean) {
+        if (isEmpty) {
+            etAccountHolderName.setBackgroundResource(R.drawable.bg_input_warning)
+            layoutAccountHolderWarning.visibility = View.VISIBLE
+        } else {
+            etAccountHolderName.setBackgroundResource(R.drawable.bg_input_white)
+            layoutAccountHolderWarning.visibility = View.GONE
         }
-        findViewById<android.view.View?>(R.id.btnPrivacyPolicy)?.setOnClickListener {
-            LegalActivity.startPrivacy(this)
-        }
-        findViewById<android.view.View?>(R.id.btnTermsConditions)?.setOnClickListener {
-            LegalActivity.startTerms(this)
-        }
+    }
+
+    private fun maskValue(valStr: String?): String {
+        if (valStr.isNullOrEmpty() || valStr.length < 4) return valStr ?: "—"
+        return valStr.take(2) + "****" + valStr.takeLast(2)
     }
 
     private fun observeViewModel() {
+        // 1. Profile Load State
         lifecycleScope.launch {
-            viewModel.profileState.collect { state ->
+            viewModel.profileState.collectLatest { state ->
                 when (state) {
-                    is UiState.Idle -> {}
                     is UiState.Loading -> {
                         progressBar.visibility = View.VISIBLE
                     }
                     is UiState.Success -> {
                         progressBar.visibility = View.GONE
-                        currentProfile = state.data
-                        displayProfile(state.data)
+                        state.data?.let { populateProfileData(it) }
                     }
                     is UiState.Error -> {
                         progressBar.visibility = View.GONE
-                        showToast(state.message)
+                        Toast.makeText(this@SellerProfileActivity, state.message, Toast.LENGTH_SHORT).show()
                     }
+                    else -> {}
                 }
             }
         }
+
+        // 2. IFSC Lookup State
         lifecycleScope.launch {
-            viewModel.updateState.collect { state ->
+            viewModel.ifscState.collectLatest { state ->
                 when (state) {
-                    is UiState.Idle -> {}
                     is UiState.Loading -> {
-                        progressBar.visibility = View.VISIBLE
+                        etBankName.setText("Fetching...")
+                        etBankBranch.setText("Fetching...")
                     }
                     is UiState.Success -> {
-                        progressBar.visibility = View.GONE
-                        showToast("Profile updated successfully")
-                        viewModel.loadProfile()
-        // ── Phase 5 (Multi-Brand): detect child brand context ────────────────
-        applyChildBrandContext()
+                        state.data?.let { (bank, branch) ->
+                            etBankName.setText(bank)
+                            etBankBranch.setText(branch)
+                        }
+                    }
+                    is UiState.Error -> {
+                        etBankName.setText("Invalid IFSC")
+                        etBankBranch.setText("")
+                    }
+                    else -> {}
+                }
+            }
+        }
+
+        // 3. Save Update State
+        lifecycleScope.launch {
+            viewModel.updateState.collectLatest { state ->
+                when (state) {
+                    is UiState.Loading -> {
+                        setSaveLoading(true)
+                    }
+                    is UiState.Success -> {
+                        setSaveLoading(false)
+                        Toast.makeText(this@SellerProfileActivity, "Profile updated successfully", Toast.LENGTH_SHORT).show()
                         viewModel.resetUpdateState()
                     }
                     is UiState.Error -> {
-                        progressBar.visibility = View.GONE
-                        showToast(state.message)
+                        setSaveLoading(false)
+                        Toast.makeText(this@SellerProfileActivity, state.message, Toast.LENGTH_LONG).show()
                         viewModel.resetUpdateState()
                     }
+                    else -> {}
                 }
             }
         }
     }
 
-    private fun displayProfile(profile: SellerProfileResponse) {
-        val businessName = profile.businessName ?: profile.name ?: "Seller"
-        val ownerName = profile.ownerName ?: profile.name ?: ""
+    private fun populateProfileData(profile: SellerProfileResponse) {
+        // Section 1: Store Identity
+        etStoreName.setText(profile.storeName ?: "")
+        etBusinessName.setText(profile.businessName ?: "")
+        etBusinessType.setText(profile.businessType ?: "")
+        etBusinessCategory.setText(profile.businessCategory ?: "")
+        etStoreDescription.setText(profile.storeDescription ?: "")
+        val descLen = profile.storeDescription?.length ?: 0
+        tvDescCounter.text = "$descLen / 1000"
 
-        tvBusinessName.text = businessName
-        tvOwnerName.text = ownerName
-        tvAvatarLetter.text = businessName.firstOrNull()?.uppercaseChar()?.toString() ?: "S"
+        // Section 2: Identity Documents (KYC)
+        val gstinVal = profile.gstin ?: profile.gstNumber
+        etGstin.setText(maskValue(gstinVal))
+        etPan.setText(maskValue(profile.panNumber))
 
-        // Load profile photo if exists
-        val photoUrl = profile.avatarUrl
-        if (!photoUrl.isNullOrEmpty()) {
-            ivProfilePhoto.load(photoUrl) {
-                transformations(CircleCropTransformation())
+        // Section 3: Registered Address
+        etAddressLine1.setText(profile.addressLine1 ?: "")
+        etCity.setText(profile.city ?: "")
+        etState.setText(profile.state ?: "")
+        etPincode.setText(profile.pincode ?: "")
+
+        // Section 4: Bank Account
+        val holderName = profile.bankAccountName ?: ""
+        etAccountHolderName.setText(holderName)
+        updateAccountHolderStyling(holderName.isBlank())
+
+        etAccountNumber.setText(profile.bankAccountNumber ?: "")
+        etIfscCode.setText(profile.bankIfsc ?: "")
+        etBankName.setText(profile.bankName ?: "Fetched from IFSC")
+        etBankBranch.setText(profile.bankBranch ?: "Fetched from IFSC")
+
+        // Verification Status
+        currentVerificationStatus = profile.kycStatus ?: "unverified"
+        updateVerificationPill(currentVerificationStatus)
+    }
+
+    private fun updateVerificationPill(status: String) {
+        val bg = GradientDrawable()
+        bg.cornerRadius = 24f
+
+        when (status.lowercase()) {
+            "verified" -> {
+                bg.setColor(Color.parseColor("#F0FBF4"))
+                layoutStatusPill.background = bg
+                ivStatusIcon.setImageResource(R.drawable.ic_check_circle)
+                ivStatusIcon.setColorFilter(Color.parseColor("#1E7A45"))
+                tvStatusText.text = "Verified"
+                tvStatusText.setTextColor(Color.parseColor("#1E7A45"))
             }
-            ivProfilePhoto.visibility = View.VISIBLE
-            layoutAvatarLetter.visibility = View.GONE
-        } else {
-            ivProfilePhoto.visibility = View.GONE
-            layoutAvatarLetter.visibility = View.VISIBLE
-        }
-
-        tvEmail.text = profile.email ?: "Not provided"
-        val rawPhone = profile.phone ?: ""
-        tvPhone.text = if (rawPhone.startsWith("+91") && rawPhone.length >= 13) {
-            "+91 ${rawPhone.substring(3, 8)} ${rawPhone.substring(8)}"
-        } else rawPhone.ifEmpty { "Not provided" }
-
-        tvGstNumber.text = profile.gstNumber ?: "Not provided"
-        tvPanNumber.text = "Not provided"  // not in SellerProfileResponse
-        tvBusinessType.text = profile.businessType ?: "Not provided"
-
-        val location = listOf(profile.city, profile.state)
-            .filterNotNull()
-            .filter { it.isNotEmpty() }
-            .joinToString(", ")
-        tvLocation.text = location.ifEmpty { "Not provided" }
-
-        // Garment categories - not in backend model yet
-        layoutGarmentSection.visibility = android.view.View.GONE
-
-        // Badge - use kyc_status as badge indicator
-        val kycStatus = profile.kycStatus ?: "pending"
-        tvSellerBadge.text = kycStatus.uppercase()
-        val badgeColor = when (kycStatus.lowercase()) {
-            "approved" -> android.graphics.Color.parseColor("#10B981")
-            "pending" -> android.graphics.Color.parseColor("#F59E0B")
-            "rejected" -> android.graphics.Color.parseColor("#EF4444")
-            else -> android.graphics.Color.parseColor("#6B7280")
-        }
-        tvSellerBadge.setBackgroundColor(badgeColor)
-
-        // Account created
-        tvAccountCreated.text = profile.createdAt ?: "Unknown"
-
-        // KYC Status
-        when (kycStatus.lowercase()) {
-            "approved" -> {
-                tvKycStatus.text = "\u2714 Verified"
-                tvKycStatus.setTextColor(getColor(R.color.success))
-            }
-            "pending", "not_submitted" -> {
-                tvKycStatus.text = "\u23F3 Pending"
-                tvKycStatus.setTextColor(getColor(R.color.warning))
+            "pending", "pending_review" -> {
+                bg.setColor(Color.parseColor("#FFFBEB"))
+                layoutStatusPill.background = bg
+                ivStatusIcon.setImageResource(R.drawable.ic_clock)
+                ivStatusIcon.setColorFilter(Color.parseColor("#D97706"))
+                tvStatusText.text = "Pending Review"
+                tvStatusText.setTextColor(Color.parseColor("#D97706"))
             }
             "rejected" -> {
-                tvKycStatus.text = "\u2716 Rejected"
-                tvKycStatus.setTextColor(getColor(R.color.error))
+                bg.setColor(Color.parseColor("#FEF2F2"))
+                layoutStatusPill.background = bg
+                ivStatusIcon.setImageResource(R.drawable.ic_cancel)
+                ivStatusIcon.setColorFilter(Color.parseColor("#DC2626"))
+                tvStatusText.text = "Rejected"
+                tvStatusText.setTextColor(Color.parseColor("#DC2626"))
             }
             else -> {
-                tvKycStatus.text = kycStatus
+                bg.setColor(Color.parseColor("#F3F4F6"))
+                layoutStatusPill.background = bg
+                ivStatusIcon.setImageResource(R.drawable.ic_clock)
+                ivStatusIcon.setColorFilter(Color.parseColor("#6B7280"))
+                tvStatusText.text = "Unverified"
+                tvStatusText.setTextColor(Color.parseColor("#6B7280"))
             }
+        }
+    }
+
+    private fun showVerificationInfoDialog() {
+        val message = when (currentVerificationStatus.lowercase()) {
+            "verified" -> "Your business legal identity and bank account details have been successfully verified by the compliance team."
+            "pending", "pending_review" -> "Your KYC documents and business entity details are currently under review by our compliance team."
+            "rejected" -> "Your business verification was rejected. Please contact seller support to update your KYC documents."
+            else -> "Your business profile is unverified. Ensure your KYC documents and bank details match to complete verification."
+        }
+
+        MaterialAlertDialogBuilder(this)
+            .setTitle("Verification Status: ${tvStatusText.text}")
+            .setMessage(message)
+            .setPositiveButton("OK", null)
+            .show()
+    }
+
+    private fun handleSave() {
+        val storeName = etStoreName.text.toString().trim()
+        val businessName = etBusinessName.text.toString().trim()
+        val businessType = etBusinessType.text.toString().trim()
+        val businessCategory = etBusinessCategory.text.toString().trim()
+        val storeDescription = etStoreDescription.text.toString().trim()
+
+        val addressLine1 = etAddressLine1.text.toString().trim()
+        val city = etCity.text.toString().trim()
+        val state = etState.text.toString().trim()
+        val pincode = etPincode.text.toString().trim()
+
+        val bankAccountName = etAccountHolderName.text.toString().trim()
+        val bankAccountNumber = etAccountNumber.text.toString().trim()
+        val bankIfsc = etIfscCode.text.toString().trim().uppercase()
+        val bankName = etBankName.text.toString().trim().let { if (it == "Fetched from IFSC" || it == "Invalid IFSC") null else it }
+        val bankBranch = etBankBranch.text.toString().trim().let { if (it == "Fetched from IFSC" || it == "Invalid IFSC") null else it }
+
+        // Validation: If bank details are partially filled, Account Holder Name is mandatory
+        if ((bankAccountNumber.isNotEmpty() || bankIfsc.isNotEmpty()) && bankAccountName.isEmpty()) {
+            etAccountHolderName.requestFocus()
+            Toast.makeText(this, "Account Holder Name is required to save bank details", Toast.LENGTH_SHORT).show()
+            updateAccountHolderStyling(true)
+            return
+        }
+
+        val request = UpdateSellerProfileRequest(
+            storeName = storeName.ifEmpty { null },
+            businessName = businessName.ifEmpty { null },
+            businessType = businessType.ifEmpty { null },
+            businessCategory = businessCategory.ifEmpty { null },
+            storeDescription = storeDescription.ifEmpty { null },
+            addressLine1 = addressLine1.ifEmpty { null },
+            city = city.ifEmpty { null },
+            state = state.ifEmpty { null },
+            pincode = pincode.ifEmpty { null },
+            bankAccountName = bankAccountName.ifEmpty { null },
+            bankAccountNumber = bankAccountNumber.ifEmpty { null },
+            bankIfsc = bankIfsc.ifEmpty { null },
+            bankName = bankName,
+            bankBranch = bankBranch
+        )
+
+        viewModel.updateProfile(request)
+    }
+
+    private fun setSaveLoading(loading: Boolean) {
+        if (loading) {
+            btnSaveChanges.isEnabled = false
+            btnSaveChanges.text = ""
+            pbSaveLoading.visibility = View.VISIBLE
+        } else {
+            btnSaveChanges.isEnabled = true
+            btnSaveChanges.text = "Save changes"
+            pbSaveLoading.visibility = View.GONE
         }
     }
 
     private fun showLogoutDialog() {
         MaterialAlertDialogBuilder(this)
-            .setTitle("Logout")
-            .setMessage("Are you sure you want to logout?")
-            .setPositiveButton("Logout") { _, _ ->
-                logout()
-            }
+            .setTitle("Log out of store")
+            .setMessage("Are you sure you want to log out of your seller account?")
             .setNegativeButton("Cancel", null)
-            .show()
-    }
-
-    // Photo picker - uploads via Supabase Storage (Phase 3B)
-    private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri: Uri? ->
-        uri?.let { uploadProfilePhoto(it) }
-    }
-
-    private fun uploadProfilePhoto(uri: Uri) {
-        progressBar.visibility = View.VISIBLE
-        lifecycleScope.launch {
-            try {
-                val productRepo = com.anga9.seller.MVVM.data.repository.ProductRepository(applicationContext)
-                val sellerId = getSellerId()
-                val result = productRepo.uploadProductImage(uri, "profile_$sellerId")
-                if (result.isSuccess) {
-                    val photoUrl = result.getOrThrow()
-                    ivProfilePhoto.load(uri) {
-                        transformations(CircleCropTransformation())
-                    }
-                    ivProfilePhoto.visibility = View.VISIBLE
-                    layoutAvatarLetter.visibility = View.GONE
-                    // Update profile with new avatar URL
-                    viewModel.updateProfile(UpdateSellerProfileRequest(avatarUrl = photoUrl))
-                    progressBar.visibility = View.GONE
-                    showToast("Profile photo updated")
-                } else {
-                    progressBar.visibility = View.GONE
-                    showToast("Failed to upload photo")
-                }
-            } catch (e: Exception) {
-                progressBar.visibility = View.GONE
-                showToast("Failed to upload photo: ${e.message}")
+            .setPositiveButton("Log out") { _, _ ->
+                TokenManager.clearAll(this)
+                val intent = Intent(this, SellerPhoneLoginActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+                finish()
             }
-        }
-    }
-
-    // ── Phase 5 (Multi-Brand): Child brand profile restrictions ──────────────
-    /**
-     * When a child brand is active:
-     *  - Shows a blue info banner at the top: "Editing profile for: [Brand Name]"
-     *  - Disables phone and email display fields (child brands use parent's contact)
-     *  - Shows tooltip on those fields: "Notifications sent to parent account"
-     *
-     * Plan ref: MULTI_BRAND_MANAGEMENT_IMPLEMENTATION_PLAN.md - Phase 5.2
-     */
-    private fun applyChildBrandContext() {
-        val activeBrandId = TokenManager.getActiveBrandId(this) ?: return
-        // Only applies when a child brand is active
-        val prefs = getSharedPreferences("anga9_seller_prefs", android.content.Context.MODE_PRIVATE)
-        val brandName = prefs.getString("brand_name_", null)
-        val label = if (!brandName.isNullOrEmpty()) brandName else "This Brand"
-
-        // 1. Show child brand banner (re-use KYC banner view as info banner)
-        //    The KYC banner is already visible infrastructure — we overlay a new message
-        //    using a Toast for simplicity (KYC banner has different color requirements)
-        android.widget.Toast.makeText(
-            this,
-            "\uD83C\uDFEA Editing profile for: ",
-            android.widget.Toast.LENGTH_LONG
-        ).show()
-
-        // 2. Visually mark phone and email as read-only (child brands have no contact)
-        //    They are TextViews in this activity (not EditTexts), so we dim them
-        //    and set a content description explaining why
-        tvPhone.alpha = 0.45f
-        tvEmail.alpha = 0.45f
-        tvPhone.contentDescription = "Notifications sent to parent account's phone"
-        tvEmail.contentDescription = "Notifications sent to parent account's email"
-
-        // 3. Append a note to the displayed values
-        if (tvPhone.text.toString().isNotEmpty() &&
-            tvPhone.text.toString() != "Not provided") {
-            tvPhone.text = "  \u2139 Parent contact"
-        }
-        if (tvEmail.text.toString().isNotEmpty() &&
-            tvEmail.text.toString() != "Not provided") {
-            tvEmail.text = "  \u2139 Parent contact"
-        }
+            .show()
     }
 }

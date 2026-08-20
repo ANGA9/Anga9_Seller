@@ -123,5 +123,34 @@ class ProfileRepository(private val context: Context) {
         }
     }
 
+    suspend fun lookupIfsc(ifsc: String): Result<Pair<String, String>> {
+        return kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
+            try {
+                val cleanIfsc = ifsc.trim().uppercase()
+                if (cleanIfsc.length != 11) {
+                    return@withContext Result.failure(Exception("IFSC must be 11 characters"))
+                }
+                val url = java.net.URL("https://ifsc.razorpay.com/$cleanIfsc")
+                val conn = url.openConnection() as java.net.HttpURLConnection
+                conn.requestMethod = "GET"
+                conn.connectTimeout = 4000
+                conn.readTimeout = 4000
+                if (conn.responseCode == 200) {
+                    val reader = java.io.BufferedReader(java.io.InputStreamReader(conn.inputStream))
+                    val responseStr = reader.readText()
+                    reader.close()
+                    val json = org.json.JSONObject(responseStr)
+                    val bank = json.optString("BANK", "")
+                    val branch = json.optString("BRANCH", "")
+                    Result.success(Pair(bank, branch))
+                } else {
+                    Result.failure(Exception("Invalid IFSC code"))
+                }
+            } catch (e: Exception) {
+                Result.failure(e)
+            }
+        }
+    }
+
     fun getSavedSellerId(): String? = TokenManager.getUserId(context)
 }

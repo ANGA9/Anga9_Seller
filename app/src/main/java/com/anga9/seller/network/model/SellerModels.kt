@@ -17,17 +17,24 @@ data class SellerProfileResponse(
     @SerializedName("role") val role: String = "seller",
     @SerializedName("avatar_url") val avatarUrl: String? = null,
     @SerializedName("verification_status") val kycStatus: String? = null,
+    @SerializedName("store_name") val storeName: String? = null,
     @SerializedName("business_name") val businessName: String? = null,
     @SerializedName("business_type") val businessType: String? = null,
-    @SerializedName("owner_name") val ownerName: String? = null,
-    @SerializedName("gst_number") val gstNumber: String? = null,
-    @SerializedName("pan_number") val panNumber: String? = null,
+    @SerializedName("business_category") val businessCategory: String? = null,
+    @SerializedName("store_description") val storeDescription: String? = null,
+    @SerializedName("address_line1") val addressLine1: String? = null,
     @SerializedName("city") val city: String? = null,
     @SerializedName("state") val state: String? = null,
     @SerializedName("pincode") val pincode: String? = null,
+    @SerializedName("owner_name") val ownerName: String? = null,
+    @SerializedName("gstin") val gstin: String? = null,
+    @SerializedName("gst_number") val gstNumber: String? = null,
+    @SerializedName("pan_number") val panNumber: String? = null,
+    @SerializedName("bank_account_name") val bankAccountName: String? = null,
     @SerializedName("bank_account_number") val bankAccountNumber: String? = null,
     @SerializedName("bank_ifsc") val bankIfsc: String? = null,
-    @SerializedName("bank_account_name") val bankAccountName: String? = null,
+    @SerializedName("bank_name") val bankName: String? = null,
+    @SerializedName("bank_branch") val bankBranch: String? = null,
     @SerializedName("delivery_zones") val deliveryZones: List<String>? = null,
     @SerializedName("is_active") val isActive: Boolean = true,
     @SerializedName("created_at") val createdAt: String? = null,
@@ -37,7 +44,9 @@ data class SellerProfileResponse(
     @SerializedName("about_md") val aboutMd: String? = null,
     @SerializedName("storefront_published") val storefrontPublished: Boolean = false,
     @SerializedName("social_links") val socialLinks: Map<String, String>? = null
-)
+) {
+    fun getEffectiveGst(): String? = gstin ?: gstNumber
+}
 
 data class SellerStatsResponse(
     @SerializedName("total_products") val totalProducts: Int = 0,
@@ -52,25 +61,26 @@ data class SellerStatsResponse(
 )
 
 data class UpdateSellerProfileRequest(
-    @SerializedName("owner_name") val ownerName: String? = null,
-    @SerializedName("name") val name: String? = null, // Used for email/name
-    @SerializedName("store_description") val storeDescription: String? = null,
+    @SerializedName("store_name") val storeName: String? = null,
     @SerializedName("business_name") val businessName: String? = null,
     @SerializedName("business_type") val businessType: String? = null,
     @SerializedName("business_category") val businessCategory: String? = null,
+    @SerializedName("store_description") val storeDescription: String? = null,
     @SerializedName("address_line1") val addressLine1: String? = null,
     @SerializedName("address_line2") val addressLine2: String? = null,
     @SerializedName("city") val city: String? = null,
     @SerializedName("state") val state: String? = null,
     @SerializedName("pincode") val pincode: String? = null,
-    @SerializedName("gstin") val gstin: String? = null,
-    @SerializedName("pan_number") val panNumber: String? = null,
-    @SerializedName("aadhaar_number") val aadhaarNumber: String? = null,
     @SerializedName("bank_account_name") val bankAccountName: String? = null,
     @SerializedName("bank_account_number") val bankAccountNumber: String? = null,
     @SerializedName("bank_ifsc") val bankIfsc: String? = null,
     @SerializedName("bank_name") val bankName: String? = null,
     @SerializedName("bank_branch") val bankBranch: String? = null,
+    @SerializedName("owner_name") val ownerName: String? = null,
+    @SerializedName("name") val name: String? = null,
+    @SerializedName("gstin") val gstin: String? = null,
+    @SerializedName("pan_number") val panNumber: String? = null,
+    @SerializedName("aadhaar_number") val aadhaarNumber: String? = null,
     @SerializedName("pickup_address_same") val pickupAddressSame: Boolean? = null,
     @SerializedName("pickup_address") val pickupAddress: String? = null,
     @SerializedName("delivery_zones") val deliveryZones: List<String>? = null,

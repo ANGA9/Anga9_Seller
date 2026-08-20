@@ -252,11 +252,6 @@ class DashboardActivity : AppCompatActivity() {
             it.findViewById<ImageView>(R.id.ivLeadingIcon).setImageResource(R.drawable.ic_package) // Fallback to package icon
             it.setOnClickListener { startActivity(Intent(this, com.anga9.seller.ui.inventory.InventoryActivity::class.java)) }
         }
-        moreContent.findViewById<View>(R.id.rowRepeatBuyers)?.let {
-            it.findViewById<TextView>(R.id.tvMenuLabel).text = "Repeat buyers"
-            it.findViewById<ImageView>(R.id.ivLeadingIcon).setImageResource(R.drawable.ic_more_repeat)
-            it.setOnClickListener { startActivity(Intent(this, com.anga9.seller.ui.b2b.RepeatBuyersActivity::class.java)) }
-        }
         moreContent.findViewById<View>(R.id.rowCustomerReviews)?.let {
             it.findViewById<TextView>(R.id.tvMenuLabel).text = "Customer reviews"
             it.findViewById<ImageView>(R.id.ivLeadingIcon).setImageResource(R.drawable.ic_star_outline)
@@ -266,11 +261,6 @@ class DashboardActivity : AppCompatActivity() {
             it.findViewById<TextView>(R.id.tvMenuLabel).text = "Disputes & Returns"
             it.findViewById<ImageView>(R.id.ivLeadingIcon).setImageResource(R.drawable.ic_warning_triangle)
             it.setOnClickListener { startActivity(Intent(this, com.anga9.seller.ui.disputes.SellerDisputesActivity::class.java)) }
-        }
-        moreContent.findViewById<View>(R.id.rowMyReturns)?.let {
-            it.findViewById<TextView>(R.id.tvMenuLabel).text = "My returns"
-            it.findViewById<ImageView>(R.id.ivLeadingIcon).setImageResource(R.drawable.ic_more_undo)
-            it.setOnClickListener { startActivity(Intent(this, com.anga9.seller.ui.returns.MyReturnsActivity::class.java)) }
         }
         moreContent.findViewById<View>(R.id.rowHelpAndSupport)?.let {
             it.findViewById<TextView>(R.id.tvMenuLabel).text = "Help and support"
@@ -449,7 +439,7 @@ class DashboardActivity : AppCompatActivity() {
         // Update badges for More Options screen
         val moreContent = findViewById<View>(R.id.moreContent)
         
-        moreContent.findViewById<View>(R.id.rowMyReturns)?.findViewById<TextView>(R.id.tvBadgeCount)?.apply {
+        moreContent.findViewById<View>(R.id.rowDisputes)?.findViewById<TextView>(R.id.tvBadgeCount)?.apply {
             if (stats.pendingReturns > 0) {
                 visibility = View.VISIBLE
                 text = stats.pendingReturns.toString()

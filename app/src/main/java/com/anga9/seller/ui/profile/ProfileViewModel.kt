@@ -1,4 +1,4 @@
-﻿package com.anga9.seller.ui.profile
+package com.anga9.seller.ui.profile
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -73,6 +73,22 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
             )
         }
     }
+
+    private val _ifscState = MutableStateFlow<UiState<Pair<String, String>>>(UiState.Idle)
+    val ifscState: StateFlow<UiState<Pair<String, String>>> = _ifscState.asStateFlow()
+
+    fun lookupIfsc(ifsc: String) {
+        if (ifsc.trim().length != 11) return
+        viewModelScope.launch {
+            _ifscState.value = UiState.Loading
+            val result = repository.lookupIfsc(ifsc)
+            _ifscState.value = result.fold(
+                onSuccess = { UiState.Success(it) },
+                onFailure = { UiState.Error(it.message ?: "Invalid IFSC") }
+            )
+        }
+    }
+
     fun resetUpdateState() {
         _updateState.value = UiState.Idle
     }
@@ -80,4 +96,3 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
 
     fun getSavedSellerId(): String? = repository.getSavedSellerId()
 }
-

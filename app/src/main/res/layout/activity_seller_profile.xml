@@ -1,579 +1,905 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F5F7FA">
+    android:background="#F7F7F8"
+    android:orientation="vertical">
 
+    <!-- ── HEADER ── -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:background="#FFFFFF"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingVertical="12dp">
 
-        <!-- Header with gradient -->
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Back"
+            android:padding="6dp"
+            android:src="@drawable/ic_back"
+            app:tint="#1A1D23" />
+
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@color/primary"
-            android:orientation="vertical"
-            android:paddingBottom="32dp">
-
-            <!-- Toolbar -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:gravity="center_vertical"
-                android:paddingHorizontal="4dp">
-
-                <ImageView
-                    android:id="@+id/btnBack"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:padding="12dp"
-                    android:src="@drawable/ic_back"
-                    android:tint="#FFFFFF" />
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center"
-                    android:text="My Profile"
-                    android:textColor="#FFFFFF"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <View android:layout_width="48dp" android:layout_height="48dp" />
-
-            </LinearLayout>
-
-            <!-- Avatar + Name -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingTop="8dp">
-
-                <!-- Profile Photo with camera badge -->
-                <FrameLayout
-                    android:layout_width="88dp"
-                    android:layout_height="88dp"
-                    android:layout_marginBottom="12dp">
-
-                    <!-- Photo / Avatar circle -->
-                    <ImageView
-                        android:id="@+id/ivProfilePhoto"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:background="@drawable/profile_photo_bg"
-                        android:scaleType="centerCrop"
-                        android:visibility="gone" />
-
-                    <!-- Letter avatar (shown when no photo) -->
-                    <FrameLayout
-                        android:id="@+id/layoutAvatarLetter"
-                        android:layout_width="88dp"
-                        android:layout_height="88dp"
-                        android:background="@drawable/profile_photo_bg">
-
-                        <TextView
-                            android:id="@+id/tvAvatarLetter"
-                            android:layout_width="88dp"
-                            android:layout_height="88dp"
-                            android:gravity="center"
-                            android:text="S"
-                            android:textColor="@color/primary"
-                            android:textSize="32sp"
-                            android:textStyle="bold" />
-
-                    </FrameLayout>
-
-                    <!-- Camera badge - tap to change photo -->
-                    <FrameLayout
-                        android:id="@+id/btnChangePhoto"
-                        android:layout_width="28dp"
-                        android:layout_height="28dp"
-                        android:layout_gravity="bottom|end"
-                        android:background="@drawable/camera_badge_bg"
-                        android:elevation="4dp">
-
-                        <ImageView
-                            android:layout_width="16dp"
-                            android:layout_height="16dp"
-                            android:layout_gravity="center"
-                            android:src="@drawable/ic_camera"
-                            android:tint="#FFFFFF" />
-
-                    </FrameLayout>
-
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/tvBusinessName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Business Name"
-                    android:textColor="#FFFFFF"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tvOwnerName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="2dp"
-                    android:text="Owner Name"
-                    android:textColor="#CCFFFFFF"
-                    android:textSize="14sp" />
-
-                <!-- Badge chip -->
-                <TextView
-                    android:id="@+id/tvSellerBadge"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="10dp"
-                    android:background="@drawable/rank_badge_bg"
-                    android:paddingHorizontal="16dp"
-                    android:paddingVertical="5dp"
-                    android:text="NEW SELLER"
-                    android:textColor="#FFFFFF"
-                    android:textSize="11sp"
-                    android:textStyle="bold"
-                    android:letterSpacing="0.05" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_margin="8dp"
-            android:visibility="gone" />
-
-        <!-- KYC Status Banner -->
-        <LinearLayout
-            android:id="@+id/layoutKycBanner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#E8F5E9"
-            android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:paddingHorizontal="16dp"
-            android:paddingVertical="10dp">
+            android:layout_marginStart="8dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvKycStatus"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="✅ KYC Verified"
-                android:textColor="#2E7D32"
-                android:textSize="13sp"
+                android:text="Business Profile"
+                android:textColor="#1A1D23"
+                android:textSize="16sp"
                 android:textStyle="bold" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Manage your legal entity details"
+                android:textColor="#5B6472"
+                android:textSize="12sp" />
         </LinearLayout>
 
-        <!-- Business Info Card -->
-        <androidx.cardview.widget.CardView
+        <!-- Verification Status Pill -->
+        <LinearLayout
+            android:id="@+id/layoutStatusPill"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_rounded_success_tint"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp">
+
+            <ImageView
+                android:id="@+id/ivStatusIcon"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
+                android:src="@drawable/ic_check_circle"
+                app:tint="#1E7A45" />
+
+            <TextView
+                android:id="@+id/tvStatusText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="5dp"
+                android:text="Verified"
+                android:textColor="#1E7A45"
+                android:textSize="11sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#E5E7EB" />
+
+    <!-- Loading Bar -->
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:indeterminate="true"
+        android:indeterminateTint="#2851C4"
+        android:visibility="gone" />
+
+    <!-- ── SCROLLABLE FORM ── -->
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fillViewport="true">
+
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="#FFFFFF">
+            android:orientation="vertical"
+            android:padding="16dp">
 
+            <!-- ── SECTION 1: STORE IDENTITY ── -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
 
-                <!-- Card Header -->
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_more_storefront"
+                    app:tint="#1A6FD4" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Store Identity"
+                    android:textColor="#1A1D23"
+                    android:textSize="13.5sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="20dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#E5E7EB"
+                app:strokeWidth="1dp">
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:layout_marginBottom="12dp">
+                    android:orientation="vertical"
+                    android:padding="14dp">
 
                     <TextView
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="Business Information"
-                        android:textColor="#1A2332"
-                        android:textSize="15sp"
+                        android:text="Store Name"
+                        android:textColor="#1A1D23"
+                        android:textSize="12.5sp"
                         android:textStyle="bold" />
 
-                    <LinearLayout
-                        android:id="@+id/btnEditBusiness"
+                    <EditText
+                        android:id="@+id/etStoreName"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/bg_input_white"
+                        android:hint="Public store name"
+                        android:paddingHorizontal="12dp"
+                        android:textColor="#1A1D23"
+                        android:textColorHint="#9AA1AC"
+                        android:textSize="13.5sp" />
+
+                    <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="32dp"
-                        android:background="@drawable/btn_outline"
-                        android:gravity="center"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="Business Legal Name"
+                        android:textColor="#1A1D23"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etBusinessName"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/bg_input_white"
+                        android:hint="Registered entity name"
+                        android:paddingHorizontal="12dp"
+                        android:textColor="#1A1D23"
+                        android:textColorHint="#9AA1AC"
+                        android:textSize="13.5sp" />
+
+                    <!-- 2-col: Entity Type & Category -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Entity Type"
+                                android:textColor="#1A1D23"
+                                android:textSize="12.5sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etBusinessType"
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@drawable/bg_input_white"
+                                android:hint="e.g. LLC, Proprietor"
+                                android:paddingHorizontal="12dp"
+                                android:textColor="#1A1D23"
+                                android:textColorHint="#9AA1AC"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Primary Category"
+                                android:textColor="#1A1D23"
+                                android:textSize="12.5sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etBusinessCategory"
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@drawable/bg_input_white"
+                                android:hint="e.g. Fashion, Apparel"
+                                android:paddingHorizontal="12dp"
+                                android:textColor="#1A1D23"
+                                android:textColorHint="#9AA1AC"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Store Description with Character Counter -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="Store Description"
+                            android:textColor="#1A1D23"
+                            android:textSize="12.5sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/tvDescCounter"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0 / 1000"
+                            android:textColor="#9AA1AC"
+                            android:textSize="11.5sp" />
+                    </LinearLayout>
+
+                    <EditText
+                        android:id="@+id/etStoreDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="90dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/bg_input_white"
+                        android:gravity="top|start"
+                        android:hint="Describe your store brand..."
+                        android:inputType="textMultiLine"
+                        android:maxLength="1000"
+                        android:padding="12dp"
+                        android:textColor="#1A1D23"
+                        android:textColorHint="#9AA1AC"
+                        android:textSize="13.5sp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ── SECTION 2: IDENTITY DOCUMENTS (KYC) ── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_more_user"
+                    app:tint="#1A6FD4" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Identity Documents"
+                    android:textColor="#1A1D23"
+                    android:textSize="13.5sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="20dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#E5E7EB"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <!-- 2-col: GSTIN & PAN (Read-Only) -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="GSTIN Number"
+                                android:textColor="#1A1D23"
+                                android:textSize="12.5sp"
+                                android:textStyle="bold" />
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:layout_marginTop="5dp">
+
+                                <EditText
+                                    android:id="@+id/etGstin"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/bg_input_readonly"
+                                    android:focusable="false"
+                                    android:inputType="none"
+                                    android:paddingStart="12dp"
+                                    android:paddingEnd="34dp"
+                                    android:text="—"
+                                    android:textColor="#9AA1AC"
+                                    android:textSize="13sp" />
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:layout_gravity="end|center_vertical"
+                                    android:layout_marginEnd="10dp"
+                                    android:src="@drawable/ic_lock"
+                                    app:tint="#9AA1AC" />
+                            </FrameLayout>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="PAN Number"
+                                android:textColor="#1A1D23"
+                                android:textSize="12.5sp"
+                                android:textStyle="bold" />
+
+                            <FrameLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:layout_marginTop="5dp">
+
+                                <EditText
+                                    android:id="@+id/etPan"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/bg_input_readonly"
+                                    android:focusable="false"
+                                    android:inputType="none"
+                                    android:paddingStart="12dp"
+                                    android:paddingEnd="34dp"
+                                    android:text="—"
+                                    android:textColor="#9AA1AC"
+                                    android:textSize="13sp" />
+
+                                <ImageView
+                                    android:layout_width="16dp"
+                                    android:layout_height="16dp"
+                                    android:layout_gravity="end|center_vertical"
+                                    android:layout_marginEnd="10dp"
+                                    android:src="@drawable/ic_lock"
+                                    app:tint="#9AA1AC" />
+                            </FrameLayout>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:lineSpacingMultiplier="1.2"
+                        android:text="To update your KYC documents, please contact seller support."
+                        android:textColor="#9AA1AC"
+                        android:textSize="11sp" />
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ── SECTION 3: REGISTERED ADDRESS ── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_location"
+                    app:tint="#1A6FD4" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Registered Address"
+                    android:textColor="#1A1D23"
+                    android:textSize="13.5sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="20dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#E5E7EB"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Address Line 1"
+                        android:textColor="#1A1D23"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etAddressLine1"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/bg_input_white"
+                        android:hint="Street address, building..."
+                        android:paddingHorizontal="12dp"
+                        android:textColor="#1A1D23"
+                        android:textColorHint="#9AA1AC"
+                        android:textSize="13.5sp" />
+
+                    <!-- 3-col: City, State, Pincode -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="4dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="City"
+                                android:textColor="#1A1D23"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etCity"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="4dp"
+                                android:background="@drawable/bg_input_white"
+                                android:paddingHorizontal="8dp"
+                                android:textColor="#1A1D23"
+                                android:textSize="12.5sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="4dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="State"
+                                android:textColor="#1A1D23"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etState"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="4dp"
+                                android:background="@drawable/bg_input_white"
+                                android:paddingHorizontal="8dp"
+                                android:textColor="#1A1D23"
+                                android:textSize="12.5sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="4dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Pincode"
+                                android:textColor="#1A1D23"
+                                android:textSize="11sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etPincode"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginTop="4dp"
+                                android:background="@drawable/bg_input_white"
+                                android:inputType="number"
+                                android:maxLength="6"
+                                android:paddingHorizontal="8dp"
+                                android:textColor="#1A1D23"
+                                android:textSize="12.5sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
+
+            <!-- ── SECTION 4: BANK ACCOUNT ── -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="18dp"
+                    android:layout_height="18dp"
+                    android:src="@drawable/ic_bank"
+                    app:tint="#1A6FD4" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Bank Account"
+                    android:textColor="#1A1D23"
+                    android:textSize="13.5sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="20dp"
+                app:cardBackgroundColor="#FFFFFF"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="0dp"
+                app:strokeColor="#E5E7EB"
+                app:strokeWidth="1dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="14dp">
+
+                    <!-- Account Holder Name with Dynamic Warning -->
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Account Holder Name"
+                        android:textColor="#1A1D23"
+                        android:textSize="12.5sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/etAccountHolderName"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_marginTop="5dp"
+                        android:background="@drawable/bg_input_white"
+                        android:hint="Not added yet"
+                        android:paddingHorizontal="12dp"
+                        android:textColor="#1A1D23"
+                        android:textColorHint="#9AA1AC"
+                        android:textSize="13.5sp" />
+
+                    <!-- Warning line if empty -->
+                    <LinearLayout
+                        android:id="@+id/layoutAccountHolderWarning"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:gravity="center_vertical"
                         android:orientation="horizontal"
-                        android:paddingHorizontal="14dp">
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="14dp"
+                            android:layout_height="14dp"
+                            android:src="@drawable/ic_baseline_warning_amber_24"
+                            app:tint="#D98E04" />
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Edit"
-                            android:textColor="@color/primary"
-                            android:textSize="13sp"
-                            android:textStyle="bold" />
+                            android:layout_marginStart="5dp"
+                            android:text="Required for payouts to reach you"
+                            android:textColor="#D98E04"
+                            android:textSize="11sp" />
+                    </LinearLayout>
 
+                    <!-- Account Number & IFSC -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Account Number"
+                                android:textColor="#1A1D23"
+                                android:textSize="12.5sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etAccountNumber"
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@drawable/bg_input_white"
+                                android:hint="••••••••••••"
+                                android:inputType="textPassword"
+                                android:paddingHorizontal="12dp"
+                                android:textColor="#1A1D23"
+                                android:textColorHint="#9AA1AC"
+                                android:textSize="13.5sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="IFSC Code"
+                                android:textColor="#1A1D23"
+                                android:textSize="12.5sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etIfscCode"
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@drawable/bg_input_white"
+                                android:hint="e.g. HDFC0000123"
+                                android:inputType="textCapCharacters"
+                                android:maxLength="11"
+                                android:paddingHorizontal="12dp"
+                                android:textColor="#1A1D23"
+                                android:textColorHint="#9AA1AC"
+                                android:textSize="13sp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <!-- Auto-derived Bank Name & Branch -->
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="6dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Bank Name"
+                                android:textColor="#1A1D23"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etBankName"
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@drawable/bg_input_readonly"
+                                android:focusable="false"
+                                android:hint="Fetched from IFSC"
+                                android:inputType="none"
+                                android:paddingHorizontal="12dp"
+                                android:textColor="#5B6472"
+                                android:textColorHint="#9AA1AC"
+                                android:textSize="12.5sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:layout_weight="1"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Branch"
+                                android:textColor="#1A1D23"
+                                android:textSize="12sp"
+                                android:textStyle="bold" />
+
+                            <EditText
+                                android:id="@+id/etBankBranch"
+                                android:layout_width="match_parent"
+                                android:layout_height="44dp"
+                                android:layout_marginTop="5dp"
+                                android:background="@drawable/bg_input_readonly"
+                                android:focusable="false"
+                                android:hint="Fetched from IFSC"
+                                android:inputType="none"
+                                android:paddingHorizontal="12dp"
+                                android:textColor="#5B6472"
+                                android:textColorHint="#9AA1AC"
+                                android:textSize="12.5sp" />
+                        </LinearLayout>
                     </LinearLayout>
 
                 </LinearLayout>
+            </com.google.android.material.card.MaterialCardView>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="#F0F0F0"
-                    android:layout_marginBottom="12dp" />
-
-                <!-- Info rows -->
-                <LinearLayout android:layout_width="match_parent" android:layout_height="36dp"
-                    android:gravity="center_vertical" android:orientation="horizontal">
-                    <TextView android:layout_width="110dp" android:layout_height="wrap_content"
-                        android:text="Email" android:textColor="#9E9E9E" android:textSize="13sp"/>
-                    <TextView android:id="@+id/tvEmail" android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:text="—" android:textColor="#1A2332" android:textSize="13sp"/>
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="match_parent" android:layout_height="36dp"
-                    android:gravity="center_vertical" android:orientation="horizontal">
-                    <TextView android:layout_width="110dp" android:layout_height="wrap_content"
-                        android:text="Phone" android:textColor="#9E9E9E" android:textSize="13sp"/>
-                    <TextView android:id="@+id/tvPhone" android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:text="—" android:textColor="#1A2332" android:textSize="13sp"/>
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="match_parent" android:layout_height="36dp"
-                    android:gravity="center_vertical" android:orientation="horizontal">
-                    <TextView android:layout_width="110dp" android:layout_height="wrap_content"
-                        android:text="GST Number" android:textColor="#9E9E9E" android:textSize="13sp"/>
-                    <TextView android:id="@+id/tvGstNumber" android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:text="—" android:textColor="#1A2332" android:textSize="13sp"/>
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="match_parent" android:layout_height="36dp"
-                    android:gravity="center_vertical" android:orientation="horizontal">
-                    <TextView android:layout_width="110dp" android:layout_height="wrap_content"
-                        android:text="PAN Number" android:textColor="#9E9E9E" android:textSize="13sp"/>
-                    <TextView android:id="@+id/tvPanNumber" android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:text="—" android:textColor="#1A2332" android:textSize="13sp"/>
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="match_parent" android:layout_height="36dp"
-                    android:gravity="center_vertical" android:orientation="horizontal">
-                    <TextView android:layout_width="110dp" android:layout_height="wrap_content"
-                        android:text="Business Type" android:textColor="#9E9E9E" android:textSize="13sp"/>
-                    <TextView android:id="@+id/tvBusinessType" android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:text="-" android:textColor="#1A2332" android:textSize="13sp"/>
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="match_parent" android:layout_height="36dp"
-                    android:gravity="center_vertical" android:orientation="horizontal">
-                    <TextView android:layout_width="110dp" android:layout_height="wrap_content"
-                        android:text="Location" android:textColor="#9E9E9E" android:textSize="13sp"/>
-                    <TextView android:id="@+id/tvLocation" android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:text="-" android:textColor="#1A2332" android:textSize="13sp"/>
-                </LinearLayout>
-
-                <LinearLayout android:id="@+id/layoutGarmentSection" android:layout_width="match_parent" android:layout_height="wrap_content"
-                    android:orientation="vertical" android:visibility="gone">
-                    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
-                        android:gravity="top" android:orientation="horizontal" android:paddingTop="8dp" android:paddingBottom="8dp">
-                        <TextView android:layout_width="110dp" android:layout_height="wrap_content"
-                            android:text="Deals In" android:textColor="#9E9E9E" android:textSize="13sp"/>
-                        <TextView android:id="@+id/tvGarmentCategories" android:layout_width="0dp" android:layout_height="wrap_content"
-                            android:layout_weight="1" android:text="-" android:textColor="#1A2332" android:textSize="13sp"
-                            android:lineSpacingExtra="4dp"/>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout android:layout_width="match_parent" android:layout_height="36dp"
-                    android:gravity="center_vertical" android:orientation="horizontal">
-                    <TextView android:layout_width="110dp" android:layout_height="wrap_content"
-                        android:text="Member Since" android:textColor="#9E9E9E" android:textSize="13sp"/>
-                    <TextView android:id="@+id/tvAccountCreated" android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:text="—" android:textColor="#1A2332" android:textSize="13sp"/>
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
-        <!-- Settings Menu Card -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="8dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="#FFFFFF">
-
+            <!-- ── SAVE PROFILE INFO CARD ── -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <!-- Bank Details -->
-                <LinearLayout
-                    android:id="@+id/btnBankDetails"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="16dp"
-                    android:background="?attr/selectableItemBackground">
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp"
-                        android:src="@drawable/ic_bank" android:tint="@color/primary"
-                        android:layout_marginEnd="14dp"/>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:text="Bank Details"
-                        android:textColor="#1A2332" android:textSize="15sp"/>
-                    <ImageView android:layout_width="16dp" android:layout_height="16dp"
-                        android:src="@drawable/ic_back" android:rotation="180"
-                        android:tint="#BDBDBD"/>
-                </LinearLayout>
-
-                <View android:layout_width="match_parent" android:layout_height="1dp"
-                    android:background="#F5F5F5" android:layout_marginStart="50dp"/>
-
-                <!-- Delivery Zones -->
-                <LinearLayout
-                    android:id="@+id/btnDeliveryZones"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="16dp"
-                    android:background="?attr/selectableItemBackground">
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp"
-                        android:src="@drawable/ic_location" android:tint="@color/primary"
-                        android:layout_marginEnd="14dp"/>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:text="Delivery Zones"
-                        android:textColor="#1A2332" android:textSize="15sp"/>
-                    <ImageView android:layout_width="16dp" android:layout_height="16dp"
-                        android:src="@drawable/ic_back" android:rotation="180"
-                        android:tint="#BDBDBD"/>
-                </LinearLayout>
-
-                <View android:layout_width="match_parent" android:layout_height="1dp"
-                    android:background="#F5F5F5" android:layout_marginStart="50dp"/>
-
-                <!-- Notifications -->
-                <LinearLayout
-                    android:id="@+id/btnNotifications"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="16dp"
-                    android:background="?attr/selectableItemBackground">
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp"
-                        android:src="@drawable/ic_notifications" android:tint="@color/primary"
-                        android:layout_marginEnd="14dp"/>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:text="Notifications"
-                        android:textColor="#1A2332" android:textSize="15sp"/>
-                    <ImageView android:layout_width="16dp" android:layout_height="16dp"
-                        android:src="@drawable/ic_back" android:rotation="180"
-                        android:tint="#BDBDBD"/>
-                </LinearLayout>
-
-                <View android:layout_width="match_parent" android:layout_height="1dp"
-                    android:background="#F5F5F5" android:layout_marginStart="50dp"/>
-
-                <!-- Help & Support -->
-                <LinearLayout
-                    android:id="@+id/btnHelpSupport"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="16dp"
-                    android:background="?attr/selectableItemBackground">
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp"
-                        android:src="@drawable/ic_search" android:tint="@color/primary"
-                        android:layout_marginEnd="14dp"/>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:text="Help &amp; Support"
-                        android:textColor="#1A2332" android:textSize="15sp"/>
-                    <ImageView android:layout_width="16dp" android:layout_height="16dp"
-                        android:src="@drawable/ic_back" android:rotation="180"
-                        android:tint="#BDBDBD"/>
-                </LinearLayout>
-
-                <View android:layout_width="match_parent" android:layout_height="1dp"
-                    android:background="#F5F5F5" android:layout_marginStart="50dp"/>
-
-                <!-- Disputes -->
-                <LinearLayout
-                    android:id="@+id/btnDisputes"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="16dp"
-                    android:background="?attr/selectableItemBackground">
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp"
-                        android:src="@drawable/ic_orders" android:tint="#E65100"
-                        android:layout_marginEnd="14dp"/>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:text="Disputes"
-                        android:textColor="#1A2332" android:textSize="15sp"/>
-                    <ImageView android:layout_width="16dp" android:layout_height="16dp"
-                        android:src="@drawable/ic_back" android:rotation="180"
-                        android:tint="#BDBDBD"/>
-                </LinearLayout>
-
-                <View android:layout_width="match_parent" android:layout_height="1dp"
-                    android:background="#F5F5F5" android:layout_marginStart="50dp"/>
-
-                <!-- Reviews -->
-                <LinearLayout
-                    android:id="@+id/btnReviews"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="16dp"
-                    android:background="?attr/selectableItemBackground">
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp"
-                        android:src="@drawable/ic_analytics" android:tint="#F59E0B"
-                        android:layout_marginEnd="14dp"/>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:text="Customer Reviews"
-                        android:textColor="#1A2332" android:textSize="15sp"/>
-                    <ImageView android:layout_width="16dp" android:layout_height="16dp"
-                        android:src="@drawable/ic_back" android:rotation="180"
-                        android:tint="#BDBDBD"/>
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-        <!-- Legal Card - Phase 3 -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="12dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="#FFFFFF">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:id="@+id/btnDataPrivacy"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="16dp"
-                    android:background="?attr/selectableItemBackground">
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp"
-                        android:src="@drawable/ic_privacy_shield"
-                        android:tint="#2563EB" android:layout_marginEnd="14dp"/>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:text="Data &amp; Privacy"
-                        android:textColor="#1A2332" android:textSize="15sp"/>
-                    <ImageView android:layout_width="16dp" android:layout_height="16dp"
-                        android:src="@drawable/ic_back" android:rotation="180"
-                        android:tint="#BDBDBD"/>
-                </LinearLayout>
-
-                <View android:layout_width="match_parent" android:layout_height="1dp"
-                    android:background="#F5F5F5" android:layout_marginStart="50dp"/>
-
-                <LinearLayout
-                    android:id="@+id/btnPrivacyPolicy"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="16dp"
-                    android:background="?attr/selectableItemBackground">
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp"
-                        android:src="@drawable/ic_back" android:rotation="180"
-                        android:tint="#2563EB" android:layout_marginEnd="14dp"/>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:text="Privacy Policy"
-                        android:textColor="#1A2332" android:textSize="15sp"/>
-                    <ImageView android:layout_width="16dp" android:layout_height="16dp"
-                        android:src="@drawable/ic_back" android:rotation="180"
-                        android:tint="#BDBDBD"/>
-                </LinearLayout>
-
-                <View android:layout_width="match_parent" android:layout_height="1dp"
-                    android:background="#F5F5F5" android:layout_marginStart="50dp"/>
-
-                <LinearLayout
-                    android:id="@+id/btnTermsConditions"
-                    android:layout_width="match_parent"
-                    android:layout_height="56dp"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingHorizontal="16dp"
-                    android:background="?attr/selectableItemBackground">
-                    <ImageView android:layout_width="20dp" android:layout_height="20dp"
-                        android:src="@drawable/ic_back" android:rotation="180"
-                        android:tint="#2563EB" android:layout_marginEnd="14dp"/>
-                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
-                        android:layout_weight="1" android:text="Terms &amp; Conditions"
-                        android:textColor="#1A2332" android:textSize="15sp"/>
-                    <ImageView android:layout_width="16dp" android:layout_height="16dp"
-                        android:src="@drawable/ic_back" android:rotation="180"
-                        android:tint="#BDBDBD"/>
-                </LinearLayout>
-
-            </LinearLayout>
-        </androidx.cardview.widget.CardView>
-
-        <!-- Logout Card -->
-        <androidx.cardview.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginBottom="32dp"
-            app:cardCornerRadius="12dp"
-            app:cardElevation="2dp"
-            app:cardBackgroundColor="#FFFFFF">
-
-            <LinearLayout
-                android:id="@+id/btnLogout"
-                android:layout_width="match_parent"
-                android:layout_height="56dp"
-                android:gravity="center"
-                android:orientation="horizontal"
-                android:background="?attr/selectableItemBackground">
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_save_info_blue"
+                android:orientation="vertical"
+                android:padding="12dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Logout"
-                    android:textColor="#E53935"
-                    android:textSize="15sp"
+                    android:text="Save profile"
+                    android:textColor="#2851C4"
+                    android:textSize="12.5sp"
                     android:textStyle="bold" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:lineSpacingMultiplier="1.2"
+                    android:text="Ensure your business and banking details match your KYC documents to avoid payout delays."
+                    android:textColor="#2851C4"
+                    android:textSize="11.5sp" />
             </LinearLayout>
 
-        </androidx.cardview.widget.CardView>
+            <!-- ── SAVE CHANGES BUTTON ── -->
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="12dp">
 
-    </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btnSaveChanges"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:backgroundTint="#2851C4"
+                    android:insetTop="0dp"
+                    android:insetBottom="0dp"
+                    android:text="Save changes"
+                    android:textAllCaps="false"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    app:cornerRadius="10dp"
+                    app:icon="@drawable/ic_check"
+                    app:iconGravity="textStart"
+                    app:iconTint="#FFFFFF" />
 
-</ScrollView>
+                <ProgressBar
+                    android:id="@+id/pbSaveLoading"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:indeterminateTint="#FFFFFF"
+                    android:visibility="gone" />
+            </FrameLayout>
 
+            <!-- ── LOG OUT OF STORE BUTTON ── -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnLogout"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="42dp"
+                android:layout_marginBottom="24dp"
+                android:backgroundTint="#FDECEA"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="Log out of store"
+                android:textAllCaps="false"
+                android:textColor="#D8342A"
+                android:textSize="12.5sp"
+                android:textStyle="bold"
+                app:cornerRadius="10dp"
+                app:icon="@drawable/ic_more_logout"
+                app:iconGravity="textStart"
+                app:iconTint="#D8342A" />
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

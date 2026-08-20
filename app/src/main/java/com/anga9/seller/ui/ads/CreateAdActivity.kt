@@ -154,6 +154,7 @@ class CreateAdActivity : AppCompatActivity() {
         tvDurationInfo = findViewById(R.id.tvDurationInfo)
         
         etBudget = findViewById(R.id.etBudget)
+        etBudget.setText("500")
         tvBudgetError = findViewById(R.id.tvBudgetError)
         
         btnSubmit = findViewById(R.id.btnSubmit)
@@ -384,7 +385,8 @@ class CreateAdActivity : AppCompatActivity() {
 
     private fun showProductSheet() {
         if (productsList.isEmpty()) {
-            Toast.makeText(this, "No products available", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Loading products...", Toast.LENGTH_SHORT).show()
+            viewModel.loadProducts()
             return
         }
         

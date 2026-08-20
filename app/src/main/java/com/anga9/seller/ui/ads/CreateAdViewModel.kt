@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
+import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
@@ -29,7 +30,7 @@ class CreateAdViewModel(application: Application) : AndroidViewModel(application
     private val _selectedProduct = MutableStateFlow<SellerProductResponse?>(null)
     val selectedProduct = _selectedProduct.asStateFlow()
 
-    private val _placement = MutableStateFlow<String?>(null)
+    private val _placement = MutableStateFlow<String?>("home_hero")
     val placement = _placement.asStateFlow()
 
     private val _bannerUri = MutableStateFlow<Uri?>(null)
@@ -38,7 +39,7 @@ class CreateAdViewModel(application: Application) : AndroidViewModel(application
     private val _headline = MutableStateFlow("")
     val headline = _headline.asStateFlow()
 
-    private val _ctaText = MutableStateFlow<String?>(null)
+    private val _ctaText = MutableStateFlow<String?>("Shop Now")
     val ctaText = _ctaText.asStateFlow()
 
     private val _startDate = MutableStateFlow<Long?>(null)
@@ -47,7 +48,7 @@ class CreateAdViewModel(application: Application) : AndroidViewModel(application
     private val _endDate = MutableStateFlow<Long?>(null)
     val endDate = _endDate.asStateFlow()
 
-    private val _budgetInr = MutableStateFlow<Double?>(null)
+    private val _budgetInr = MutableStateFlow<Double?>(500.0)
     val budgetInr = _budgetInr.asStateFlow()
 
     // Form Validations
@@ -63,17 +64,33 @@ class CreateAdViewModel(application: Application) : AndroidViewModel(application
     val submitState = _submitState.asStateFlow()
 
     init {
+        val tmrw = Calendar.getInstance().apply {
+            add(Calendar.DAY_OF_YEAR, 1)
+            set(Calendar.HOUR_OF_DAY, 0)
+            set(Calendar.MINUTE, 0)
+            set(Calendar.SECOND, 0)
+        }
+        val nextWk = Calendar.getInstance().apply {
+            timeInMillis = tmrw.timeInMillis
+            add(Calendar.DAY_OF_YEAR, 7)
+        }
+        _startDate.value = tmrw.timeInMillis
+        _endDate.value = nextWk.timeInMillis
+
         loadProducts()
     }
 
-    private fun loadProducts() {
+    fun loadProducts() {
         viewModelScope.launch {
             _productsListState.value = UiState.Loading
-            productRepository.getMyProducts("published").collectLatest { resource ->
+            productRepository.getMyProducts("active,pending_review,draft,archived,rejected").collectLatest { resource ->
                 when (resource) {
                     is Resource.Success<*> -> {
                         val list = (resource.data as? List<SellerProductResponse>) ?: emptyList()
                         _productsListState.value = UiState.Success(list)
+                        if (_selectedProduct.value == null && list.isNotEmpty()) {
+                            _selectedProduct.value = list[0]
+                        }
                     }
                     is Resource.Error -> {
                         _productsListState.value = UiState.Error(resource.message ?: "Failed to load products")
@@ -151,15 +168,19 @@ class CreateAdViewModel(application: Application) : AndroidViewModel(application
                 endsAt = endsAtStr,
                 bannerUrl = bannerUrl,
                 headline = _headline.value.trim(),
-                ctaText = _ctaText.value!!,
-                budgetInr = _budgetInr.value!!
+                ctaText = _ctaText.value ?: "Shop Now",
+                budgetInr = _budgetInr.value ?: 500.0
             )
 
-            // 4. Submit Request
+            // 4. Submit to Backend API
             adRepository.requestAd(request).collectLatest { resource ->
                 when (resource) {
-                    is Resource.Success<*> -> _submitState.value = UiState.Success(Unit)
-                    is Resource.Error -> _submitState.value = UiState.Error(resource.message ?: "Submission failed")
+                    is Resource.Success<*> -> {
+                        _submitState.value = UiState.Success(Unit)
+                    }
+                    is Resource.Error -> {
+                        _submitState.value = UiState.Error(resource.message ?: "Failed to submit request")
+                    }
                     is Resource.Loading<*> -> {}
                 }
             }
