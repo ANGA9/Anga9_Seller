@@ -1,6 +1,6 @@
-﻿package com.anga9.seller.ui.dashboard
+package com.anga9.seller.ui.dashboard
 
-import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +9,7 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.anga9.seller.R
 import com.anga9.seller.data.model.RecentOrderItem
+import com.anga9.seller.utils.AppFormatters
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
@@ -44,27 +45,39 @@ class RecentOrderAdapter(
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val order = orders[position]
 
-        holder.tvOrderId.text = "#${order.orderId.takeLast(6).uppercase()}"
-        holder.tvCustomerName.text = order.customerName
-        holder.tvAmount.text = "₹${String.format("%,.0f", order.amount)}"
-        holder.tvItemCount.text = "${order.itemCount} item${if (order.itemCount > 1) "s" else ""}"
-
-        val sdf = SimpleDateFormat("dd MMM, hh:mm a", Locale.getDefault())
-        holder.tvDate.text = sdf.format(Date(order.createdAt))
-
-        // Status chip color
-        val (statusText, statusColor) = when (order.status.lowercase()) {
-            "new", "pending" -> Pair("New", "#2563EB")
-            "accepted" -> Pair("Accepted", "#7C3AED")
-            "packed" -> Pair("Packed", "#D97706")
-            "shipped" -> Pair("Shipped", "#0891B2")
-            "delivered" -> Pair("Delivered", "#059669")
-            "cancelled" -> Pair("Cancelled", "#DC2626")
-            else -> Pair(order.status.replaceFirstChar { it.uppercase() }, "#6B7280")
+        val displayId = if (order.orderNumber.isNotEmpty()) {
+            if (order.orderNumber.startsWith("#")) order.orderNumber else "#${order.orderNumber}"
+        } else if (order.orderId.length > 8) {
+            "#${order.orderId.takeLast(6).uppercase()}"
+        } else {
+            "#${order.orderId}"
         }
 
-        holder.tvStatus.text = statusText
-        holder.tvStatus.setBackgroundColor(Color.parseColor(statusColor))
+        holder.tvOrderId.text = displayId
+        holder.tvCustomerName.text = order.customerName.ifEmpty { "Customer" }
+        holder.tvAmount.text = AppFormatters.formatINR(order.amount)
+        holder.tvItemCount.text = "${order.itemCount} item${if (order.itemCount > 1) "s" else ""}"
+
+        if (order.createdAt > 0) {
+            val sdf = SimpleDateFormat("dd MMM, hh:mm a", Locale.getDefault())
+            holder.tvDate.text = sdf.format(Date(order.createdAt))
+            holder.tvDate.visibility = View.VISIBLE
+        } else {
+            holder.tvDate.visibility = View.GONE
+        }
+
+        // Shared status chip config
+        val config = AppFormatters.getStatusConfig(order.status)
+        holder.tvStatus.text = config.label
+        holder.tvStatus.setTextColor(config.textColor)
+
+        val bgDrawable = GradientDrawable().apply {
+            shape = GradientDrawable.RECTANGLE
+            cornerRadius = 12f
+            setColor(config.bgColor)
+        }
+        holder.tvStatus.background = bgDrawable
+
         holder.cardOrder.setOnClickListener { onOrderClick(order) }
     }
 

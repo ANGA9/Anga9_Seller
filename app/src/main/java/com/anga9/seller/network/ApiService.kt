@@ -50,6 +50,11 @@ interface ApiService {
     @GET("api/users/seller-stats")
     suspend fun getSellerStats(): Response<SellerStatsResponse>
 
+    @GET("api/users/seller-analytics")
+    suspend fun getSellerAnalytics(
+        @Query("period") period: String = "30d"
+    ): Response<SellerAnalyticsResponse>
+
     @DELETE("api/users/profile")
     suspend fun deleteAccount(): Response<ApiSuccessResponse>
 

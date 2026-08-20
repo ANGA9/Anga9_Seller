@@ -9,16 +9,31 @@
     android:paddingVertical="12dp"
     android:background="@color/seller_bg_light">
 
+    <!-- Hamburger Menu Button -->
+    <ImageView
+        android:id="@+id/btnDrawerOpen"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:padding="8dp"
+        android:src="@drawable/ic_menu"
+        app:tint="#1A1D23"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:contentDescription="Open navigation drawer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
     <!-- Avatar -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cvAvatar"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        app:cardCornerRadius="24dp"
+        android:layout_width="42dp"
+        android:layout_height="42dp"
+        android:layout_marginStart="8dp"
+        app:cardCornerRadius="21dp"
         app:cardElevation="0dp"
         app:strokeWidth="0dp"
         app:cardBackgroundColor="@color/seller_primary_light"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/btnDrawerOpen"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -29,7 +44,7 @@
             android:gravity="center"
             tools:text="RS"
             android:textColor="@color/seller_primary"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:fontFamily="sans-serif-medium" />
     </com.google.android.material.card.MaterialCardView>
@@ -38,7 +53,7 @@
         android:id="@+id/tvStoreName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="10dp"
         android:layout_marginEnd="4dp"
         tools:text="Ravi Stores"
         android:textColor="@color/seller_text_primary"
@@ -71,10 +86,10 @@
         android:id="@+id/tvSellerId"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
+        android:layout_marginStart="10dp"
         tools:text="ID: SELL-4920"
         android:textColor="@color/seller_text_muted"
-        android:textSize="12sp"
+        android:textSize="11sp"
         app:layout_constraintStart_toEndOf="@id/cvAvatar"
         app:layout_constraintTop_toBottomOf="@id/tvStoreName"
         app:layout_constraintBottom_toBottomOf="@id/cvAvatar"

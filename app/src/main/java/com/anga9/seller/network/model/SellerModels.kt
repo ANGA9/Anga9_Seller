@@ -17,6 +17,8 @@ data class SellerProfileResponse(
     @SerializedName("role") val role: String = "seller",
     @SerializedName("avatar_url") val avatarUrl: String? = null,
     @SerializedName("verification_status") val kycStatus: String? = null,
+    @SerializedName("is_verified") val isVerified: Boolean = false,
+    @SerializedName("rejection_reason") val rejectionReason: String? = null,
     @SerializedName("store_name") val storeName: String? = null,
     @SerializedName("business_name") val businessName: String? = null,
     @SerializedName("business_type") val businessType: String? = null,
@@ -46,6 +48,7 @@ data class SellerProfileResponse(
     @SerializedName("social_links") val socialLinks: Map<String, String>? = null
 ) {
     fun getEffectiveGst(): String? = gstin ?: gstNumber
+    val verificationStatus: String? get() = kycStatus
 }
 
 data class SellerStatsResponse(
@@ -57,7 +60,42 @@ data class SellerStatsResponse(
     @SerializedName("rating") val rating: Double = 0.0,
     @SerializedName("total_reviews") val totalReviews: Int = 0,
     @SerializedName("pending_returns") val pendingReturns: Int = 0,
-    @SerializedName("open_tickets") val openTickets: Int = 0
+    @SerializedName("open_tickets") val openTickets: Int = 0,
+    @SerializedName("active_products") val activeProducts: Int = 0
+)
+
+data class SellerAnalyticsResponse(
+    @SerializedName("period") val period: String = "30d",
+    @SerializedName("totalRevenue") val totalRevenue: Double = 0.0,
+    @SerializedName("totalOrders") val totalOrders: Int = 0,
+    @SerializedName("activeOrders") val activeOrders: Int = 0,
+    @SerializedName("fulfilledOrders") val fulfilledOrders: Int = 0,
+    @SerializedName("returnedOrders") val returnedOrders: Int = 0,
+    @SerializedName("cancelledOrders") val cancelledOrders: Int = 0,
+    @SerializedName("fulfillmentRate") val fulfillmentRate: Int = 0,
+    @SerializedName("returnRate") val returnRate: Int = 0,
+    @SerializedName("revenueChart") val revenueChart: List<RevenueChartPoint>? = null,
+    @SerializedName("topProducts") val topProducts: List<TopProductItem>? = null,
+    @SerializedName("categoryBreakdown") val categoryBreakdown: List<CategoryBreakdownItem>? = null
+)
+
+data class RevenueChartPoint(
+    @SerializedName("date") val date: String,
+    @SerializedName("revenue") val revenue: Double = 0.0,
+    @SerializedName("orders") val orders: Int = 0
+)
+
+data class TopProductItem(
+    @SerializedName("id") val id: String = "",
+    @SerializedName("name") val name: String = "",
+    @SerializedName("revenue") val revenue: Double = 0.0,
+    @SerializedName("unitsSold") val unitsSold: Int = 0
+)
+
+data class CategoryBreakdownItem(
+    @SerializedName("category") val category: String = "",
+    @SerializedName("revenue") val revenue: Double = 0.0,
+    @SerializedName("count") val count: Int = 0
 )
 
 data class UpdateSellerProfileRequest(
