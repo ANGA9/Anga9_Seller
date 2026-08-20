@@ -157,6 +157,15 @@
                     android:orientation="vertical">
 
                     <include
+                        android:id="@+id/rowDisputes"
+                        layout="@layout/layout_more_menu_row" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@color/more_divider" />
+
+                    <include
                         android:id="@+id/rowMyReturns"
                         layout="@layout/layout_more_menu_row" />
 

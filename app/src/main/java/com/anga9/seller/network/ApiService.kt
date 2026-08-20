@@ -277,9 +277,17 @@ interface ApiService {
         @retrofit2.http.Body request: ArticleFeedbackRequest
     ): Response<ArticleFeedbackResponse>
 
-    // â”€â”€ DISPUTES (Seller) â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    // GET  /api/orders/:id/dispute       â†’ get dispute for an order
-    // PATCH /api/orders/:id/dispute/:disputeId â†’ seller respond to dispute
+    // ── DISPUTES (Seller) ───────────────────────────────────────────────────
+    // GET  /api/seller/orders/disputes   → list seller disputes
+    // GET  /api/orders/:id/dispute       → get dispute for an order
+    // PATCH /api/orders/:id/dispute/:disputeId → seller respond to dispute
+
+    @GET("api/seller/orders/disputes")
+    suspend fun getSellerDisputes(
+        @Query("page") page: Int? = null,
+        @Query("limit") limit: Int? = null,
+        @Query("status") status: String? = null
+    ): Response<DisputeListResponse>
 
     @GET("api/orders/{orderId}/dispute")
     suspend fun getOrderDispute(

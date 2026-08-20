@@ -1,4 +1,4 @@
-﻿package com.anga9.seller.ui.disputes
+package com.anga9.seller.ui.disputes
 
 import android.graphics.Color
 import android.os.Bundle
@@ -195,10 +195,10 @@ class SellerDisputeDetailActivity : AppCompatActivity() {
         // Admin decision
         if (!dispute.adminDecision.isNullOrEmpty()) {
             cardAdminDecision.visibility = View.VISIBLE
-            tvAdminDecision.text = dispute.adminDecision
-            if (dispute.refundAmount > 0) {
+            val refund = dispute.refundAmount ?: 0.0
+            if (refund > 0.0) {
                 tvRefundAmount.visibility = View.VISIBLE
-                tvRefundAmount.text = "Refund Amount: \u20B9${String.format("%,.0f", dispute.refundAmount)}"
+                tvRefundAmount.text = "Refund Amount: \u20B9${String.format("%,.0f", refund)}"
             }
         }
     }

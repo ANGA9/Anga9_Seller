@@ -404,6 +404,7 @@ data class ApiSuccessResponse(
 
 data class DisputeRespondRequest(
     @com.google.gson.annotations.SerializedName("seller_response") val sellerResponse: String,
+    @com.google.gson.annotations.SerializedName("qc_status") val qcStatus: String? = null,
     @com.google.gson.annotations.SerializedName("request_admin") val requestAdmin: Boolean = false
 )
 
@@ -411,14 +412,24 @@ data class DisputeItem(
     @com.google.gson.annotations.SerializedName("id") val id: String = "",
     @com.google.gson.annotations.SerializedName("order_id") val orderId: String = "",
     @com.google.gson.annotations.SerializedName("order_item_id") val orderItemId: String = "",
+    @com.google.gson.annotations.SerializedName("customer_id") val customerId: String = "",
+    @com.google.gson.annotations.SerializedName("seller_id") val sellerId: String = "",
     @com.google.gson.annotations.SerializedName("type") val type: String = "",
     @com.google.gson.annotations.SerializedName("reason") val reason: String = "",
+    @com.google.gson.annotations.SerializedName("reason_code") val reasonCode: String? = null,
     @com.google.gson.annotations.SerializedName("status") val status: String = "open",
+    @com.google.gson.annotations.SerializedName("resolution_mode") val resolutionMode: String? = null,
+    @com.google.gson.annotations.SerializedName("requested_qty") val requestedQty: Int? = null,
+    @com.google.gson.annotations.SerializedName("refund_amount") val refundAmount: Double? = null,
+    @com.google.gson.annotations.SerializedName("qc_status") val qcStatus: String? = null,
     @com.google.gson.annotations.SerializedName("evidence_images") val evidenceImages: List<String> = emptyList(),
     @com.google.gson.annotations.SerializedName("seller_response") val sellerResponse: String? = null,
+    @com.google.gson.annotations.SerializedName("seller_responded_at") val sellerRespondedAt: String? = null,
+    @com.google.gson.annotations.SerializedName("admin_resolution") val adminResolution: String? = null,
     @com.google.gson.annotations.SerializedName("admin_decision") val adminDecision: String? = null,
-    @com.google.gson.annotations.SerializedName("refund_amount") val refundAmount: Double = 0.0,
+    @com.google.gson.annotations.SerializedName("admin_resolved_at") val adminResolvedAt: String? = null,
     @com.google.gson.annotations.SerializedName("created_at") val createdAt: String = "",
+    @com.google.gson.annotations.SerializedName("updated_at") val updatedAt: String? = null,
     @com.google.gson.annotations.SerializedName("customer") val customer: DisputeCustomer? = null
 )
 
@@ -430,7 +441,8 @@ data class DisputeCustomer(
 
 data class DisputeResponse(
     @com.google.gson.annotations.SerializedName("dispute") val dispute: DisputeItem? = null,
-    @com.google.gson.annotations.SerializedName("disputes") val disputes: List<DisputeItem>? = null
+    @com.google.gson.annotations.SerializedName("disputes") val disputes: List<DisputeItem>? = null,
+    @com.google.gson.annotations.SerializedName("items") val items: List<DisputeItem>? = null
 )
 
 data class DisputeListResponse(
