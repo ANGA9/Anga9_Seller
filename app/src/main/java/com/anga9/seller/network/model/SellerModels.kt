@@ -440,6 +440,8 @@ data class SellerReviewItem(
 data class ReviewProduct(
     @com.google.gson.annotations.SerializedName("seller_id") val sellerId: String = "",
     @com.google.gson.annotations.SerializedName("name") val name: String = "",
+    @com.google.gson.annotations.SerializedName("category") val category: String? = null,
+    @com.google.gson.annotations.SerializedName("subcategory") val subcategory: String? = null,
     @com.google.gson.annotations.SerializedName("images") val images: List<String>? = emptyList()
 )
 

@@ -132,6 +132,9 @@ class SellerProfileActivity : BaseActivity() {
             showLogoutDialog()
         }
         // Legal — Phase 3 integration
+        findViewById<android.view.View?>(R.id.btnDataPrivacy)?.setOnClickListener {
+            com.anga9.seller.ui.privacy.DataPrivacyActivity.start(this)
+        }
         findViewById<android.view.View?>(R.id.btnPrivacyPolicy)?.setOnClickListener {
             LegalActivity.startPrivacy(this)
         }

@@ -103,5 +103,25 @@ class ProfileRepository(private val context: Context) {
         }
     }
 
+    suspend fun deleteAccount(): Result<Boolean> {
+        return try {
+            val response = apiService.deleteAccount()
+            if (response.isSuccessful) {
+                Result.success(true)
+            } else {
+                val errorMsg = response.errorBody()?.string()?.let {
+                    try {
+                        org.json.JSONObject(it).optString("error", "Failed to delete account (${response.code()})")
+                    } catch (e: Exception) {
+                        "Failed to delete account (${response.code()})"
+                    }
+                } ?: "Failed to delete account (${response.code()})"
+                Result.failure(Exception(errorMsg))
+            }
+        } catch (e: Exception) {
+            Result.failure(Exception("Network error: ${e.message}"))
+        }
+    }
+
     fun getSavedSellerId(): String? = TokenManager.getUserId(context)
 }

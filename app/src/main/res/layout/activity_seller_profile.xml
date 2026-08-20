@@ -478,6 +478,28 @@
                 android:orientation="vertical">
 
                 <LinearLayout
+                    android:id="@+id/btnDataPrivacy"
+                    android:layout_width="match_parent"
+                    android:layout_height="56dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:paddingHorizontal="16dp"
+                    android:background="?attr/selectableItemBackground">
+                    <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                        android:src="@drawable/ic_privacy_shield"
+                        android:tint="#2563EB" android:layout_marginEnd="14dp"/>
+                    <TextView android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:text="Data &amp; Privacy"
+                        android:textColor="#1A2332" android:textSize="15sp"/>
+                    <ImageView android:layout_width="16dp" android:layout_height="16dp"
+                        android:src="@drawable/ic_back" android:rotation="180"
+                        android:tint="#BDBDBD"/>
+                </LinearLayout>
+
+                <View android:layout_width="match_parent" android:layout_height="1dp"
+                    android:background="#F5F5F5" android:layout_marginStart="50dp"/>
+
+                <LinearLayout
                     android:id="@+id/btnPrivacyPolicy"
                     android:layout_width="match_parent"
                     android:layout_height="56dp"

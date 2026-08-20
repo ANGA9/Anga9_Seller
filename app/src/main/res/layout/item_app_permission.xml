@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/bg_card_permission"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:padding="14dp">
+
+    <ImageView
+        android:id="@+id/ivPermissionIcon"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:layout_gravity="top"
+        android:layout_marginTop="1dp"
+        android:layout_marginEnd="12dp"
+        android:src="@drawable/ic_camera"
+        app:tint="#2563EB" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tvPermissionTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Camera"
+            android:textColor="#111827"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvPermissionDesc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:lineSpacingExtra="2dp"
+            android:text="Used for KYC verification, catalog photos, and barcode scanning"
+            android:textColor="#6B7280"
+            android:textSize="12.5sp" />
+
+    </LinearLayout>
+
+</LinearLayout>

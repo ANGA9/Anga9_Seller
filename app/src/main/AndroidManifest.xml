@@ -171,6 +171,11 @@
             android:theme="@style/Theme.AppCompat.NoActionBar" />
 
         <activity
+            android:name=".ui.privacy.DataPrivacyActivity"
+            android:exported="false"
+            android:theme="@style/Theme.ANGA_SellerSide" />
+
+        <activity
             android:name=".MVVM.ui.products.EditProductActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.ANGA_SellerSide" />

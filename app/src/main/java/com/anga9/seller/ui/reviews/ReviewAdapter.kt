@@ -70,6 +70,18 @@ class ReviewAdapter(
                 binding.llProductRef.visibility = View.VISIBLE
                 binding.tvProductName.text = review.products.name
                 
+                val category = review.products.category
+                val subcategory = review.products.subcategory
+                if (category != null && subcategory != null) {
+                    binding.tvProductCategory.text = "$category > $subcategory"
+                    binding.tvProductCategory.visibility = View.VISIBLE
+                } else if (category != null) {
+                    binding.tvProductCategory.text = category
+                    binding.tvProductCategory.visibility = View.VISIBLE
+                } else {
+                    binding.tvProductCategory.visibility = View.GONE
+                }
+                
                 val imageUrl = review.products.images?.firstOrNull()
                 if (imageUrl != null) {
                     binding.ivProductThumb.load(imageUrl) {

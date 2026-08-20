@@ -232,6 +232,11 @@ class DashboardActivity : AppCompatActivity() {
             it.findViewById<ImageView>(R.id.ivLeadingIcon).setImageResource(R.drawable.ic_more_storefront)
             it.setOnClickListener { startActivity(Intent(this, com.anga9.seller.ui.storefront.StorefrontActivity::class.java)) }
         }
+        moreContent.findViewById<View>(R.id.rowDataPrivacy)?.let {
+            it.findViewById<TextView>(R.id.tvMenuLabel).text = "Data & Privacy"
+            it.findViewById<ImageView>(R.id.ivLeadingIcon).setImageResource(R.drawable.ic_privacy_shield)
+            it.setOnClickListener { startActivity(Intent(this, com.anga9.seller.ui.privacy.DataPrivacyActivity::class.java)) }
+        }
         moreContent.findViewById<View>(R.id.rowMyAdCampaigns)?.let {
             it.findViewById<TextView>(R.id.tvMenuLabel).text = "My ad campaigns"
             it.findViewById<ImageView>(R.id.ivLeadingIcon).setImageResource(R.drawable.ic_more_megaphone)
@@ -295,10 +300,10 @@ class DashboardActivity : AppCompatActivity() {
             moreContent.findViewById<TextView>(R.id.tvAppVersion)?.text = "Version 1.0"
         }
         moreContent.findViewById<TextView>(R.id.tvTerms)?.setOnClickListener {
-            // Open Terms
+            com.anga9.seller.ui.legal.LegalActivity.startTerms(this)
         }
         moreContent.findViewById<TextView>(R.id.tvPrivacy)?.setOnClickListener {
-            // Open Privacy
+            startActivity(Intent(this, com.anga9.seller.ui.privacy.DataPrivacyActivity::class.java))
         }
     }
 

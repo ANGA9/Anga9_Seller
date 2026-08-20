@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_bottom_sheet"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <!-- Drag handle indicator -->
+    <View
+        android:layout_width="36dp"
+        android:layout_height="4dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:background="#D1D5DB" />
+
+    <!-- Warning Icon & Title -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <FrameLayout
+            android:layout_width="42dp"
+            android:layout_height="42dp"
+            android:background="@drawable/bg_badge_red">
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_baseline_warning_24"
+                app:tint="#DC2626" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delete Seller Account?"
+                android:textColor="#111827"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Permanent store closure"
+                android:textColor="#EF4444"
+                android:textSize="12sp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginVertical="14dp"
+        android:background="#F3F4F6" />
+
+    <!-- Description -->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:lineSpacingExtra="3dp"
+        android:text="This action cannot be undone. Your product listings will be removed, your storefront will be closed, and your login access revoked."
+        android:textColor="#374151"
+        android:textSize="13.5sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:lineSpacingExtra="2dp"
+        android:text="Note: All outstanding orders and payouts must be fully settled before closing."
+        android:textColor="#6B7280"
+        android:textSize="12.5sp" />
+
+    <!-- Type DELETE confirmation input -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        android:layout_marginBottom="6dp"
+        android:text="Type DELETE to confirm:"
+        android:textColor="#374151"
+        android:textSize="12.5sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/etConfirmDelete"
+        android:layout_width="match_parent"
+        android:layout_height="46dp"
+        android:background="@drawable/bg_card_permission"
+        android:gravity="center"
+        android:hint="DELETE"
+        android:inputType="textCapCharacters"
+        android:letterSpacing="0.1"
+        android:paddingHorizontal="14dp"
+        android:textColor="#111827"
+        android:textColorHint="#9CA3AF"
+        android:textSize="15sp"
+        android:textStyle="bold" />
+
+    <!-- Error Message -->
+    <TextView
+        android:id="@+id/tvDeleteError"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:textColor="#DC2626"
+        android:textSize="12.5sp"
+        android:visibility="gone" />
+
+    <!-- Progress Indicator -->
+    <ProgressBar
+        android:id="@+id/pbDeleting"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="12dp"
+        android:indeterminateTint="#DC2626"
+        android:visibility="gone" />
+
+    <!-- Buttons -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancelDelete"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            android:textColor="#374151"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:cornerRadius="12dp"
+            app:strokeColor="#D1D5DB"
+            app:strokeWidth="1dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnConfirmDelete"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginStart="8dp"
+            android:layout_weight="1.2"
+            android:enabled="false"
+            android:text="Delete Account"
+            android:textAllCaps="false"
+            android:textColor="#FFFFFF"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:backgroundTint="#DC2626"
+            app:cornerRadius="12dp" />
+
+    </LinearLayout>
+
+</LinearLayout>
