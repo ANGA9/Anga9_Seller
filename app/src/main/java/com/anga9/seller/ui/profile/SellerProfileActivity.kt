@@ -126,7 +126,7 @@ class SellerProfileActivity : BaseActivity() {
         }
         // Reviews
         findViewById<android.view.View?>(R.id.btnReviews)?.setOnClickListener {
-            startActivity(Intent(this, com.anga9.seller.ui.reviews.SellerReviewsActivity::class.java))
+            startActivity(Intent(this, com.anga9.seller.ui.reviews.ReviewsActivity::class.java))
         }
         btnLogout.setOnClickListener {
             showLogoutDialog()

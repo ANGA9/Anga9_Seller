@@ -252,6 +252,11 @@ class DashboardActivity : AppCompatActivity() {
             it.findViewById<ImageView>(R.id.ivLeadingIcon).setImageResource(R.drawable.ic_more_repeat)
             it.setOnClickListener { startActivity(Intent(this, com.anga9.seller.ui.b2b.RepeatBuyersActivity::class.java)) }
         }
+        moreContent.findViewById<View>(R.id.rowCustomerReviews)?.let {
+            it.findViewById<TextView>(R.id.tvMenuLabel).text = "Customer reviews"
+            it.findViewById<ImageView>(R.id.ivLeadingIcon).setImageResource(R.drawable.ic_star_outline)
+            it.setOnClickListener { startActivity(Intent(this, com.anga9.seller.ui.reviews.ReviewsActivity::class.java)) }
+        }
         moreContent.findViewById<View>(R.id.rowMyReturns)?.let {
             it.findViewById<TextView>(R.id.tvMenuLabel).text = "My returns"
             it.findViewById<ImageView>(R.id.ivLeadingIcon).setImageResource(R.drawable.ic_more_undo)

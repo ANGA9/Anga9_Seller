@@ -115,6 +115,15 @@
                     <include
                         android:id="@+id/rowRepeatBuyers"
                         layout="@layout/layout_more_menu_row" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1px"
+                        android:background="@color/more_divider" />
+
+                    <include
+                        android:id="@+id/rowCustomerReviews"
+                        layout="@layout/layout_more_menu_row" />
                 </LinearLayout>
             </com.google.android.material.card.MaterialCardView>
 

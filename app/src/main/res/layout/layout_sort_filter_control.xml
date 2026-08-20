@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/btnSort"
+    android:layout_width="wrap_content"
+    android:layout_height="32dp"
+    android:orientation="horizontal"
+    android:background="@drawable/input_background"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="12dp"
+    android:clickable="true"
+    android:focusable="true">
+
+    <ImageView
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/ic_dropdown"
+        android:layout_marginEnd="6dp" />
+
+    <TextView
+        android:id="@+id/tvSortLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Newest First"
+        android:textColor="#374151"
+        android:textSize="13sp"
+        android:textStyle="normal" />
+
+</LinearLayout>

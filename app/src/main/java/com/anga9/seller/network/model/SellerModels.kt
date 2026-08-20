@@ -431,7 +431,16 @@ data class SellerReviewItem(
     @com.google.gson.annotations.SerializedName("body")         val body: String? = null,
     @com.google.gson.annotations.SerializedName("helpful_count") val helpfulCount: Int = 0,
     @com.google.gson.annotations.SerializedName("status")       val status: String = "",
-    @com.google.gson.annotations.SerializedName("created_at")   val createdAt: String = ""
+    @com.google.gson.annotations.SerializedName("created_at")   val createdAt: String = "",
+    @com.google.gson.annotations.SerializedName("product_id")   val productId: String = "",
+    @com.google.gson.annotations.SerializedName("customer_id")  val customerId: String = "",
+    @com.google.gson.annotations.SerializedName("products")     val products: ReviewProduct? = null
+)
+
+data class ReviewProduct(
+    @com.google.gson.annotations.SerializedName("seller_id") val sellerId: String = "",
+    @com.google.gson.annotations.SerializedName("name") val name: String = "",
+    @com.google.gson.annotations.SerializedName("images") val images: List<String>? = emptyList()
 )
 
 data class SellerReviewListResponse(

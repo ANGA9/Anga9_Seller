@@ -117,7 +117,7 @@
         <activity android:name=".ui.disputes.SellerDisputeDetailActivity" android:exported="false" />
 
         <!-- Reviews -->
-        <activity android:name=".ui.reviews.SellerReviewsActivity" android:exported="false" />
+        <activity android:name=".ui.reviews.ReviewsActivity" android:exported="false" />
 
         <!-- Phase 3 - Returns Management -->
         <activity android:name=".ui.returns.MyReturnsActivity" android:exported="false" />

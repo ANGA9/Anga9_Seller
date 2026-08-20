@@ -301,6 +301,11 @@ interface ApiService {
         @Query("sort") sort: String? = null
     ): Response<SellerReviewListResponse>
 
+    @GET("api/products/seller/reviews")
+    suspend fun getSellerReviews(
+        @Query("sort") sort: String? = null
+    ): Response<SellerReviewListResponse>
+
     // ── AD CAMPAIGNS — Phase 6C ───────────────────────────────────────────────
     // POST /api/seller/ads/request — request a new ad campaign
     // GET  /api/seller/ads/         — list own ad campaigns
