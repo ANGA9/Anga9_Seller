@@ -88,6 +88,10 @@ data class SubmitKycRequest(
 
 // ── 3B: Products ─────────────────────────────────────────────────────────────
 
+data class SingleProductWrapperResponse(
+    @SerializedName("product") val product: SellerProductResponse?
+)
+
 data class SellerProductResponse(
     @SerializedName("id") val id: String = "",
     @SerializedName("name") val name: String = "",
@@ -114,7 +118,9 @@ data class SellerProductResponse(
     @SerializedName("updated_at") val updatedAt: String? = null,
     @SerializedName("min_order_qty") val minOrderQty: Int? = null,
     @SerializedName("unit") val unit: String? = null,
-    @SerializedName("commission_rate") val commissionRate: Double? = null
+    @SerializedName("commission_rate") val commissionRate: Double? = null,
+    @SerializedName("tags") val tags: List<String>? = null,
+    @SerializedName("category_ids") val categoryIds: List<String>? = null
 )
 
 data class ProductVariantResponse(

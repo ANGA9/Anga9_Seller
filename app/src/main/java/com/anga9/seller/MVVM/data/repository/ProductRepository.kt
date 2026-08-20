@@ -71,7 +71,7 @@ class ProductRepository(private val context: Context) {
             val response = apiService.getProductById(productId)
             if (response.isSuccessful) {
                 val body = response.body()
-                if (body != null) emit(Resource.Success(body))
+                if (body?.product != null) emit(Resource.Success(body.product))
                 else emit(Resource.Error("Product not found"))
             } else {
                 emit(Resource.Error("Failed to get product: ${response.code()}"))
@@ -87,7 +87,7 @@ class ProductRepository(private val context: Context) {
             val response = apiService.createProduct(request)
             if (response.isSuccessful) {
                 val body = response.body()
-                if (body != null) Result.success(body)
+                if (body?.product != null) Result.success(body.product)
                 else Result.failure(Exception("Empty response"))
             } else {
                 Result.failure(Exception("Failed to create product: ${response.code()}"))
@@ -103,7 +103,7 @@ class ProductRepository(private val context: Context) {
             val response = apiService.updateProduct(productId, request)
             if (response.isSuccessful) {
                 val body = response.body()
-                if (body != null) Result.success(body)
+                if (body?.product != null) Result.success(body.product)
                 else Result.failure(Exception("Empty response"))
             } else {
                 Result.failure(Exception("Failed to update product: ${response.code()}"))

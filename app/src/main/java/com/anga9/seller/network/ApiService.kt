@@ -64,12 +64,12 @@ interface ApiService {
     @GET("api/products/{id}")
     suspend fun getProductById(
         @Path("id") productId: String
-    ): Response<SellerProductResponse>
+    ): Response<SingleProductWrapperResponse>
 
     @POST("api/products")
     suspend fun createProduct(
         @Body request: CreateProductRequest
-    ): Response<SellerProductResponse>
+    ): Response<SingleProductWrapperResponse>
 
     @Multipart
     @POST("api/products/bulk-upload")
@@ -81,7 +81,7 @@ interface ApiService {
     suspend fun updateProduct(
         @Path("id") productId: String,
         @Body request: UpdateProductRequest
-    ): Response<SellerProductResponse>
+    ): Response<SingleProductWrapperResponse>
 
     @DELETE("api/products/{id}")
     suspend fun deleteProduct(

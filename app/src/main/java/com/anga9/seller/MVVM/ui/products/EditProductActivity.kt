@@ -220,6 +220,9 @@ class EditProductActivity : AppCompatActivity() {
 
         etHsnCode.setText(product.hsnCode ?: "")
         
+        val tagsStr = product.tags?.joinToString(", ") ?: ""
+        etSearchTags.setText(tagsStr)
+        
         // Commission
         val rate = product.commissionRate
         if (rate != null) {
@@ -241,7 +244,11 @@ class EditProductActivity : AppCompatActivity() {
 
         // Categories
         currentCategoryIds.clear()
-        product.category?.let { currentCategoryIds.add(it) }
+        if (!product.categoryIds.isNullOrEmpty()) {
+            currentCategoryIds.addAll(product.categoryIds)
+        } else {
+            product.category?.let { currentCategoryIds.add(it) }
+        }
         renderCategoryChips()
     }
 
