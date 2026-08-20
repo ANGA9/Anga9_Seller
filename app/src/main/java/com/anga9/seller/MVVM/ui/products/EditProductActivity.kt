@@ -23,6 +23,7 @@ import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.Locale
+import com.anga9.seller.network.model.CategoryResponse
 
 class EditProductActivity : AppCompatActivity() {
 
@@ -52,6 +53,7 @@ class EditProductActivity : AppCompatActivity() {
     private var productId: String = ""
     private var originalProduct: SellerProductResponse? = null
     private var currentCategoryIds = mutableListOf<String>()
+    private var allCategories: List<CategoryResponse> = emptyList()
 
     private val units = listOf("piece", "kg", "gram", "liter", "ml", "box", "dozen", "pack", "pair", "set")
 
@@ -70,7 +72,7 @@ class EditProductActivity : AppCompatActivity() {
         setupListeners()
         observeViewModel()
 
-        // Fetch product
+        viewModel.fetchAllCategories()
         viewModel.getProductById(productId)
     }
 
@@ -193,24 +195,34 @@ class EditProductActivity : AppCompatActivity() {
                 }
             }
         }
+
+        lifecycleScope.launch {
+            viewModel.allCategoriesState.collectLatest { state ->
+                when (state) {
+                    is UiState.Success -> {
+                        allCategories = state.data
+                        renderCategoryChips() // Re-render chips to show names instead of IDs
+                    }
+                    else -> {}
+                }
+            }
+        }
     }
 
     private fun prefillData(product: SellerProductResponse) {
         etProductName.setText(product.name)
         etDescription.setText(product.description ?: "")
         
-        val price = product.price
-        if (price != null && price > 0) {
-            etMrp.setText(String.format(Locale.US, "%.2f", price))
-        } else {
-            // fallback if MRP is stored differently
-            val p = product.variants?.firstOrNull()?.price ?: 0.0
-            if (p > 0) etMrp.setText(String.format(Locale.US, "%.2f", p))
+        val mrpVal = product.basePrice ?: product.mrp ?: product.price
+        if (mrpVal > 0) {
+            etMrp.setText(if (mrpVal % 1 == 0.0) mrpVal.toInt().toString() else String.format(Locale.US, "%.2f", mrpVal))
         }
         
         // Wholesale (sale_price)
-        val wholesale = product.variants?.firstOrNull()?.price ?: 0.0 // Actually backend uses basePrice/salePrice. Let's assume variants.price is wholesale for now based on app logic.
-        etWholesalePrice.setText(String.format(Locale.US, "%.2f", wholesale))
+        val wholesaleVal = product.salePrice ?: product.variants?.firstOrNull()?.price ?: 0.0
+        if (wholesaleVal > 0) {
+            etWholesalePrice.setText(if (wholesaleVal % 1 == 0.0) wholesaleVal.toInt().toString() else String.format(Locale.US, "%.2f", wholesaleVal))
+        }
 
         etMinOrderQty.setText((product.minOrderQty ?: 1).toString())
         
@@ -256,23 +268,24 @@ class EditProductActivity : AppCompatActivity() {
         cgCategories.removeAllViews()
         tvCategoryLimit.text = "Categories * (${currentCategoryIds.size}/5)"
 
-        currentCategoryIds.forEachIndexed { index, category ->
+        currentCategoryIds.forEachIndexed { index, categoryId ->
+            val categoryName = allCategories.find { it.id == categoryId }?.name ?: categoryId
             val chip = Chip(this).apply {
                 isCloseIconVisible = true
                 setOnCloseIconClickListener {
-                    currentCategoryIds.remove(category)
+                    currentCategoryIds.remove(categoryId)
                     renderCategoryChips()
                 }
                 
                 // Styling
                 if (index == 0) {
-                    text = "PRIMARY: ${category.replaceFirstChar { it.uppercase() }}"
+                    text = "PRIMARY: ${categoryName.replaceFirstChar { it.uppercase() }}"
                     setTextColor(Color.parseColor("#2851C4"))
                     chipBackgroundColor = ColorStateList.valueOf(Color.parseColor("#EEF3FF"))
                     closeIconTint = ColorStateList.valueOf(Color.parseColor("#2851C4"))
                     typeface = android.graphics.Typeface.DEFAULT_BOLD
                 } else {
-                    text = category.replaceFirstChar { it.uppercase() }
+                    text = categoryName.replaceFirstChar { it.uppercase() }
                     setTextColor(Color.parseColor("#5B6472"))
                     chipBackgroundColor = ColorStateList.valueOf(Color.parseColor("#F0F1F3"))
                     closeIconTint = ColorStateList.valueOf(Color.parseColor("#5B6472"))
@@ -296,6 +309,7 @@ class EditProductActivity : AppCompatActivity() {
 
     private fun openCategoryPicker() {
         val bottomSheet = CategoryMultiSelectBottomSheet()
+        bottomSheet.setAllCategories(allCategories)
         bottomSheet.setSelectedCategories(currentCategoryIds)
         bottomSheet.setOnSelectionChangedListener { selected ->
             currentCategoryIds.clear()

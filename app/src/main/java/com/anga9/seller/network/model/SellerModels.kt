@@ -132,6 +132,17 @@ data class ProductVariantResponse(
     @SerializedName("sku") val sku: String? = null
 )
 
+data class CategoryResponse(
+    @SerializedName("id") val id: String,
+    @SerializedName("name") val name: String,
+    @SerializedName("parent_id") val parentId: String?,
+    @SerializedName("sort_order") val sortOrder: Int?
+)
+
+data class CategoriesWrapperResponse(
+    @SerializedName("categories") val categories: List<CategoryResponse>
+)
+
 data class CreateProductRequest(
     @SerializedName("name") val name: String,
     @SerializedName("slug") val slug: String,

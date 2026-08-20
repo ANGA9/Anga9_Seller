@@ -44,6 +44,9 @@ class ProductsViewModel(application: Application) : AndroidViewModel(application
     private val _categoriesState = MutableStateFlow<UiState<List<String>>>(UiState.Idle)
     val categoriesState: StateFlow<UiState<List<String>>> = _categoriesState.asStateFlow()
 
+    private val _allCategoriesState = MutableStateFlow<UiState<List<com.anga9.seller.network.model.CategoryResponse>>>(UiState.Idle)
+    val allCategoriesState: StateFlow<UiState<List<com.anga9.seller.network.model.CategoryResponse>>> = _allCategoriesState.asStateFlow()
+
     /** Subcategories for a given category (stub - returns empty list) */
     private val _subcategoriesState = MutableStateFlow<UiState<List<String>>>(UiState.Idle)
     val subcategoriesState: StateFlow<UiState<List<String>>> = _subcategoriesState.asStateFlow()
@@ -83,6 +86,18 @@ class ProductsViewModel(application: Application) : AndroidViewModel(application
      */
     fun loadCategories() {
         _categoriesState.value = UiState.Success(emptyList())
+    }
+
+    fun fetchAllCategories() {
+        viewModelScope.launch {
+            repository.getCategories().collectLatest { resource ->
+                _allCategoriesState.value = when (resource) {
+                    is Resource.Loading -> UiState.Loading
+                    is Resource.Success -> UiState.Success(resource.data ?: emptyList())
+                    is Resource.Error -> UiState.Error(resource.message ?: "Failed to load categories")
+                }
+            }
+        }
     }
 
     /**

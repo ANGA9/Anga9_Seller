@@ -63,6 +63,20 @@ class ProductRepository(private val context: Context) {
             emit(Resource.Error("Network error: ${e.message}"))
         }
     }
+    /** Get all categories. */
+    fun getCategories(): Flow<Resource<List<com.anga9.seller.network.model.CategoryResponse>>> = flow {
+        emit(Resource.Loading())
+        try {
+            val response = apiService.getCategories()
+            if (response.isSuccessful) {
+                emit(Resource.Success(response.body()?.categories ?: emptyList()))
+            } else {
+                emit(Resource.Error("Failed to load categories: ${response.code()}"))
+            }
+        } catch (e: Exception) {
+            emit(Resource.Error("Network error: ${e.message}"))
+        }
+    }
 
     /** Get single product by ID. */
     fun getProductById(productId: String): Flow<Resource<SellerProductResponse>> = flow {
