@@ -9,10 +9,14 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
 import com.anga9.seller.R
 import com.anga9.seller.MVVM.ui.products.wizard.*
+import com.anga9.seller.utils.UiState
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.launch
 
 class AddProductWizardActivity : AppCompatActivity() {
 
@@ -101,7 +105,32 @@ class AddProductWizardActivity : AppCompatActivity() {
             }
         }
 
+        observeViewModel()
         updateUIForStep(0)
+    }
+
+    private fun observeViewModel() {
+        lifecycleScope.launch {
+            viewModel.createState.collectLatest { state ->
+                when (state) {
+                    is UiState.Loading -> {
+                        btnNext.isEnabled = false
+                        btnNext.text = "Submitting..."
+                    }
+                    is UiState.Success -> {
+                        btnNext.isEnabled = true
+                        Toast.makeText(this@AddProductWizardActivity, "Product submitted for review!", Toast.LENGTH_LONG).show()
+                        finish()
+                    }
+                    is UiState.Error -> {
+                        btnNext.isEnabled = true
+                        btnNext.text = "Submit for Review"
+                        Toast.makeText(this@AddProductWizardActivity, state.message, Toast.LENGTH_LONG).show()
+                    }
+                    else -> {}
+                }
+            }
+        }
     }
 
     private fun navigate(direction: Int) {

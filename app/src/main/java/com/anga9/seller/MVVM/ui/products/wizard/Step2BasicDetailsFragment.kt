@@ -2,24 +2,21 @@ package com.anga9.seller.MVVM.ui.products.wizard
 
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
-import androidx.fragment.app.Fragment
-import com.anga9.seller.R
-import com.anga9.seller.MVVM.ui.products.AddProductWizardViewModel
-import com.anga9.seller.MVVM.ui.products.WizardStep
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
-
+import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Spinner
-import android.widget.AdapterView
+import android.widget.TextView
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.Dispatchers
+import com.anga9.seller.R
+import com.anga9.seller.MVVM.data.repository.ProductRepository
+import com.anga9.seller.MVVM.ui.products.AddProductWizardViewModel
+import com.anga9.seller.MVVM.ui.products.WizardStep
+import com.anga9.seller.utils.Resource
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import org.json.JSONArray
 
 class Step2BasicDetailsFragment : Fragment(R.layout.fragment_wizard_step2_basic), WizardStep {
 
@@ -29,11 +26,12 @@ class Step2BasicDetailsFragment : Fragment(R.layout.fragment_wizard_step2_basic)
     private lateinit var tilDesc: TextInputLayout
     private lateinit var spinnerCategory: Spinner
     private lateinit var spinnerSubcategory: Spinner
-    
-    // Fallback map in case of network error, but we will overwrite it with live data
-    private var categoriesMap: MutableMap<String, MutableList<String>> = mutableMapOf(
-        "Select Category" to mutableListOf("Select Subcategory")
-    )
+
+    data class CategoryItem(val id: String, val name: String, val parentId: String?)
+
+    private val allCategories = mutableListOf<CategoryItem>()
+    private val parentCategories = mutableListOf<CategoryItem>()
+    private val subcategoryMap = mutableMapOf<String, MutableList<CategoryItem>>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -43,81 +41,78 @@ class Step2BasicDetailsFragment : Fragment(R.layout.fragment_wizard_step2_basic)
         tilDesc = view.findViewById(R.id.tilProductDesc)
         spinnerCategory = view.findViewById(R.id.spinnerCategory)
         spinnerSubcategory = view.findViewById(R.id.spinnerSubcategory)
-        
+
         val tipText = view.findViewById<TextView>(R.id.tvTipText)
-        tipText.text = "Clear names with material and size (e.g. '2mm' not 'medium') get 3x more buyer searches."
-        
-        setupSpinners()
+        tipText?.text = "Clear names with material and size (e.g. '2mm' not 'medium') get 3x more buyer searches."
+
         fetchLiveCategories()
     }
 
     private fun fetchLiveCategories() {
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val url = "https://plfaugkadavxenpqawzw.supabase.co/rest/v1/categories?select=id,name,parent_id"
-                val request = Request.Builder()
-                    .url(url)
-                    .addHeader("apikey", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsZmF1Z2thZGF2eGVucHFhd3p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMzY2OTgsImV4cCI6MjA5MTgxMjY5OH0.iR7aGloeXXNZPf1Vur_WPjEsqnD--MY_k53LTvmodnc")
-                    .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InBsZmF1Z2thZGF2eGVucHFhd3p3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYyMzY2OTgsImV4cCI6MjA5MTgxMjY5OH0.iR7aGloeXXNZPf1Vur_WPjEsqnD--MY_k53LTvmodnc")
-                    .build()
+        val repo = ProductRepository(requireContext())
+        lifecycleScope.launch {
+            repo.getCategories().collectLatest { res ->
+                if (res is Resource.Success) {
+                    val cats = res.data ?: emptyList()
+                    allCategories.clear()
+                    parentCategories.clear()
+                    subcategoryMap.clear()
 
-                val response = OkHttpClient().newCall(request).execute()
-                val responseBody = response.body?.string()
+                    parentCategories.add(CategoryItem("", "Select Category", null))
 
-                if (response.isSuccessful && responseBody != null) {
-                    val jsonArray = JSONArray(responseBody)
-                    val parentMap = mutableMapOf<String, String>() // id -> name
-                    val newCategoriesMap = mutableMapOf<String, MutableList<String>>(
-                        "Select Category" to mutableListOf("Select Subcategory")
-                    )
-
-                    // First pass: Find all parents
-                    for (i in 0 until jsonArray.length()) {
-                        val obj = jsonArray.getJSONObject(i)
-                        if (obj.isNull("parent_id")) {
-                            val name = obj.getString("name")
-                            parentMap[obj.getString("id")] = name
-                            newCategoriesMap[name] = mutableListOf("Select Subcategory")
+                    for (c in cats) {
+                        val item = CategoryItem(c.id, c.name, c.parentId)
+                        allCategories.add(item)
+                        if (c.parentId == null) {
+                            parentCategories.add(item)
+                            subcategoryMap[c.id] = mutableListOf(CategoryItem("", "Select Subcategory", c.id))
                         }
                     }
 
-                    // Second pass: Find all children and assign to parents
-                    for (i in 0 until jsonArray.length()) {
-                        val obj = jsonArray.getJSONObject(i)
-                        if (!obj.isNull("parent_id")) {
-                            val parentId = obj.getString("parent_id")
-                            val parentName = parentMap[parentId]
-                            if (parentName != null) {
-                                newCategoriesMap[parentName]?.add(obj.getString("name"))
-                            }
+                    for (c in cats) {
+                        if (c.parentId != null) {
+                            val item = CategoryItem(c.id, c.name, c.parentId)
+                            subcategoryMap[c.parentId]?.add(item)
                         }
                     }
 
-                    withContext(Dispatchers.Main) {
-                        categoriesMap = newCategoriesMap
-                        setupSpinners()
-                    }
+                    setupSpinners()
                 }
-            } catch (e: Exception) {
-                e.printStackTrace()
             }
         }
     }
 
     private fun setupSpinners() {
-        val categories = categoriesMap.keys.toList()
-        val categoryAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, categories)
+        val categoryAdapter = ArrayAdapter(
+            requireContext(),
+            android.R.layout.simple_spinner_dropdown_item,
+            parentCategories.map { it.name }
+        )
         spinnerCategory.adapter = categoryAdapter
-        
+
         spinnerCategory.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                val selectedCat = categories[position]
-                val subcategories = categoriesMap[selectedCat] ?: listOf("Select Subcategory")
-                
-                val subAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_spinner_dropdown_item, subcategories)
-                spinnerSubcategory.adapter = subAdapter
-                spinnerSubcategory.isEnabled = selectedCat != "Select Category"
+                if (position > 0) {
+                    val selectedParent = parentCategories[position]
+                    val subcats = subcategoryMap[selectedParent.id] ?: listOf(CategoryItem("", "Select Subcategory", selectedParent.id))
+                    val subAdapter = ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_spinner_dropdown_item,
+                        subcats.map { it.name }
+                    )
+                    spinnerSubcategory.adapter = subAdapter
+                    spinnerSubcategory.isEnabled = true
+                } else {
+                    val subAdapter = ArrayAdapter(
+                        requireContext(),
+                        android.R.layout.simple_spinner_dropdown_item,
+                        listOf("Select Subcategory")
+                    )
+                    spinnerSubcategory.adapter = subAdapter
+                    spinnerSubcategory.isEnabled = false
+                }
             }
+
             override fun onNothingSelected(parent: AdapterView<*>?) {}
         }
     }
@@ -130,33 +125,40 @@ class Step2BasicDetailsFragment : Fragment(R.layout.fragment_wizard_step2_basic)
         } else {
             tilName.error = null
         }
-        
+
         if (etDesc.text.toString().trim().isEmpty()) {
             tilDesc.error = "Description is required"
             isValid = false
         } else {
             tilDesc.error = null
         }
-        
-        if (spinnerCategory.selectedItemPosition == 0) {
-            isValid = false // Optionally show a toast
+
+        if (spinnerCategory.selectedItemPosition <= 0) {
+            isValid = false
         }
-        
+
         return isValid
     }
 
     override fun saveDataToViewModel(viewModel: AddProductWizardViewModel) {
         viewModel.productName = etName.text.toString().trim()
         viewModel.productDescription = etDesc.text.toString().trim()
-        
-        if (spinnerCategory.selectedItemPosition > 0) {
-            viewModel.categoryId = spinnerCategory.selectedItem.toString().lowercase()
+
+        val catPos = spinnerCategory.selectedItemPosition
+        if (catPos > 0 && catPos < parentCategories.size) {
+            val parentCat = parentCategories[catPos]
+            viewModel.categoryId = parentCat.id
+
+            val subcats = subcategoryMap[parentCat.id]
+            val subPos = spinnerSubcategory.selectedItemPosition
+            if (subcats != null && subPos > 0 && subPos < subcats.size) {
+                viewModel.subcategoryId = subcats[subPos].id
+            } else {
+                viewModel.subcategoryId = ""
+            }
         } else {
-            viewModel.categoryId = "general"
-        }
-        
-        if (spinnerSubcategory.selectedItemPosition > 0) {
-            viewModel.subcategoryId = spinnerSubcategory.selectedItem.toString().lowercase()
+            viewModel.categoryId = ""
+            viewModel.subcategoryId = ""
         }
     }
 }

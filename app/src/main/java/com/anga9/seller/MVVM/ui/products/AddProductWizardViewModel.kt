@@ -51,19 +51,37 @@ class AddProductWizardViewModel(application: Application) : AndroidViewModel(app
     fun submitProduct() {
         viewModelScope.launch {
             _createState.value = UiState.Loading
-            
-            // Collect tags
+
+            // 1. Upload Images to Supabase if any
+            val uploadedImageUrls = mutableListOf<String>()
+            for (uri in selectedImageUris) {
+                val uploadResult = repository.uploadProductImage(uri, "prod_${System.currentTimeMillis()}")
+                if (uploadResult.isSuccess) {
+                    uploadedImageUrls.add(uploadResult.getOrThrow())
+                }
+            }
+
+            // 2. Prepare Category IDs list
+            val categoryIdsList = mutableListOf<String>()
+            if (categoryId.isNotEmpty()) categoryIdsList.add(categoryId)
+            if (subcategoryId.isNotEmpty()) categoryIdsList.add(subcategoryId)
+            if (categoryIdsList.isEmpty()) categoryIdsList.add("general")
+
+            // 3. Prepare Tags
             val tagList = if (searchTags.isNotEmpty()) searchTags else null
 
+            // 4. Build Request matching Web Seller POST /api/products
             val request = CreateProductRequest(
-                name = productName,
-                slug = productName.lowercase().replace(Regex("[^a-z0-9]"), "-"),
-                description = productDescription,
+                name = productName.trim(),
+                slug = productName.trim().lowercase().replace(Regex("[^a-z0-9]"), "-"),
+                description = productDescription.trim(),
                 basePrice = mrp,
                 salePrice = wholesalePrice,
                 minOrderQty = minOrderQty,
-                categoryIds = listOf(categoryId.ifEmpty { "general" }),
+                categoryIds = categoryIdsList,
                 unit = unit,
+                status = "pending_review",
+                images = if (uploadedImageUrls.isNotEmpty()) uploadedImageUrls else null,
                 initialStock = initialStock,
                 countryOfOrigin = countryOfOrigin.ifEmpty { "India" },
                 gstRate = gstRate,
@@ -75,9 +93,6 @@ class AddProductWizardViewModel(application: Application) : AndroidViewModel(app
                 warranty = warranty.ifEmpty { null },
                 sku = skuCode.ifEmpty { null }
             )
-
-            // Image uploading omitted for brevity in MVP (same as before).
-            // In a real app, we'd upload images sequentially and map URIs.
 
             val result = repository.createProduct(request)
             _createState.value = result.fold(
