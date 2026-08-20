@@ -155,7 +155,7 @@ class EarningsActivity : AppCompatActivity() {
         }
         
         tvCtaHelp.setOnClickListener {
-            // Open web link or help center
+            startActivity(Intent(this, PayoutsActivity::class.java))
         }
     }
     
@@ -222,6 +222,25 @@ class EarningsActivity : AppCompatActivity() {
         }
     }
 
+    data class EarningStatusStyle(
+        val label: String,
+        val bgHex: String,
+        val textHex: String
+    )
+
+    companion object {
+        val earningStatusConfig: Map<String, EarningStatusStyle> = mapOf(
+            "available" to EarningStatusStyle("Available", "#EAF3DE", "#27500A"),
+            "processing" to EarningStatusStyle("Processing", "#FAEEDA", "#854F0B"),
+            "pending" to EarningStatusStyle("Pending", "#FAEEDA", "#854F0B"),
+            "on_hold" to EarningStatusStyle("On hold", "#F3E8FD", "#6B21A8"),
+            "requested" to EarningStatusStyle("Requested", "#F3E8FD", "#6B21A8"),
+            "paid" to EarningStatusStyle("Paid", "#EAF3DE", "#27500A"),
+            "failed" to EarningStatusStyle("Failed", "#FBE4E1", "#B42318"),
+            "reversed" to EarningStatusStyle("Reversed", "#FBE4E1", "#B42318")
+        )
+    }
+
     private fun updateEarningsUI(e: SellerEarningsResponse) {
         tvHeroAmount.text = fmt(e.total)
         tvPendingAmount.text = fmt(e.pending)
@@ -231,9 +250,16 @@ class EarningsActivity : AppCompatActivity() {
     }
 
     private fun fmt(amount: Double): String {
-        val format = NumberFormat.getCurrencyInstance(Locale("en", "IN"))
-        format.maximumFractionDigits = 0
-        return format.format(amount)
+        return if (amount % 1.0 == 0.0) {
+            val format = NumberFormat.getCurrencyInstance(Locale("en", "IN"))
+            format.maximumFractionDigits = 0
+            format.format(amount)
+        } else {
+            val format = NumberFormat.getCurrencyInstance(Locale("en", "IN"))
+            format.minimumFractionDigits = 1
+            format.maximumFractionDigits = 2
+            format.format(amount)
+        }
     }
 
     inner class EarningsHistoryAdapter : ListAdapter<EarningItemResponse, EarningsHistoryAdapter.VH>(
@@ -243,33 +269,59 @@ class EarningsActivity : AppCompatActivity() {
         }
     ) {
         inner class VH(v: View) : RecyclerView.ViewHolder(v) {
-            val tvDesc = v.findViewById<TextView>(R.id.tvDescription)
-            val tvDate = v.findViewById<TextView>(R.id.tvDate)
-            val tvAmount = v.findViewById<TextView>(R.id.tvAmount)
-            val tvStatus = v.findViewById<TextView>(R.id.tvStatus)
+            private val tvProductName: TextView = v.findViewById(R.id.tvProductName)
+            private val tvMeta: TextView = v.findViewById(R.id.tvMeta)
+            private val tvAmount: TextView = v.findViewById(R.id.tvAmount)
+            private val tvStatus: TextView = v.findViewById(R.id.tvStatus)
 
             fun bind(item: EarningItemResponse) {
-                tvDesc.text = "Order #${item.orderId?.take(8) ?: "N/A"}"
-                tvDate.text = formatDate(item.createdAt ?: "")
-                tvAmount.text = "+ ${fmt(item.amount)}"
-                tvStatus.text = item.status.replaceFirstChar { it.uppercase() }
-                
-                when (item.status.lowercase()) {
-                    "pending" -> tvStatus.setTextColor(Color.parseColor("#D98E04"))
-                    "available", "paid" -> tvStatus.setTextColor(Color.parseColor("#1E7A45"))
-                    "requested" -> tvStatus.setTextColor(Color.parseColor("#7C3AED"))
-                    else -> tvStatus.setTextColor(Color.parseColor("#5B6472"))
+                val productName = item.orderItems?.productName?.takeIf { it.isNotBlank() }
+                    ?: item.description?.takeIf { it.isNotBlank() }
+                    ?: ("Order #" + (item.orderItems?.orderId?.take(8) ?: item.orderId?.take(8) ?: "N/A"))
+
+                tvProductName.text = productName
+
+                val qty = item.orderItems?.quantity ?: 1
+                val dateFormatted = formatDate(item.createdAt ?: "")
+                tvMeta.text = if (dateFormatted.isNotBlank()) "×$qty · $dateFormatted" else "×$qty"
+
+                tvAmount.text = fmt(item.amount)
+
+                val statusKey = item.status.lowercase().trim()
+                val config = earningStatusConfig[statusKey] ?: EarningStatusStyle(
+                    label = statusKey.replaceFirstChar { it.uppercase() },
+                    bgHex = "#F3F4F6",
+                    textHex = "#374151"
+                )
+
+                tvStatus.text = config.label
+                tvStatus.setTextColor(Color.parseColor(config.textHex))
+
+                val pillDrawable = android.graphics.drawable.GradientDrawable().apply {
+                    shape = android.graphics.drawable.GradientDrawable.RECTANGLE
+                    cornerRadius = 12f * itemView.resources.displayMetrics.density
+                    setColor(Color.parseColor(config.bgHex))
                 }
+                tvStatus.background = pillDrawable
             }
-            
+
             private fun formatDate(dateStr: String): String {
-                try {
-                    val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-                    val d = sdf.parse(dateStr) ?: return dateStr
-                    val out = SimpleDateFormat("dd MMM yyyy, HH:mm", Locale.getDefault())
-                    return out.format(d)
-                } catch(e: Exception) {
-                    return dateStr
+                if (dateStr.isBlank()) return ""
+                return try {
+                    val cleaned = if (dateStr.contains(".")) dateStr.substringBefore(".") else dateStr.substringBefore("Z")
+                    val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
+                    val d = sdf.parse(cleaned) ?: return dateStr
+                    val out = SimpleDateFormat("d MMM yyyy", Locale.US)
+                    out.format(d)
+                } catch (e: Exception) {
+                    try {
+                        val sdf2 = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+                        val d2 = sdf2.parse(dateStr.take(10)) ?: return dateStr
+                        val out2 = SimpleDateFormat("d MMM yyyy", Locale.US)
+                        out2.format(d2)
+                    } catch (e2: Exception) {
+                        dateStr.take(10)
+                    }
                 }
             }
         }

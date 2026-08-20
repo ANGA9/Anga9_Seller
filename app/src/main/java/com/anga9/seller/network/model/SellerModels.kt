@@ -333,21 +333,36 @@ data class SellerEarningsResponse(
     @SerializedName("paid") val paid: Double = 0.0
 )
 
-data class EarningHistoryResponse(
-    @SerializedName("earnings") val earnings: List<EarningItemResponse> = emptyList(),
-    @SerializedName("total") val total: Int = 0
+data class EarningOrderItem(
+    @SerializedName("product_name") val productName: String? = null,
+    @SerializedName("quantity") val quantity: Int? = null,
+    @SerializedName("order_id") val orderId: String? = null,
+    @SerializedName("product_image") val productImage: String? = null
 )
 
 data class EarningItemResponse(
     @SerializedName("id") val id: String = "",
     @SerializedName("order_id") val orderId: String? = null,
+    @SerializedName("order_item_id") val orderItemId: String? = null,
     @SerializedName("order_number") val orderNumber: String? = null,
     @SerializedName("amount") val amount: Double = 0.0,
     @SerializedName("type") val type: String = "credit",
-    @SerializedName("status") val status: String = "pending",
+    @SerializedName("status") val status: String = "available",
     @SerializedName("description") val description: String? = null,
-    @SerializedName("created_at") val createdAt: String? = null
+    @SerializedName("created_at") val createdAt: String? = null,
+    @SerializedName("order_items") val orderItems: EarningOrderItem? = null
 )
+
+data class EarningHistoryResponse(
+    @SerializedName("data") val data: List<EarningItemResponse> = emptyList(),
+    @SerializedName("earnings") val earningsLegacy: List<EarningItemResponse>? = null,
+    @SerializedName("total") val total: Int = 0,
+    @SerializedName("page") val page: Int = 1,
+    @SerializedName("limit") val limit: Int = 50
+) {
+    val earnings: List<EarningItemResponse>
+        get() = if (data.isNotEmpty()) data else earningsLegacy ?: emptyList()
+}
 
 data class SellerPayoutResponse(
     @SerializedName("id") val id: String = "",
@@ -362,9 +377,13 @@ data class SellerPayoutResponse(
 )
 
 data class PayoutListResponse(
-    @SerializedName("payouts") val payouts: List<SellerPayoutResponse> = emptyList(),
+    @SerializedName("data") val data: List<SellerPayoutResponse> = emptyList(),
+    @SerializedName("payouts") val payoutsLegacy: List<SellerPayoutResponse>? = null,
     @SerializedName("total") val total: Int = 0
-)
+) {
+    val payouts: List<SellerPayoutResponse>
+        get() = if (data.isNotEmpty()) data else payoutsLegacy ?: emptyList()
+}
 
 data class PayoutRequestBody(
     @SerializedName("amount") val amount: Double,
