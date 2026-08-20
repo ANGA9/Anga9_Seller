@@ -5,7 +5,6 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import com.anga9.seller.MVVM.data.repository.ProductRepository
 import com.anga9.seller.data.repository.InventoryRepository
-import com.anga9.seller.data_models.SellerProduct
 import com.anga9.seller.network.model.InventoryResponse
 import com.anga9.seller.network.model.SellerProductResponse
 import com.anga9.seller.utils.Resource
@@ -67,7 +66,7 @@ class InventoryViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     private suspend fun fetchStockForProducts(products: List<SellerProductResponse>) {
-        // 2. Fetch stock for each product concurrently (simulating Promise.all)
+        // 2. Fetch stock for each product concurrently (matching web seller Promise.all)
         val deferredResults = products.map { product ->
             viewModelScope.async {
                 var stockResponse: InventoryResponse? = null
@@ -89,11 +88,14 @@ class InventoryViewModel(application: Application) : AndroidViewModel(applicatio
 
     private fun calculateStats(rows: List<InventoryRow>) {
         val lowStockCount = rows.count { 
-            val qty = it.stock?.stock ?: 0
+            val qty = it.stock?.effectiveQuantity ?: it.stock?.quantity ?: it.stock?.stock ?: 0
             val threshold = it.stock?.lowStockThreshold ?: 10
             qty in 1..threshold
         }
-        val outOfStockCount = rows.count { (it.stock?.stock ?: 0) <= 0 }
+        val outOfStockCount = rows.count { 
+            val qty = it.stock?.effectiveQuantity ?: it.stock?.quantity ?: it.stock?.stock ?: 0
+            qty <= 0 
+        }
 
         _statSummary.value = InventoryStatSummary(
             totalProducts = rows.size,
@@ -105,7 +107,7 @@ class InventoryViewModel(application: Application) : AndroidViewModel(applicatio
     fun updateStock(productId: String, quantity: Int, threshold: Int) {
         viewModelScope.launch {
             _updateStockState.value = UiState.Loading
-            val result = inventoryRepository.updateStock(productId, quantity, "Manual update via app")
+            val result = inventoryRepository.updateStock(productId, quantity, threshold, "Manual update via app")
             
             if (result.isSuccess) {
                 // Optimistic UI Update
@@ -114,10 +116,12 @@ class InventoryViewModel(application: Application) : AndroidViewModel(applicatio
                 if (index != -1) {
                     val oldRow = currentRows[index]
                     val updatedStock = oldRow.stock?.copy(
+                        quantity = quantity,
                         stock = quantity,
                         lowStockThreshold = threshold
                     ) ?: InventoryResponse(
                         productId = productId,
+                        quantity = quantity,
                         stock = quantity,
                         lowStockThreshold = threshold,
                         available = quantity

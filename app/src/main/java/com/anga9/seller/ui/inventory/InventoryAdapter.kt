@@ -1,7 +1,7 @@
 package com.anga9.seller.ui.inventory
 
-import android.content.res.ColorStateList
 import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.anga9.seller.R
 import coil.load
 import com.google.android.material.card.MaterialCardView
+import java.text.NumberFormat
+import java.util.Locale
 
 class InventoryAdapter(
     private val onEditClicked: (InventoryRow) -> Unit
@@ -44,55 +46,75 @@ class InventoryAdapter(
             val product = row.product
             val stock = row.stock
             
-            val qty = stock?.stock ?: 0
+            val qty = stock?.effectiveQuantity ?: stock?.quantity ?: stock?.stock ?: 0
             val threshold = stock?.lowStockThreshold ?: 10
             val reserved = stock?.reserved ?: 0
 
             tvProductName.text = product.name
-            val priceToShow = product.basePrice ?: product.price
-            tvPrice.text = "₹${priceToShow}" // Matching web's formatINR(base_price)
+
+            val priceVal = (product.basePrice ?: product.price ?: 0.0)
+            val format = NumberFormat.getCurrencyInstance(Locale("en", "IN")).apply {
+                maximumFractionDigits = 0
+            }
+            tvPrice.text = format.format(priceVal)
             tvStock.text = qty.toString()
             tvAlertAt.text = threshold.toString()
-            tvReserved.text = reserved.toString()
+            tvReserved.text = "$reserved units"
 
             // Load Image
             val imageUrl = product.imageUrl ?: product.images?.firstOrNull()
             if (!imageUrl.isNullOrEmpty()) {
-                ivProduct.load(imageUrl) {
+                val fullUrl = if (imageUrl.startsWith("http")) imageUrl else "https://api.anga9.com/$imageUrl"
+                ivProduct.load(fullUrl) {
                     crossfade(true)
-                    placeholder(R.drawable.ic_package)
-                    error(R.drawable.ic_package)
+                    placeholder(R.drawable.bg_image_placeholder)
+                    error(R.drawable.bg_image_placeholder)
                 }
             } else {
-                ivProduct.setImageResource(R.drawable.ic_package)
+                ivProduct.setImageResource(R.drawable.bg_image_placeholder)
             }
 
-            // Status Logic (Colors matching Web: Neutral, Amber, Red)
+            // Status Logic (Colors matching Web: IN STOCK, LOW STOCK, OUT OF STOCK)
             val context = itemView.context
             when {
                 qty <= 0 -> {
                     // Out of stock (Red)
                     tvStatusPill.text = "OUT OF STOCK"
-                    tvStatusPill.setTextColor(Color.parseColor("#D8342A"))
-                    tvStatusPill.setBackgroundResource(R.drawable.bg_rounded_danger_tint)
-                    cardContainer.strokeColor = Color.parseColor("#F3B4AE")
-                    tvStock.setTextColor(Color.parseColor("#D8342A"))
+                    tvStatusPill.setTextColor(Color.parseColor("#DC2626"))
+                    
+                    val bg = GradientDrawable()
+                    bg.cornerRadius = 16f
+                    bg.setColor(Color.parseColor("#FEF2F2"))
+                    tvStatusPill.background = bg
+                    
+                    cardContainer.strokeColor = Color.parseColor("#FCA5A5")
+                    tvStock.setTextColor(Color.parseColor("#DC2626"))
                 }
                 qty <= threshold -> {
                     // Low stock (Amber)
                     tvStatusPill.text = "LOW STOCK"
-                    tvStatusPill.setTextColor(Color.parseColor("#D98E04"))
-                    tvStatusPill.setBackgroundResource(R.drawable.bg_rounded_warning_tint)
-                    cardContainer.strokeColor = Color.parseColor("#F5D98A")
-                    tvStock.setTextColor(Color.parseColor("#D98E04"))
+                    tvStatusPill.setTextColor(Color.parseColor("#D97706"))
+                    
+                    val bg = GradientDrawable()
+                    bg.cornerRadius = 16f
+                    bg.setColor(Color.parseColor("#FFFBEB"))
+                    tvStatusPill.background = bg
+                    
+                    cardContainer.strokeColor = Color.parseColor("#FCD34D")
+                    tvStock.setTextColor(Color.parseColor("#D97706"))
                 }
                 else -> {
-                    // In stock (Green/Neutral)
+                    // In stock (Green)
                     tvStatusPill.text = "IN STOCK"
-                    tvStatusPill.setTextColor(Color.parseColor("#1E7A45"))
-                    tvStatusPill.setBackgroundResource(R.drawable.bg_rounded_success_tint)
-                    cardContainer.strokeColor = Color.parseColor("#E5E7EB") // Neutral border
-                    tvStock.setTextColor(ContextCompat.getColor(context, R.color.seller_text_primary))
+                    tvStatusPill.setTextColor(Color.parseColor("#16A34A"))
+                    
+                    val bg = GradientDrawable()
+                    bg.cornerRadius = 16f
+                    bg.setColor(Color.parseColor("#F0FDF4"))
+                    tvStatusPill.background = bg
+                    
+                    cardContainer.strokeColor = Color.parseColor("#E5E7EB")
+                    tvStock.setTextColor(Color.parseColor("#111827"))
                 }
             }
 

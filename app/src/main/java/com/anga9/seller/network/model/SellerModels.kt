@@ -209,15 +209,24 @@ data class ProductListResponse(
 // ── 3C: Inventory ─────────────────────────────────────────────────────────────
 
 data class InventoryResponse(
+    @SerializedName("id") val id: String? = null,
     @SerializedName("product_id") val productId: String = "",
+    @SerializedName("variant_id") val variantId: String? = null,
+    @SerializedName("quantity") val quantity: Int = 0,
     @SerializedName("stock") val stock: Int = 0,
     @SerializedName("reserved") val reserved: Int = 0,
     @SerializedName("available") val available: Int = 0,
-    @SerializedName("low_stock_threshold") val lowStockThreshold: Int = 5,
+    @SerializedName("low_stock_threshold") val lowStockThreshold: Int = 10,
     @SerializedName("updated_at") val updatedAt: String? = null
-)
+) {
+    val effectiveQuantity: Int
+        get() = if (quantity != 0) quantity else stock
+}
 
 data class UpdateStockRequest(
+    @SerializedName("quantity") val quantity: Int? = null,
+    @SerializedName("low_stock_threshold") val lowStockThreshold: Int? = null,
+    @SerializedName("lowStockThreshold") val lowStockThresholdCamel: Int? = null,
     @SerializedName("stock") val stock: Int? = null,
     @SerializedName("adjustment") val adjustment: Int? = null,
     @SerializedName("reason") val reason: String? = null

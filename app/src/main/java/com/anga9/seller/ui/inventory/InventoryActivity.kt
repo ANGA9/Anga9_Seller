@@ -187,12 +187,13 @@ class InventoryActivity : AppCompatActivity() {
             // 2. Status Filter
             filtered = when (activeFilter) {
                 StockFilter.LOW_STOCK -> filtered.filter { 
-                    val qty = it.stock?.stock ?: 0
+                    val qty = it.stock?.effectiveQuantity ?: it.stock?.quantity ?: it.stock?.stock ?: 0
                     val threshold = it.stock?.lowStockThreshold ?: 10
                     qty in 1..threshold 
                 }
                 StockFilter.OUT_OF_STOCK -> filtered.filter { 
-                    (it.stock?.stock ?: 0) <= 0 
+                    val qty = it.stock?.effectiveQuantity ?: it.stock?.quantity ?: it.stock?.stock ?: 0
+                    qty <= 0 
                 }
                 StockFilter.ALL -> filtered
             }
@@ -276,7 +277,8 @@ class InventoryActivity : AppCompatActivity() {
         val btnClose = view.findViewById<ImageView>(R.id.btnClose)
 
         tvProductName.text = row.product.name
-        etStock.setText(row.stock?.stock?.toString() ?: "0")
+        val currentQty = row.stock?.effectiveQuantity ?: row.stock?.quantity ?: row.stock?.stock ?: 0
+        etStock.setText(currentQty.toString())
         etThreshold.setText(row.stock?.lowStockThreshold?.toString() ?: "10")
 
         btnClose.setOnClickListener { bottomSheet.dismiss() }

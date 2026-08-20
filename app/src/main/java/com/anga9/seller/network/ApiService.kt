@@ -125,13 +125,13 @@ interface ApiService {
     @GET("api/inventory/{productId}")
     suspend fun getStock(
         @Path("productId") productId: String
-    ): Response<InventoryResponse>
+    ): Response<com.google.gson.JsonElement>
 
     @PATCH("api/inventory/{productId}")
     suspend fun updateStock(
         @Path("productId") productId: String,
         @Body request: UpdateStockRequest
-    ): Response<InventoryResponse>
+    ): Response<com.google.gson.JsonElement>
 
     @GET("api/inventory/low-stock")
     suspend fun getLowStockProducts(): Response<List<InventoryResponse>>
