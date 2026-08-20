@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <!-- Timeline Column (Dot + Connecting Line) -->
+    <LinearLayout
+        android:layout_width="24dp"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <!-- Dot -->
+        <View
+            android:id="@+id/vTimelineDot"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/bg_dot_blue" />
+
+        <!-- Line -->
+        <View
+            android:id="@+id/vTimelineLine"
+            android:layout_width="1.5dp"
+            android:layout_height="match_parent"
+            android:layout_marginTop="2dp"
+            android:background="#DBEAFE" />
+    </LinearLayout>
+
+    <!-- Content Column -->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingBottom="16dp">
+
+        <TextView
+            android:id="@+id/tvTimelineStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#1A1D23"
+            android:textSize="13sp"
+            android:textStyle="bold"
+            tools:text="Order Confirmed" />
+
+        <TextView
+            android:id="@+id/tvTimelineNote"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="#5B6472"
+            android:textSize="11.5sp"
+            android:visibility="gone"
+            tools:text="COD order auto-confirmed"
+            tools:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tvTimelineDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:textColor="#9AA1AC"
+            android:textSize="11sp"
+            tools:text="20 Aug 2026, 08:00 PM" />
+    </LinearLayout>
+
+</LinearLayout>

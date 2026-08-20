@@ -8,8 +8,6 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import coil.load
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.anga9.seller.R
 import com.anga9.seller.network.model.SellerOrderResponse
@@ -19,7 +17,19 @@ import java.util.*
 
 class SellerOrderAdapter(
     private val onOrderClick: (SellerOrderResponse) -> Unit
-) : ListAdapter<SellerOrderResponse, SellerOrderAdapter.OrderViewHolder>(OrderDiffCallback()) {
+) : RecyclerView.Adapter<SellerOrderAdapter.OrderViewHolder>() {
+
+    private var orders: List<SellerOrderResponse> = emptyList()
+
+    fun submitList(newList: List<SellerOrderResponse>) {
+        this.orders = newList
+        notifyDataSetChanged()
+    }
+
+    val currentList: List<SellerOrderResponse>
+        get() = orders
+
+    override fun getItemCount(): Int = orders.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): OrderViewHolder {
         val view = LayoutInflater.from(parent.context)
@@ -28,7 +38,7 @@ class SellerOrderAdapter(
     }
 
     override fun onBindViewHolder(holder: OrderViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(orders[position])
     }
 
     inner class OrderViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
@@ -46,8 +56,8 @@ class SellerOrderAdapter(
             tvOrderId.text = if (orderNum.startsWith("ANGA")) "#$orderNum" else "#ANGA-$orderNum"
             
             // Format date — web seller uses placed_at
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
-            val outputFormat = SimpleDateFormat("dd MMM, yyyy", Locale.getDefault())
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US)
+            val outputFormat = SimpleDateFormat("d MMM yyyy", Locale.US)
             val dateStr = order.getEffectiveDate()?.let {
                 try {
                     val date = inputFormat.parse(it)
@@ -75,12 +85,12 @@ class SellerOrderAdapter(
             // Product Bottom Row
             val firstItem = order.items.firstOrNull()
             tvProductName.text = firstItem?.productName ?: "Unknown Product"
-            tvQty.text = "Qty: ${firstItem?.quantity ?: 0}"
+            tvQty.text = "Qty: ${firstItem?.quantity ?: 1}"
             
             val extraCount = order.items.size - 1
             if (extraCount > 0) {
                 tvMoreItems.visibility = View.VISIBLE
-                tvMoreItems.text = "+$extraCount more item(s)"
+                tvMoreItems.text = "+$extraCount more ${if (extraCount == 1) "item" else "items"}"
             } else {
                 tvMoreItems.visibility = View.GONE
             }
@@ -89,7 +99,6 @@ class SellerOrderAdapter(
             val imageUrl = firstItem?.productImage?.let {
                 if (it.startsWith("http")) it else "https://api.anga9.com/$it"
             }
-            android.util.Log.d("SellerOrderAdapter", "Loading image for ${firstItem?.productName}: $imageUrl")
             ivProduct.load(imageUrl) {
                 placeholder(R.drawable.bg_image_placeholder)
                 error(R.drawable.bg_image_placeholder)
@@ -106,16 +115,6 @@ class SellerOrderAdapter(
             itemView.setOnClickListener {
                 onOrderClick(order)
             }
-        }
-    }
-
-    class OrderDiffCallback : DiffUtil.ItemCallback<SellerOrderResponse>() {
-        override fun areItemsTheSame(oldItem: SellerOrderResponse, newItem: SellerOrderResponse): Boolean {
-            return oldItem.id == newItem.id
-        }
-
-        override fun areContentsTheSame(oldItem: SellerOrderResponse, newItem: SellerOrderResponse): Boolean {
-            return oldItem == newItem
         }
     }
 }

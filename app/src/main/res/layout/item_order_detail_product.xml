@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingVertical="10dp">
+
+        <!-- Product Image (40x40, 8dp radius) -->
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/ivProductThumb"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:background="@drawable/bg_image_placeholder"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/ShapeAppearance.App.CornerSize8dp"
+            tools:src="@drawable/bg_image_placeholder" />
+
+        <!-- Name + Qty x Unit Price -->
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tvProductName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:textColor="#1A1D23"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                tools:text="Men Tailored Suit Blazer" />
+
+            <TextView
+                android:id="@+id/tvQtyAndPrice"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textColor="#9AA1AC"
+                android:textSize="11sp"
+                tools:text="Qty: 1 × ₹800.00" />
+        </LinearLayout>
+
+        <!-- Line Total Amount -->
+        <TextView
+            android:id="@+id/tvLineTotal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#1A1D23"
+            android:textSize="13.5sp"
+            android:textStyle="bold"
+            tools:text="₹800.00" />
+
+    </LinearLayout>
+
+    <View
+        android:id="@+id/itemDivider"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#F1F5F9" />
+
+</LinearLayout>

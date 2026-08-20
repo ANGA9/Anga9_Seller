@@ -1,317 +1,378 @@
-﻿package com.anga9.seller.ui.orders
+package com.anga9.seller.ui.orders
 
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.view.View
-import android.widget.*
+import android.widget.ProgressBar
+import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
-import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.anga9.seller.R
-import com.anga9.seller.data.model.SellerOrder
-import com.anga9.seller.utils.GstInvoiceGenerator
+import com.anga9.seller.network.model.SellerOrderResponse
+import com.anga9.seller.network.model.StatusHistoryResponse
 import com.anga9.seller.utils.Resource
-import com.google.android.material.snackbar.Snackbar
+import com.google.android.material.button.MaterialButton
+import java.text.NumberFormat
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 
 class OrderDetailActivity : AppCompatActivity() {
 
     private val viewModel: OrdersViewModel by viewModels()
     private lateinit var orderId: String
 
-    // Views
-    private lateinit var tvOrderId: TextView
-    private lateinit var tvOrderDate: TextView
-    private lateinit var tvOrderStatus: TextView
-    private lateinit var tvCustomerName: TextView
-    private lateinit var tvCustomerPhone: TextView
-    private lateinit var tvDeliveryAddress: TextView
-    private lateinit var tvPaymentMethod: TextView
-    private lateinit var tvPaymentStatus: TextView
-    private lateinit var tvPoNumber: TextView
-    private lateinit var tvOrderTypeRow: TextView
-    private lateinit var layoutPoNumber: View
-    private lateinit var tvItemsTotal: TextView
-    private lateinit var tvBulkDiscount: TextView
-    private lateinit var tvGst: TextView
-    private lateinit var tvDeliveryCharges: TextView
-    private lateinit var tvTotalAmount: TextView
-    private lateinit var tvSellerEarnings: TextView
-    private lateinit var tvTrackingNumber: TextView
-    private lateinit var layoutTracking: View
-    private lateinit var rvItems: RecyclerView
-    private lateinit var rvStatusHistory: RecyclerView
-    private lateinit var progressBar: ProgressBar
-    private lateinit var layoutActions: View
-    private lateinit var btnPrimaryAction: Button
-    private lateinit var btnSecondaryAction: Button
-    private lateinit var btnGenerateInvoice: Button
-    private lateinit var btnRejectOrder: Button
+    // Adapters
+    private lateinit var itemAdapter: OrderItemAdapter
+    private lateinit var timelineAdapter: OrderTimelineAdapter
 
-    private var currentOrder: SellerOrder? = null
+    // Views
+    private lateinit var btnBackContainer: View
+    private lateinit var tvOrderId: TextView
+    private lateinit var tvOrderStatus: TextView
+    private lateinit var tvPlacedDate: TextView
+    private lateinit var progressBar: ProgressBar
+
+    // Items Card
+    private lateinit var rvOrderItems: RecyclerView
+    private lateinit var tvItemsSubtotal: TextView
+
+    // Price Breakdown Card
+    private lateinit var tvBreakdownItemsTotal: TextView
+    private lateinit var tvBreakdownDiscount: TextView
+    private lateinit var tvBreakdownGst: TextView
+    private lateinit var tvBreakdownDelivery: TextView
+    private lateinit var tvBreakdownTotal: TextView
+    private lateinit var tvEarningsLabel: TextView
+    private lateinit var tvEarningsAmount: TextView
+
+    // Timeline Card
+    private lateinit var rvStatusHistory: RecyclerView
+
+    // Sticky Action Bar
+    private lateinit var btnFulfillmentAction: MaterialButton
+    private lateinit var progressAction: ProgressBar
+
+    private var currentOrder: SellerOrderResponse? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_order_detail)
-        orderId = intent.getStringExtra("orderId") ?: run { finish(); return }
+
+        orderId = intent.getStringExtra("orderId")
+            ?: intent.getStringExtra("ORDER_ID")
+            ?: run {
+                Toast.makeText(this, "Order ID missing", Toast.LENGTH_SHORT).show()
+                finish()
+                return
+            }
+
         initViews()
+        setupRecyclerViews()
         observeViewModel()
-        viewModel.loadOrderById(orderId)
+
+        viewModel.loadOrderDetail(orderId)
     }
 
     private fun initViews() {
+        btnBackContainer = findViewById(R.id.btnBackContainer)
         tvOrderId = findViewById(R.id.tvOrderId)
-        tvOrderDate = findViewById(R.id.tvOrderDate)
         tvOrderStatus = findViewById(R.id.tvOrderStatus)
-        tvCustomerName = findViewById(R.id.tvCustomerName)
-        tvCustomerPhone = findViewById(R.id.tvCustomerPhone)
-        tvDeliveryAddress = findViewById(R.id.tvDeliveryAddress)
-        tvPaymentMethod = findViewById(R.id.tvPaymentMethod)
-        tvPaymentStatus = findViewById(R.id.tvPaymentStatus)
-        tvPoNumber = findViewById(R.id.tvPoNumber)
-        tvOrderTypeRow = findViewById(R.id.tvOrderTypeRow)
-        layoutPoNumber = findViewById(R.id.layoutPoNumber)
-        tvItemsTotal = findViewById(R.id.tvItemsTotal)
-        tvBulkDiscount = findViewById(R.id.tvBulkDiscount)
-        tvGst = findViewById(R.id.tvGst)
-        tvDeliveryCharges = findViewById(R.id.tvDeliveryCharges)
-        tvTotalAmount = findViewById(R.id.tvTotalAmount)
-        tvSellerEarnings = findViewById(R.id.tvSellerEarnings)
-        tvTrackingNumber = findViewById(R.id.tvTrackingNumber)
-        layoutTracking = findViewById(R.id.layoutTracking)
-        rvItems = findViewById(R.id.rvItems)
-        rvStatusHistory = findViewById(R.id.rvStatusHistory)
+        tvPlacedDate = findViewById(R.id.tvPlacedDate)
         progressBar = findViewById(R.id.progressBar)
-        layoutActions = findViewById(R.id.layoutActions)
-        btnPrimaryAction = findViewById(R.id.btnPrimaryAction)
-        btnSecondaryAction = findViewById(R.id.btnSecondaryAction)
-        btnGenerateInvoice = findViewById(R.id.btnGenerateInvoice)
-        btnRejectOrder = findViewById(R.id.btnRejectOrder)
-        rvItems.layoutManager = LinearLayoutManager(this)
+
+        rvOrderItems = findViewById(R.id.rvOrderItems)
+        tvItemsSubtotal = findViewById(R.id.tvItemsSubtotal)
+
+        tvBreakdownItemsTotal = findViewById(R.id.tvBreakdownItemsTotal)
+        tvBreakdownDiscount = findViewById(R.id.tvBreakdownDiscount)
+        tvBreakdownGst = findViewById(R.id.tvBreakdownGst)
+        tvBreakdownDelivery = findViewById(R.id.tvBreakdownDelivery)
+        tvBreakdownTotal = findViewById(R.id.tvBreakdownTotal)
+        tvEarningsLabel = findViewById(R.id.tvEarningsLabel)
+        tvEarningsAmount = findViewById(R.id.tvEarningsAmount)
+
+        rvStatusHistory = findViewById(R.id.rvStatusHistory)
+
+        btnFulfillmentAction = findViewById(R.id.btnFulfillmentAction)
+        progressAction = findViewById(R.id.progressAction)
+
+        btnBackContainer.setOnClickListener { finish() }
+    }
+
+    private fun setupRecyclerViews() {
+        itemAdapter = OrderItemAdapter()
+        rvOrderItems.layoutManager = LinearLayoutManager(this)
+        rvOrderItems.isNestedScrollingEnabled = false
+        rvOrderItems.adapter = itemAdapter
+
+        timelineAdapter = OrderTimelineAdapter()
         rvStatusHistory.layoutManager = LinearLayoutManager(this)
-        findViewById<ImageButton>(R.id.btnBack).setOnClickListener { finish() }
+        rvStatusHistory.isNestedScrollingEnabled = false
+        rvStatusHistory.adapter = timelineAdapter
     }
 
     private fun observeViewModel() {
-        viewModel.selectedOrder.observe(this) { result ->
+        viewModel.orderDetailState.observe(this) { result ->
             when (result) {
-                is Resource.Loading -> progressBar.visibility = View.VISIBLE
+                is Resource.Loading -> {
+                    progressBar.visibility = View.VISIBLE
+                }
                 is Resource.Success -> {
                     progressBar.visibility = View.GONE
                     result.data?.let { bindOrder(it) }
                 }
                 is Resource.Error -> {
                     progressBar.visibility = View.GONE
-                    Snackbar.make(rvItems, result.message, Snackbar.LENGTH_SHORT).show()
+                    Toast.makeText(this, result.message ?: "Failed to load order", Toast.LENGTH_SHORT).show()
                 }
             }
         }
 
-        viewModel.updateStatus.observe(this) { result ->
+        viewModel.updateStatusState.observe(this) { result ->
             when (result) {
-                is Resource.Success -> Snackbar.make(rvItems, "Status updated", Snackbar.LENGTH_SHORT).show()
-                is Resource.Error -> Snackbar.make(rvItems, result.message, Snackbar.LENGTH_SHORT).show()
-                else -> {}
-            }
-        }
-    }
-
-    private fun bindOrder(order: SellerOrder) {
-        currentOrder = order
-        val fmt = SimpleDateFormat("dd MMM yyyy, hh:mm a", Locale.getDefault())
-
-        tvOrderId.text = "#${order.orderId.takeLast(8).uppercase()}"
-
-        // Order Type Badge in title
-        val orderTypes = order.items.map { it.orderType }.distinct()
-        val hasPerSet = orderTypes.contains("per_set")
-        val hasPerPiece = orderTypes.contains("per_piece") || orderTypes.isEmpty()
-        val orderTypeLabel = when {
-            hasPerSet && hasPerPiece -> "Mixed Order"
-            hasPerSet -> "Per Set Order"
-            else -> "Per Piece Order"
-        }
-        // Show order type as subtitle in status chip area
-        tvOrderStatus.text = "${getStatusLabel(order.orderStatus)} · $orderTypeLabel"
-        tvOrderTypeRow.text = orderTypeLabel
-        tvOrderDate.text = fmt.format(Date(order.createdAt))
-        tvOrderStatus.text = getStatusLabel(order.orderStatus)
-        tvCustomerName.text = order.customerName
-        tvCustomerPhone.text = "📞 ${order.customerPhone}"
-        tvDeliveryAddress.text = "📍 ${order.deliveryAddress.ifEmpty { "Address not available" }}"
-        tvPaymentMethod.text = order.paymentMethod
-        tvPaymentStatus.text = order.paymentStatus
-
-        // B2B Delivery Instructions
-        val layoutDeliveryInstructions = findViewById<View>(R.id.layoutDeliveryInstructions)
-        val tvDeliveryAddressType = findViewById<TextView>(R.id.tvDeliveryAddressType)
-        val tvWeekendDelivery = findViewById<TextView>(R.id.tvWeekendDelivery)
-        val tvDeliveryNote = findViewById<TextView>(R.id.tvDeliveryNote)
-
-        val hasInstructions = order.deliveryAddressType.isNotEmpty() ||
-                order.saturdayDelivery || order.sundayDelivery ||
-                order.deliveryInstructions.isNotEmpty()
-
-        if (hasInstructions) {
-            layoutDeliveryInstructions.visibility = View.VISIBLE
-            if (order.deliveryAddressType.isNotEmpty()) {
-                tvDeliveryAddressType.visibility = View.VISIBLE
-                tvDeliveryAddressType.text = "🏭 Address Type: ${order.deliveryAddressType}"
-            }
-            val weekendParts = mutableListOf<String>()
-            if (order.saturdayDelivery) weekendParts.add("Saturday")
-            if (order.sundayDelivery) weekendParts.add("Sunday")
-            if (weekendParts.isNotEmpty()) {
-                tvWeekendDelivery.visibility = View.VISIBLE
-                tvWeekendDelivery.text = "📅 Weekend delivery: ${weekendParts.joinToString(", ")}"
-            }
-            if (order.deliveryInstructions.isNotEmpty()) {
-                tvDeliveryNote.visibility = View.VISIBLE
-                tvDeliveryNote.text = "📝 ${order.deliveryInstructions}"
-            }
-        } else {
-            layoutDeliveryInstructions.visibility = View.GONE
-        }
-
-        if (order.poNumber.isNotEmpty()) {
-            layoutPoNumber.visibility = View.VISIBLE
-            tvPoNumber.text = order.poNumber
-        } else {
-            layoutPoNumber.visibility = View.GONE
-        }
-
-        tvItemsTotal.text = "₹${String.format("%.2f", order.itemsTotal)}"
-        tvBulkDiscount.text = "-₹${String.format("%.2f", order.bulkDiscount)}"
-        tvGst.text = "₹${String.format("%.2f", order.gstAmount)}"
-        tvDeliveryCharges.text = "₹${String.format("%.2f", order.deliveryCharges)}"
-        tvTotalAmount.text = "₹${String.format("%.2f", order.totalAmount)}"
-
-        val earnings = if (order.sellerEarnings > 0) order.sellerEarnings
-        else (order.itemsTotal - order.bulkDiscount) * 0.95
-        tvSellerEarnings.text = "₹${String.format("%.2f", earnings)}"
-
-        if (order.trackingNumber.isNotEmpty()) {
-            layoutTracking.visibility = View.VISIBLE
-            tvTrackingNumber.text = "${order.courierName} - ${order.trackingNumber}"
-        } else {
-            layoutTracking.visibility = View.GONE
-        }
-
-        // Order items
-        rvItems.adapter = OrderItemsAdapter(order.items)
-
-        // Status history
-        rvStatusHistory.adapter = StatusHistoryAdapter(order.statusHistory)
-
-        // Action buttons based on status
-        setupActionButtons(order)
-
-        // Invoice button
-        btnGenerateInvoice.visibility = if (order.orderStatus == "delivered") View.VISIBLE else View.GONE
-        btnGenerateInvoice.setOnClickListener {
-            GstInvoiceGenerator.generateAndShare(this, order)
-        }
-    }
-
-    private fun setupActionButtons(order: SellerOrder) {
-        btnRejectOrder.visibility = View.GONE
-        when (order.orderStatus) {
-            "pending" -> {
-                layoutActions.visibility = View.VISIBLE
-                btnPrimaryAction.text = "Accept Order"
-                btnPrimaryAction.setOnClickListener { showAcceptDialog(order) }
-                btnRejectOrder.visibility = View.VISIBLE
-                btnRejectOrder.setOnClickListener { showRejectDialog(order) }
-                btnSecondaryAction.visibility = View.GONE
-            }
-            "confirmed" -> {
-                layoutActions.visibility = View.VISIBLE
-                btnPrimaryAction.text = "Mark as Packed"
-                btnPrimaryAction.setOnClickListener {
-                    viewModel.updateOrderStatus(order.orderId, "packed", "Order packed and ready to ship")
+                is Resource.Loading -> {
+                    progressAction.visibility = View.VISIBLE
+                    btnFulfillmentAction.text = ""
+                    btnFulfillmentAction.isEnabled = false
                 }
-                btnSecondaryAction.visibility = View.GONE
+                is Resource.Success -> {
+                    progressAction.visibility = View.GONE
+                    Toast.makeText(this, "Order status updated successfully", Toast.LENGTH_SHORT).show()
+                    viewModel.loadOrderDetail(orderId)
+                }
+                is Resource.Error -> {
+                    progressAction.visibility = View.GONE
+                    btnFulfillmentAction.isEnabled = true
+                    currentOrder?.let { bindFulfillmentButton(it) }
+                    Toast.makeText(this, result.message ?: "Failed to update status", Toast.LENGTH_SHORT).show()
+                }
             }
-            "packed" -> {
-                layoutActions.visibility = View.VISIBLE
-                btnPrimaryAction.text = "Mark as Shipped"
-                btnPrimaryAction.setOnClickListener { showShipDialog(order) }
-                btnSecondaryAction.visibility = View.GONE
+        }
+    }
+
+    private fun bindOrder(order: SellerOrderResponse) {
+        currentOrder = order
+
+        // 1. Order ID
+        val orderNum = order.orderNumber ?: order.id.take(8).uppercase()
+        tvOrderId.text = if (orderNum.startsWith("ANGA")) "#$orderNum" else "#ANGA-$orderNum"
+
+        // 2. Status Pill
+        val statusKey = order.getEffectiveStatus().lowercase()
+        val style = OrderStatusConfig.config[statusKey] ?: OrderStatusConfig.config["pending"]!!
+        tvOrderStatus.text = style.label.uppercase()
+        tvOrderStatus.setTextColor(style.getTextColor())
+
+        val pillDrawable = GradientDrawable()
+        pillDrawable.cornerRadius = 32f
+        pillDrawable.setColor(style.getBgColor())
+        if (style.border != null) {
+            pillDrawable.setStroke(2, style.getBorderColor())
+        }
+        tvOrderStatus.background = pillDrawable
+
+        // 3. Placed Timestamp (Real Date in IST, matching Web Seller)
+        val formattedDate = formatIsoDate(order.getEffectiveDate())
+        tvPlacedDate.text = "Placed $formattedDate"
+
+        // 4. Order Items (Seller Items & Subtotal)
+        itemAdapter.submitList(order.items)
+        tvItemsSubtotal.text = formatINR(order.getSellerTotal())
+
+        // 5. Price Breakdown (Seller Items Total)
+        tvBreakdownItemsTotal.text = formatINR(order.getSellerTotal())
+        tvBreakdownDiscount.text = "-${formatINR(order.getEffectiveDiscount())}"
+        tvBreakdownGst.text = formatINR(0.0)
+        tvBreakdownDelivery.text = formatINR(0.0)
+        tvBreakdownTotal.text = formatINR(order.getSellerTotal())
+
+        // Your Earnings (95%)
+        tvEarningsLabel.text = "Your Earnings (95%)"
+        tvEarningsAmount.text = formatINR(order.getSellerEarnings(0.95))
+
+        // 6. Timeline Card
+        bindTimeline(order)
+
+        // 7. Sticky Fulfillment Button
+        bindFulfillmentButton(order)
+    }
+
+    private fun bindTimeline(order: SellerOrderResponse) {
+        val history = order.statusHistory
+        if (!history.isNullOrEmpty()) {
+            timelineAdapter.submitList(history)
+        } else {
+            // Fallback timeline events based on order data
+            val syntheticHistory = mutableListOf<StatusHistoryResponse>()
+            val effectiveDate = order.getEffectiveDate()
+            val effectiveStatus = order.getEffectiveStatus().lowercase()
+
+            syntheticHistory.add(
+                StatusHistoryResponse(
+                    status = "Order placed",
+                    createdAt = effectiveDate
+                )
+            )
+
+            syntheticHistory.add(
+                StatusHistoryResponse(
+                    status = if (order.paymentMethod?.lowercase() == "cod") "COD order auto-confirmed at placement" else "Order confirmed",
+                    createdAt = effectiveDate
+                )
+            )
+
+            if (effectiveStatus == "processing") {
+                syntheticHistory.add(
+                    StatusHistoryResponse(
+                        status = "Processing",
+                        createdAt = order.updatedAt ?: effectiveDate,
+                        reason = "Order is being packed and processed"
+                    )
+                )
+            } else if (effectiveStatus == "shipped") {
+                syntheticHistory.add(
+                    StatusHistoryResponse(
+                        status = "Processing",
+                        createdAt = effectiveDate
+                    )
+                )
+                syntheticHistory.add(
+                    StatusHistoryResponse(
+                        status = "Shipped",
+                        createdAt = order.updatedAt ?: effectiveDate,
+                        reason = if (!order.trackingNumber.isNullOrEmpty()) "Tracking: ${order.trackingNumber}" else "Handed over to courier"
+                    )
+                )
+            } else if (effectiveStatus == "delivered") {
+                syntheticHistory.add(
+                    StatusHistoryResponse(
+                        status = "Processing",
+                        createdAt = effectiveDate
+                    )
+                )
+                syntheticHistory.add(
+                    StatusHistoryResponse(
+                        status = "Shipped",
+                        createdAt = effectiveDate
+                    )
+                )
+                syntheticHistory.add(
+                    StatusHistoryResponse(
+                        status = "Delivered",
+                        createdAt = order.updatedAt ?: effectiveDate,
+                        reason = "Delivered to customer"
+                    )
+                )
+            } else if (effectiveStatus == "cancelled") {
+                syntheticHistory.add(
+                    StatusHistoryResponse(
+                        status = "Cancelled",
+                        createdAt = order.updatedAt ?: effectiveDate,
+                        reason = "Order cancelled"
+                    )
+                )
+            }
+
+            timelineAdapter.submitList(syntheticHistory)
+        }
+    }
+
+    private fun bindFulfillmentButton(order: SellerOrderResponse) {
+        val status = order.getEffectiveStatus().lowercase()
+        btnFulfillmentAction.isEnabled = true
+        progressAction.visibility = View.GONE
+
+        when (status) {
+            "pending", "confirmed" -> {
+                btnFulfillmentAction.text = "Mark as Processing"
+                btnFulfillmentAction.setIconResource(R.drawable.ic_package)
+                btnFulfillmentAction.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#E8720C"))
+                btnFulfillmentAction.setOnClickListener {
+                    viewModel.updateOrderStatus(orderId = order.id, status = "processing")
+                }
+            }
+            "processing" -> {
+                btnFulfillmentAction.text = "Mark as Shipped"
+                btnFulfillmentAction.setIconResource(R.drawable.ic_truck)
+                btnFulfillmentAction.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#E8720C"))
+                btnFulfillmentAction.setOnClickListener {
+                    viewModel.updateOrderStatus(orderId = order.id, status = "shipped")
+                }
             }
             "shipped" -> {
-                layoutActions.visibility = View.VISIBLE
-                btnPrimaryAction.text = "Mark as Delivered"
-                btnPrimaryAction.setOnClickListener { showDeliverDialog(order) }
-                btnSecondaryAction.visibility = View.GONE
+                btnFulfillmentAction.text = "Mark as Delivered"
+                btnFulfillmentAction.setIconResource(R.drawable.ic_check_circle)
+                btnFulfillmentAction.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#E8720C"))
+                btnFulfillmentAction.setOnClickListener {
+                    viewModel.updateOrderStatus(orderId = order.id, status = "delivered")
+                }
             }
-            else -> layoutActions.visibility = View.GONE
+            "delivered" -> {
+                btnFulfillmentAction.text = "Fulfillment Completed"
+                btnFulfillmentAction.setIconResource(R.drawable.ic_check_circle)
+                btnFulfillmentAction.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#16A34A"))
+                btnFulfillmentAction.isEnabled = false
+                btnFulfillmentAction.setOnClickListener(null)
+            }
+            "cancelled" -> {
+                btnFulfillmentAction.text = "Order Cancelled"
+                btnFulfillmentAction.setIconResource(R.drawable.ic_cancel)
+                btnFulfillmentAction.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#DC2626"))
+                btnFulfillmentAction.isEnabled = false
+                btnFulfillmentAction.setOnClickListener(null)
+            }
+            else -> {
+                btnFulfillmentAction.text = "Mark as Processing"
+                btnFulfillmentAction.setIconResource(R.drawable.ic_package)
+                btnFulfillmentAction.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#E8720C"))
+                btnFulfillmentAction.setOnClickListener {
+                    viewModel.updateOrderStatus(orderId = order.id, status = "processing")
+                }
+            }
         }
     }
 
-    private fun showAcceptDialog(order: SellerOrder) {
-        AlertDialog.Builder(this)
-            .setTitle("Accept Order")
-            .setMessage("Confirm acceptance of this order?\n\nCustomer: ${order.customerName}\nAmount: ₹${String.format("%.0f", order.totalAmount)}")
-            .setPositiveButton("Accept") { _, _ ->
-                viewModel.updateOrderStatus(order.orderId, "confirmed", "Accepted by seller")
+    private fun formatINR(amount: Double): String {
+        val format = NumberFormat.getCurrencyInstance(Locale("en", "IN"))
+        format.maximumFractionDigits = 2
+        format.minimumFractionDigits = 2
+        return format.format(amount)
+    }
+
+    private fun formatIsoDate(dateString: String?): String {
+        if (dateString.isNullOrBlank()) return "Date N/A"
+        val patterns = listOf(
+            "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'",
+            "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+            "yyyy-MM-dd'T'HH:mm:ss'Z'",
+            "yyyy-MM-dd'T'HH:mm:ss.SSSSSS",
+            "yyyy-MM-dd'T'HH:mm:ss.SSS",
+            "yyyy-MM-dd'T'HH:mm:ss",
+            "yyyy-MM-dd"
+        )
+        var date: Date? = null
+        for (pattern in patterns) {
+            try {
+                val sdf = SimpleDateFormat(pattern, Locale.US).apply {
+                    timeZone = TimeZone.getTimeZone("UTC")
+                }
+                date = sdf.parse(dateString)
+                if (date != null) break
+            } catch (e: Exception) {
+                // try next pattern
             }
-            .setNegativeButton("Cancel", null)
-            .show()
-    }
-
-    private fun showRejectDialog(order: SellerOrder) {
-        val reasons = arrayOf("Out of stock", "Cannot fulfill", "Delivery not available", "Price mismatch", "Other")
-        var selectedReason = reasons[0]
-        AlertDialog.Builder(this)
-            .setTitle("Reject Order")
-            .setSingleChoiceItems(reasons, 0) { _, which -> selectedReason = reasons[which] }
-            .setPositiveButton("Reject") { _, _ -> viewModel.rejectOrder(order.orderId, selectedReason) }
-            .setNegativeButton("Cancel", null)
-            .show()
-    }
-
-    private fun showShipDialog(order: SellerOrder) {
-        val view = layoutInflater.inflate(R.layout.dialog_ship_order, null)
-        val etTracking = view.findViewById<EditText>(R.id.etTrackingNumber)
-        val etCourier = view.findViewById<EditText>(R.id.etCourierName)
-        AlertDialog.Builder(this)
-            .setTitle("Ship Order")
-            .setView(view)
-            .setPositiveButton("Mark Shipped") { _, _ ->
-                val tracking = etTracking.text.toString().trim()
-                val courier = etCourier.text.toString().trim()
-                viewModel.updateOrderStatus(order.orderId, "shipped", "Shipped by seller", tracking, courier)
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
-    }
-
-    private fun showDeliverDialog(order: SellerOrder) {
-        val msg = if (order.paymentMethod == "COD")
-            "Mark as delivered? Payment of ₹${String.format("%.0f", order.totalAmount)} will be marked as PAID (COD)."
-        else
-            "Confirm delivery of this order?"
-        AlertDialog.Builder(this)
-            .setTitle("Confirm Delivery")
-            .setMessage(msg)
-            .setPositiveButton("Delivered") { _, _ ->
-                viewModel.updateOrderStatus(order.orderId, "delivered", "Delivered - confirmed by seller")
-            }
-            .setNegativeButton("Cancel", null)
-            .show()
-    }
-
-    private fun getStatusLabel(status: String) = when (status) {
-        "pending" -> "New Order"
-        "confirmed" -> "Confirmed"
-        "packed" -> "Packed"
-        "shipped" -> "Shipped"
-        "out_for_delivery" -> "Out for Delivery"
-        "delivered" -> "Delivered"
-        "cancelled" -> "Cancelled"
-        else -> status.replaceFirstChar { it.uppercase() }
+        }
+        if (date == null) return dateString
+        val outSdf = SimpleDateFormat("d MMM yyyy, hh:mm a", Locale.US).apply {
+            timeZone = TimeZone.getTimeZone("Asia/Kolkata")
+        }
+        return outSdf.format(date).lowercase()
     }
 }

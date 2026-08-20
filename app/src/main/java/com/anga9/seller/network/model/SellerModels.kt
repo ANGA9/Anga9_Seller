@@ -255,9 +255,13 @@ data class SellerOrderResponse(
     @SerializedName("status") val status: String = "PENDING",
     @SerializedName("payment_method") val paymentMethod: String? = null,
     @SerializedName("payment_status") val paymentStatus: String? = null,
+    @SerializedName("total") val total: Double = 0.0,
     @SerializedName("subtotal") val subtotal: Double = 0.0,
+    @SerializedName("shipping_fee") val shippingFee: Double = 0.0,
     @SerializedName("delivery_charges") val deliveryCharges: Double = 0.0,
+    @SerializedName("tax_amount") val taxAmount: Double = 0.0,
     @SerializedName("gst_amount") val gstAmount: Double = 0.0,
+    @SerializedName("discount_amount") val discountAmount: Double = 0.0,
     @SerializedName("total_amount") val totalAmount: Double = 0.0,
     @SerializedName("delivery_address") val deliveryAddress: OrderAddressResponse? = null,
     @SerializedName("tracking_number") val trackingNumber: String? = null,
@@ -271,6 +275,18 @@ data class SellerOrderResponse(
     fun getEffectiveStatus(): String = items.firstOrNull()?.status ?: status
     /** Effective date — backend uses placed_at, fallback to created_at */
     fun getEffectiveDate(): String? = placedAt ?: createdAt
+
+    fun getSellerTotal(): Double {
+        val itemsSum = items.sumOf { it.getEffectiveTotalPrice() }
+        return if (itemsSum > 0) itemsSum else if (subtotal > 0) subtotal else total
+    }
+
+    fun getEffectiveSubtotal(): Double = getSellerTotal()
+    fun getEffectiveShipping(): Double = 0.0
+    fun getEffectiveGst(): Double = 0.0
+    fun getEffectiveDiscount(): Double = discountAmount
+    fun getEffectiveTotal(): Double = getSellerTotal() - getEffectiveDiscount()
+    fun getSellerEarnings(rate: Double = 0.95): Double = getSellerTotal() * rate
 }
 
 data class OrderItemResponse(
@@ -288,7 +304,13 @@ data class OrderItemResponse(
     @SerializedName("seller_id") val sellerId: String? = null,
     @SerializedName("gst_rate") val gstRate: Double? = null,
     @SerializedName("hsn_code") val hsnCode: String? = null
-)
+) {
+    fun getEffectiveUnitPrice(): Double =
+        if (unitPrice > 0) unitPrice else if (price > 0) price else if (quantity > 0 && totalPrice > 0) totalPrice / quantity else 0.0
+
+    fun getEffectiveTotalPrice(): Double =
+        if (totalPrice > 0) totalPrice else getEffectiveUnitPrice() * quantity
+}
 
 data class OrderAddressResponse(
     @SerializedName("name") val name: String? = null,
@@ -301,10 +323,16 @@ data class OrderAddressResponse(
 )
 
 data class StatusHistoryResponse(
+    @SerializedName("id") val id: String = "",
     @SerializedName("status") val status: String = "",
+    @SerializedName("created_at") val createdAt: String? = null,
     @SerializedName("timestamp") val timestamp: String? = null,
+    @SerializedName("reason") val reason: String? = null,
     @SerializedName("note") val note: String? = null
-)
+) {
+    fun getEffectiveDate(): String? = createdAt ?: timestamp
+    fun getEffectiveNote(): String? = reason ?: note
+}
 
 data class UpdateOrderStatusRequest(
     @SerializedName("status") val status: String,
