@@ -36,15 +36,15 @@ class ReviewAdapter(
 
         fun bind(review: SellerReviewItem) {
             binding.tvReviewTitle.text = review.title ?: ""
-            binding.tvReviewBody.text = review.body ?: ""
-            binding.tvCustomerName.text = "By ${review.userName.ifEmpty { "Anonymous" }}"
+            binding.tvReviewBody.text = "\"${review.body ?: ""}\""
+
             
             // Format Date
             try {
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                     val parsedDate = java.time.ZonedDateTime.parse(review.createdAt)
-                    val formatter = java.time.format.DateTimeFormatter.ofPattern("MMM dd, yyyy", java.util.Locale.US)
-                    binding.tvDate.text = parsedDate.format(formatter)
+                    val formatter = java.time.format.DateTimeFormatter.ofPattern("dd MMM yyyy", java.util.Locale.US)
+                    binding.tvDate.text = parsedDate.format(formatter).uppercase(java.util.Locale.US)
                 } else {
                     binding.tvDate.text = review.createdAt.substring(0, 10)
                 }
@@ -53,12 +53,17 @@ class ReviewAdapter(
             }
 
             // Star Rating
+            fun updateStar(iv: android.widget.ImageView, isFilled: Boolean) {
+                iv.setImageResource(if (isFilled) R.drawable.ic_star_filled else R.drawable.ic_star_outline)
+                iv.setColorFilter(android.graphics.Color.parseColor(if (isFilled) "#FBBF24" else "#D1D5DB"))
+            }
+
             val rating = review.rating.toInt()
-            binding.ivStar1.setImageResource(if (rating >= 1) R.drawable.ic_star_filled else R.drawable.ic_star_outline)
-            binding.ivStar2.setImageResource(if (rating >= 2) R.drawable.ic_star_filled else R.drawable.ic_star_outline)
-            binding.ivStar3.setImageResource(if (rating >= 3) R.drawable.ic_star_filled else R.drawable.ic_star_outline)
-            binding.ivStar4.setImageResource(if (rating >= 4) R.drawable.ic_star_filled else R.drawable.ic_star_outline)
-            binding.ivStar5.setImageResource(if (rating >= 5) R.drawable.ic_star_filled else R.drawable.ic_star_outline)
+            updateStar(binding.ivStar1, rating >= 1)
+            updateStar(binding.ivStar2, rating >= 2)
+            updateStar(binding.ivStar3, rating >= 3)
+            updateStar(binding.ivStar4, rating >= 4)
+            updateStar(binding.ivStar5, rating >= 5)
 
             // Product Reference
             if (review.products != null) {
