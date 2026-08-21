@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.network.model.EarningItemResponse
 import com.anga9.seller.network.model.SellerEarningsResponse
@@ -27,7 +28,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class EarningsActivity : AppCompatActivity() {
+class EarningsActivity : BaseActivity() {
 
     private lateinit var viewModel: EarningsViewModel
     private lateinit var historyAdapter: EarningsHistoryAdapter

@@ -57,7 +57,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:paddingHorizontal="16dp"
+                        android:paddingHorizontal="@dimen/card_margin_horizontal"
                         android:paddingTop="16dp"
                         android:paddingBottom="24dp">
 
@@ -68,7 +68,7 @@
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="16dp"
                             app:singleSelection="true"
-                            app:checkedButton="@+id/btnToday"
+                            app:checkedButton="@+id/btn30Days"
                             app:selectionRequired="true">
 
                             <com.google.android.material.button.MaterialButton

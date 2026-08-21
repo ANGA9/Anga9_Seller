@@ -12,6 +12,7 @@ import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.network.model.SellerProductResponse
 import com.anga9.seller.network.model.UpdateProductRequest
@@ -25,7 +26,7 @@ import kotlinx.coroutines.launch
 import java.util.Locale
 import com.anga9.seller.network.model.CategoryResponse
 
-class EditProductActivity : AppCompatActivity() {
+class EditProductActivity : BaseActivity() {
 
     private val viewModel: ProductsViewModel by viewModels()
 

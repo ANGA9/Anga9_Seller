@@ -12,6 +12,7 @@ import android.widget.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.MVVM.data.repository.ProductRepository
 import com.anga9.seller.R
 import com.google.android.material.button.MaterialButton
@@ -21,7 +22,7 @@ import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.ByteArrayOutputStream
 
-class BulkUploadActivity : AppCompatActivity() {
+class BulkUploadActivity : BaseActivity() {
     private lateinit var repository: ProductRepository
 
     // Header

@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import coil.load
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.network.model.DisputeItem
 import com.anga9.seller.utils.UiState
@@ -21,7 +22,7 @@ import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class SellerDisputesActivity : AppCompatActivity() {
+class SellerDisputesActivity : BaseActivity() {
 
     private val viewModel: DisputesViewModel by viewModels()
     private lateinit var adapter: SellerDisputeAdapter

@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.databinding.ActivityPayoutsBinding
 import com.anga9.seller.utils.Resource
@@ -25,7 +26,7 @@ import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.util.Locale
 
-class PayoutsActivity : AppCompatActivity() {
+class PayoutsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityPayoutsBinding
     private val viewModel: PayoutsViewModel by viewModels()

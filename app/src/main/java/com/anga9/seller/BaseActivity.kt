@@ -1,10 +1,15 @@
-﻿package com.anga9.seller
+package com.anga9.seller
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
+import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import com.anga9.seller.utils.Constants
 import com.anga9.seller.utils.FcmTokenManager
 import com.anga9.seller.utils.LocaleHelper
@@ -13,8 +18,8 @@ import com.anga9.seller.auth.SellerPhoneLoginActivity
 
 /**
  * Base class for all activities.
- * Handles: locale application, auth check, FCM token refresh.
- * Firebase Auth/Firestore removed — using TokenManager (Supabase JWT).
+ * Handles: locale application, auth check, FCM token refresh,
+ * system window insets (status bar, gesture nav) for all Indian devices.
  */
 abstract class BaseActivity : AppCompatActivity() {
 
@@ -24,6 +29,53 @@ abstract class BaseActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Prevent MIUI/ColorOS/Realme UI forced dark mode from breaking hardcoded colors
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            window.decorView.isForceDarkAllowed = false
+        }
+
+        // Handle display cutout (notch) on all devices
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            window.attributes.layoutInDisplayCutoutMode =
+                WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_DEFAULT
+        }
+    }
+
+    /**
+     * Call this from child activities after setContentView() to apply
+     * proper status bar + navigation bar insets to the root content view.
+     * This prevents content from being hidden behind status bar on notched phones
+     * (Redmi Note, Realme, Samsung A/M series) and behind gesture nav bar.
+     */
+    protected fun applySystemInsets(rootView: View) {
+        ViewCompat.setOnApplyWindowInsetsListener(rootView) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(
+                view.paddingLeft,
+                insets.top,
+                view.paddingRight,
+                insets.bottom
+            )
+            WindowInsetsCompat.CONSUMED
+        }
+    }
+
+    /**
+     * Apply only top inset (status bar) -- use when bottom padding is handled separately
+     * (e.g. screens with BottomNavigationView or fixed footer buttons).
+     */
+    protected fun applyTopInset(rootView: View) {
+        ViewCompat.setOnApplyWindowInsetsListener(rootView) { view, windowInsets ->
+            val insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(
+                view.paddingLeft,
+                insets.top,
+                view.paddingRight,
+                view.paddingBottom
+            )
+            WindowInsetsCompat.CONSUMED
+        }
     }
 
     override fun onResume() {

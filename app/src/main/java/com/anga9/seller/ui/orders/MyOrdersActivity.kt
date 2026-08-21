@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.data.repository.BrandRepository
 import com.anga9.seller.utils.Resource
@@ -23,7 +24,7 @@ import com.anga9.seller.utils.TokenManager
 import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.launch
 
-class MyOrdersActivity : AppCompatActivity() {
+class MyOrdersActivity : BaseActivity() {
 
     private val viewModel: OrdersViewModel by viewModels()
     private lateinit var adapter: SellerOrderAdapter

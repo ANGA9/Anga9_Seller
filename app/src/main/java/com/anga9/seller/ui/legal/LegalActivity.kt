@@ -23,6 +23,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.data.model.LegalDataSource
 import com.anga9.seller.data.model.PrivacyBlock
@@ -38,7 +39,7 @@ import kotlinx.coroutines.withContext
  * Single activity for Privacy Policy + Terms of Service.
  * Usage: LegalActivity.startPrivacy(context) / startTerms(context)
  */
-class LegalActivity : AppCompatActivity() {
+class LegalActivity : BaseActivity() {
 
     companion object {
         const val EXTRA_TYPE = "legal_type"

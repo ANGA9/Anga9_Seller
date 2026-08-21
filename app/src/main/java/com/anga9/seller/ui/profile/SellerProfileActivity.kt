@@ -17,6 +17,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.auth.SellerPhoneLoginActivity
 import com.anga9.seller.network.model.SellerProfileResponse
@@ -37,7 +38,7 @@ import kotlinx.coroutines.launch
  *   GET   /api/users/seller-profile
  *   PATCH /api/users/seller-profile
  */
-class SellerProfileActivity : AppCompatActivity() {
+class SellerProfileActivity : BaseActivity() {
 
     private val viewModel: ProfileViewModel by viewModels()
 

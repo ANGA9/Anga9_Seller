@@ -1,4 +1,4 @@
-﻿package com.anga9.seller.auth
+package com.anga9.seller.auth
 
 import android.content.Intent
 import android.os.Bundle
@@ -52,6 +52,7 @@ class KycStatusActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_kyc_status)
+        applySystemInsets(findViewById(R.id.rootKycContent))
 
         initViews()
 

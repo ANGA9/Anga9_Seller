@@ -1,4 +1,4 @@
-﻿package com.anga9.seller.ui.wallet
+package com.anga9.seller.ui.wallet
 
 import android.os.Bundle
 import android.view.View
@@ -6,6 +6,7 @@ import android.widget.*
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.network.model.UpdateSellerProfileRequest
 import com.anga9.seller.ui.profile.ProfileViewModel
@@ -16,7 +17,7 @@ import kotlinx.coroutines.launch
  * BankDetailsActivity (wallet package)
  * Uses ProfileViewModel + PATCH /api/users/seller-profile
  */
-class BankDetailsActivity : AppCompatActivity() {
+class BankDetailsActivity : BaseActivity() {
 
     private val viewModel: ProfileViewModel by viewModels()
 

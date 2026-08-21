@@ -6,11 +6,12 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.databinding.ActivitySupportHomeBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class SupportHomeActivity : AppCompatActivity() {
+class SupportHomeActivity : BaseActivity() {
 
     private lateinit var binding: ActivitySupportHomeBinding
     private val viewModel: SupportViewModel by viewModels()

@@ -1,4 +1,4 @@
-﻿package com.anga9.seller.ui.returns
+package com.anga9.seller.ui.returns
 
 import android.os.Bundle
 import android.widget.ImageView
@@ -6,6 +6,7 @@ import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 
 /**
@@ -19,7 +20,7 @@ import com.anga9.seller.R
  *
  * Showing placeholder UI until backend implements return management.
  */
-class ReturnDetailActivity : AppCompatActivity() {
+class ReturnDetailActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

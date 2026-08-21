@@ -16,6 +16,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.network.model.SellerNotification
 import com.anga9.seller.ui.disputes.SellerDisputeDetailActivity
@@ -25,7 +26,7 @@ import com.google.android.material.button.MaterialButton
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class NotificationsActivity : AppCompatActivity() {
+class NotificationsActivity : BaseActivity() {
 
     private val viewModel: NotificationsViewModel by viewModels()
     private lateinit var adapter: NotificationsAdapter

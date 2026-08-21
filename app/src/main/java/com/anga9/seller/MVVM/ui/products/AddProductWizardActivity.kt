@@ -12,13 +12,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import androidx.viewpager2.widget.ViewPager2
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.MVVM.ui.products.wizard.*
 import com.anga9.seller.utils.UiState
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class AddProductWizardActivity : AppCompatActivity() {
+class AddProductWizardActivity : BaseActivity() {
 
     private val viewModel: AddProductWizardViewModel by viewModels()
 

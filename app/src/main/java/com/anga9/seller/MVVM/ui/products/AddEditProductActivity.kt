@@ -10,13 +10,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.network.model.CreateProductRequest
 import com.anga9.seller.utils.UiState
 import kotlinx.coroutines.launch
 import com.google.android.material.textfield.TextInputEditText
 
-class AddEditProductActivity : AppCompatActivity() {
+class AddEditProductActivity : BaseActivity() {
 
     private val viewModel: ProductsViewModel by viewModels()
 

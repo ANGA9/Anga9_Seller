@@ -17,6 +17,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.utils.Resource
 import com.google.android.material.button.MaterialButton
@@ -25,7 +26,7 @@ import java.util.Calendar
 import java.util.Date
 import java.util.Locale
 
-class CreateDealActivity : AppCompatActivity() {
+class CreateDealActivity : BaseActivity() {
 
     private lateinit var viewModel: CreateDealViewModel
 

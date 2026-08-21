@@ -100,6 +100,7 @@ class SellerRegistrationActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_seller_registration)
+        applySystemInsets(findViewById(R.id.rootRegistrationLayout))
         initViews()
         setupSpinners()
         setupListeners()

@@ -17,13 +17,14 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.network.model.DealItem
 import com.anga9.seller.utils.UiState
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class PromotionalDealsActivity : AppCompatActivity() {
+class PromotionalDealsActivity : BaseActivity() {
 
     private val viewModel: DealsViewModel by viewModels()
     private lateinit var adapter: DealsAdapter

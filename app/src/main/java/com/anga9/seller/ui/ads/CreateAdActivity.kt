@@ -15,6 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import coil.load
 import coil.transform.RoundedCornersTransformation
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.network.model.SellerProductResponse
 import com.anga9.seller.utils.UiState
@@ -24,7 +25,7 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 
-class CreateAdActivity : AppCompatActivity() {
+class CreateAdActivity : BaseActivity() {
 
     private val viewModel: CreateAdViewModel by viewModels()
 

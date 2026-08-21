@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Tablet-specific dimensions (600dp+ screens: Samsung Tab A, Lenovo Tab, Realme Pad) -->
+    <dimen name="content_max_width">600dp</dimen>
+    <dimen name="drawer_width">360dp</dimen>
+    <dimen name="horizontal_margin">32dp</dimen>
+    <dimen name="card_margin_horizontal">24dp</dimen>
+    <dimen name="stat_card_min_height">120dp</dimen>
+    <dimen name="header_padding_horizontal">24dp</dimen>
+</resources>

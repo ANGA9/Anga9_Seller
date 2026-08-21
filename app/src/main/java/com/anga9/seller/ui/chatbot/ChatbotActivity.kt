@@ -15,13 +15,14 @@ import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.network.chatbot.StreamFrame
 import com.anga9.seller.ui.support.TicketDetailActivity
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
-class ChatbotActivity : AppCompatActivity() {
+class ChatbotActivity : BaseActivity() {
 
     companion object {
         const val EXTRA_SOURCE = "SOURCE"

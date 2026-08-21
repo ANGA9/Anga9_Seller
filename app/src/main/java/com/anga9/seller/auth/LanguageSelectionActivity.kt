@@ -1,10 +1,11 @@
-﻿package com.anga9.seller.auth
+package com.anga9.seller.auth
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.utils.LocaleHelper
 
@@ -13,7 +14,7 @@ import com.anga9.seller.utils.LocaleHelper
  * Language names are hardcoded (not from @string/) because locale is not yet set.
  * After selection, locale is applied and user proceeds to phone login.
  */
-class LanguageSelectionActivity : AppCompatActivity() {
+class LanguageSelectionActivity : BaseActivity() {
 
     private var selectedLanguageCode: String = "en"
 
@@ -39,6 +40,7 @@ class LanguageSelectionActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_language_selection)
+        applySystemInsets(findViewById(R.id.rootLangContent))
 
         initViews()
         setupClickListeners()

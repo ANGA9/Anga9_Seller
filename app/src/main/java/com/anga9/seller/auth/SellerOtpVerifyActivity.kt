@@ -65,6 +65,8 @@ class SellerOtpVerifyActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_seller_otp_verify)
 
+        applySystemInsets(findViewById(R.id.rootOtpContent))
+
         identifier = intent.getStringExtra("phone") ?: ""
         authType   = intent.getStringExtra("auth_type") ?: "phone"
         authRepository = AuthRepository(applicationContext)

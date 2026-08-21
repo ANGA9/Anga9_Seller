@@ -66,11 +66,13 @@ class DashboardRepository(private val context: Context) {
             var stats: com.anga9.seller.network.model.SellerStatsResponse? = null
             var earnings: com.anga9.seller.network.model.SellerEarningsResponse? = null
             var ordersBody: com.anga9.seller.network.model.SellerOrderListResponse? = null
+            var productsBody: com.anga9.seller.network.model.ProductListResponse? = null
 
             kotlinx.coroutines.coroutineScope {
                 val analyticsDeferred = async(kotlinx.coroutines.Dispatchers.IO) {
                     try {
-                        val res = apiService.getSellerAnalytics(period = period)
+                        val backendPeriod = if (period == "today") "7d" else period
+                        val res = apiService.getSellerAnalytics(period = backendPeriod)
                         if (res.isSuccessful) res.body() else null
                     } catch (e: Exception) { null }
                 }
@@ -88,7 +90,13 @@ class DashboardRepository(private val context: Context) {
                 }
                 val ordersDeferred = async(kotlinx.coroutines.Dispatchers.IO) {
                     try {
-                        val res = apiService.getSellerOrders(status = null, page = 1, limit = 5)
+                        val res = apiService.getSellerOrders(status = null, page = 1, limit = 50)
+                        if (res.isSuccessful) res.body() else null
+                    } catch (e: Exception) { null }
+                }
+                val productsDeferred = async(kotlinx.coroutines.Dispatchers.IO) {
+                    try {
+                        val res = apiService.getSellerProducts(sellerId = sellerId, status = "active", limit = 1)
                         if (res.isSuccessful) res.body() else null
                     } catch (e: Exception) { null }
                 }
@@ -97,9 +105,10 @@ class DashboardRepository(private val context: Context) {
                 stats = statsDeferred.await()
                 earnings = earningsDeferred.await()
                 ordersBody = ordersDeferred.await()
+                productsBody = productsDeferred.await()
             }
 
-            anyCallSucceeded = analytics != null || stats != null || earnings != null || ordersBody != null
+            anyCallSucceeded = analytics != null || stats != null || earnings != null || ordersBody != null || productsBody != null
 
             // If ALL network requests failed (e.g. offline / connection lost)
             if (!anyCallSucceeded) {
@@ -116,9 +125,11 @@ class DashboardRepository(private val context: Context) {
                 timeZone = TimeZone.getTimeZone("UTC")
             }
 
-            val recentOrders = ordersBody?.getList()?.take(3)?.map { order ->
+            val recentOrders = ordersBody?.getList()?.take(5)?.map { order ->
                 val parsedTime = try {
-                    order.placedAt?.let { isoFormat.parse(it)?.time } ?: 0L
+                    order.placedAt?.let { isoFormat.parse(it)?.time }
+                        ?: order.createdAt?.let { isoFormat.parse(it)?.time }
+                        ?: 0L
                 } catch (e: Exception) { 0L }
 
                 val customerName = if (!order.deliveryAddress?.name.isNullOrBlank()) {
@@ -133,43 +144,67 @@ class DashboardRepository(private val context: Context) {
                     orderId = order.id,
                     orderNumber = order.orderNumber ?: order.id.takeLast(6).uppercase(),
                     customerName = customerName,
-                    amount = order.totalAmount,
-                    status = order.items.firstOrNull()?.status ?: order.status,
+                    amount = order.getSellerTotal(),
+                    status = order.getEffectiveStatus(),
                     createdAt = parsedTime,
                     itemCount = order.items.size
                 )
             } ?: cachedStats?.recentOrders ?: emptyList()
 
-            val revenueTrendPoints = analytics?.revenueChart?.map { it.revenue }
-                ?: cachedStats?.revenueTrend
-                ?: emptyList()
-
-            val topProducts = analytics?.topProducts?.take(3)
+            val topProducts = analytics?.topProducts?.take(5)
                 ?: cachedStats?.topProducts
                 ?: emptyList()
 
-            val activeProductsCount = if (stats?.activeProducts != null && stats.activeProducts > 0) {
-                stats.activeProducts
-            } else if (stats?.totalProducts != null) {
-                stats.totalProducts
-            } else {
-                cachedStats?.activeProducts ?: 0
+            val activeProductsCount = productsBody?.total
+                ?: productsBody?.getList()?.size
+                ?: stats?.activeProducts
+                ?: cachedStats?.activeProducts
+                ?: 0
+
+            val toFulfillCount = ordersBody?.getList()?.count { o ->
+                val s = o.getEffectiveStatus().lowercase()
+                s == "confirmed" || s == "processing" || s == "pending"
+            } ?: stats?.pendingOrders ?: cachedStats?.pendingOrders ?: 0
+
+            val (totalOrdersVal, totalRevenueVal, revenueTrendPoints) = when (period) {
+                "today" -> {
+                    val cal = java.util.Calendar.getInstance().apply {
+                        set(java.util.Calendar.HOUR_OF_DAY, 0)
+                        set(java.util.Calendar.MINUTE, 0)
+                        set(java.util.Calendar.SECOND, 0)
+                        set(java.util.Calendar.MILLISECOND, 0)
+                    }
+                    val startOfDay = cal.timeInMillis
+
+                    val todayOrdersList = ordersBody?.getList()?.filter { order ->
+                        val t = try {
+                            order.placedAt?.let { isoFormat.parse(it)?.time }
+                                ?: order.createdAt?.let { isoFormat.parse(it)?.time }
+                                ?: 0L
+                        } catch (e: Exception) { 0L }
+                        t >= startOfDay
+                    } ?: emptyList()
+
+                    val rev = todayOrdersList.sumOf { it.getSellerTotal() }
+                    val count = todayOrdersList.size
+                    Triple(count, rev, listOf(0.0, rev))
+                }
+                "7d" -> {
+                    val count = analytics?.totalOrders ?: 0
+                    val rev = analytics?.totalRevenue ?: 0.0
+                    val trend = analytics?.revenueChart?.map { it.revenue } ?: emptyList()
+                    Triple(count, rev, trend)
+                }
+                else -> { // "30d"
+                    val count = ordersBody?.total
+                        ?: ordersBody?.getList()?.size
+                        ?: analytics?.totalOrders
+                        ?: 0
+                    val rev = analytics?.totalRevenue ?: stats?.totalEarnings ?: 0.0
+                    val trend = analytics?.revenueChart?.map { it.revenue } ?: emptyList()
+                    Triple(count, rev, trend)
+                }
             }
-
-            val toFulfillCount = stats?.pendingOrders
-                ?: analytics?.activeOrders
-                ?: cachedStats?.pendingOrders
-                ?: 0
-
-            val totalRevenueVal = analytics?.totalRevenue
-                ?: stats?.totalEarnings
-                ?: cachedStats?.totalRevenue
-                ?: 0.0
-
-            val totalOrdersVal = analytics?.totalOrders
-                ?: stats?.totalOrders
-                ?: cachedStats?.totalOrders
-                ?: 0
 
             val freshStats = SellerDashboardStats(
                 todayOrders = if (period == "today") totalOrdersVal else cachedStats?.todayOrders ?: 0,

@@ -1,172 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#FFFFFF"
-    android:paddingLeft="24dp"
-    android:paddingRight="24dp"
-    android:paddingTop="64dp"
-    android:paddingBottom="32dp">
+    android:fillViewport="true">
 
-    <!-- Logo -->
-    <ImageView
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/ic_seller_logo"
-        android:contentDescription="ANGA9 Logo" />
-
-    <!-- Title -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="32dp"
-        android:text="@string/enter_phone_title"
-        android:textSize="22sp"
-        android:textStyle="bold"
-        android:textColor="#1C1B1F" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="40dp"
-        android:text="@string/enter_phone_subtitle"
-        android:textSize="14sp"
-        android:textColor="#6B7280" />
-
-    <!-- Phone Input Row -->
     <LinearLayout
+        android:id="@+id/rootLoginContent"
         android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@drawable/input_background"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:paddingTop="24dp"
+        android:paddingBottom="32dp">
+
+        <!-- Logo -->
+        <ImageView
+            android:layout_width="64dp"
+            android:layout_height="64dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="40dp"
+            android:src="@drawable/ic_seller_logo"
+            android:contentDescription="ANGA9 Logo" />
+
+        <!-- Title -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="32dp"
+            android:text="@string/enter_phone_title"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:textColor="#1C1B1F" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="+91"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            android:textColor="#1C1B1F" />
-
-        <View
-            android:layout_width="1dp"
-            android:layout_height="24dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
-            android:background="#E5E7EB" />
-
-        <EditText
-            android:id="@+id/etPhone"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:background="@null"
-            android:hint="10-digit mobile number"
-            android:inputType="phone"
-            android:maxLength="10"
-            android:textColor="#1C1B1F"
-            android:textSize="16sp" />
-    </LinearLayout>
-
-    <!-- Progress -->
-    <ProgressBar
-        android:id="@+id/progressBar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:visibility="gone" />
-
-    <!-- Spacer -->
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <!-- Get OTP Button -->
-    <TextView
-        android:id="@+id/btnGetOtp"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:background="@drawable/btn_primary_rounded"
-        android:gravity="center"
-        android:text="@string/btn_get_otp"
-        android:textColor="#FFFFFF"
-        android:textSize="16sp"
-        android:textStyle="bold"
-        android:clickable="true"
-        android:focusable="true" />
-
-    <!-- TEMP: Email/Password Login -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:orientation="vertical"
-        android:background="#F9FAFB"
-        android:padding="16dp">
-        
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Test Auth (To be removed)"
-            android:textColor="#EF4444"
-            android:textStyle="bold"
-            android:gravity="center"
-            android:layout_marginBottom="12dp" />
-
-        <EditText
-            android:id="@+id/etEmail"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/input_background"
-            android:hint="Email Address"
-            android:inputType="textEmailAddress"
-            android:paddingHorizontal="16dp"
-            android:layout_marginBottom="8dp"/>
-
-        <EditText
-            android:id="@+id/etPassword"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/input_background"
-            android:hint="Password"
-            android:inputType="textPassword"
-            android:paddingHorizontal="16dp"
-            android:layout_marginBottom="12dp"/>
-
-        <TextView
-            android:id="@+id/btnLoginWithEmail"
-            android:layout_width="match_parent"
-            android:layout_height="48dp"
-            android:background="@drawable/btn_primary_rounded"
-            android:backgroundTint="#1F2937"
-            android:gravity="center"
-            android:text="Login with Email"
-            android:textColor="#FFFFFF"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="40dp"
+            android:text="@string/enter_phone_subtitle"
             android:textSize="14sp"
+            android:textColor="#6B7280" />
+
+        <!-- Phone Input Row -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/input_background"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+91"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:textColor="#1C1B1F" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="12dp"
+                android:layout_marginRight="12dp"
+                android:background="#E5E7EB" />
+
+            <EditText
+                android:id="@+id/etPhone"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@null"
+                android:hint="10-digit mobile number"
+                android:inputType="phone"
+                android:maxLength="10"
+                android:textColor="#1C1B1F"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <!-- Progress -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:visibility="gone" />
+
+        <!-- Spacer -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <!-- Get OTP Button -->
+        <TextView
+            android:id="@+id/btnGetOtp"
+            android:layout_width="match_parent"
+            android:layout_height="56dp"
+            android:background="@drawable/btn_primary_rounded"
+            android:gravity="center"
+            android:text="@string/btn_get_otp"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
             android:textStyle="bold"
             android:clickable="true"
             android:focusable="true" />
+
+        <!-- Terms -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="@string/terms_text"
+            android:textColor="#9CA3AF"
+            android:textSize="11sp" />
+
     </LinearLayout>
 
-    <!-- Terms -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
-        android:text="@string/terms_text"
-        android:textColor="#9CA3AF"
-        android:textSize="11sp" />
-
-</LinearLayout>
+</ScrollView>

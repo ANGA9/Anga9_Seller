@@ -17,6 +17,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.utils.TokenManager
 import com.anga9.seller.data_models.SellerProduct
@@ -24,7 +25,7 @@ import com.anga9.seller.utils.UiState
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import kotlinx.coroutines.launch
 
-class MyProductsActivity : AppCompatActivity() {
+class MyProductsActivity : BaseActivity() {
 
     private val viewModel: ProductsViewModel by viewModels()
 

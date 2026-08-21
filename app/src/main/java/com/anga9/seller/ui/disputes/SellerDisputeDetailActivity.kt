@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.lifecycleScope
 import coil.load
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.network.ApiClient
 import com.anga9.seller.network.model.DisputeItem
@@ -26,7 +27,7 @@ import java.util.Locale
  *   "orderId"   â€” required
  *   "disputeId" â€” required
  */
-class SellerDisputeDetailActivity : AppCompatActivity() {
+class SellerDisputeDetailActivity : BaseActivity() {
 
     private lateinit var btnBack: ImageView
     private lateinit var tvOrderId: TextView

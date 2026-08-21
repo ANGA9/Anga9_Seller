@@ -14,6 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.network.model.AdCampaignResponse
 import com.anga9.seller.utils.UiState
@@ -21,7 +22,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.launch
 
-class MyAdsActivity : AppCompatActivity() {
+class MyAdsActivity : BaseActivity() {
 
     private val viewModel: AdsViewModel by viewModels()
     private lateinit var recyclerAds: RecyclerView

@@ -14,20 +14,20 @@ import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import coil.load
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.MVVM.data.repository.ProductRepository
 import com.anga9.seller.data_models.SellerProduct
 import com.anga9.seller.utils.Resource
 import kotlinx.coroutines.launch
 
-class AdProductPickerActivity : AppCompatActivity() {
+class AdProductPickerActivity : BaseActivity() {
 
     private val productRepository by lazy { ProductRepository(this) }
     private lateinit var recyclerProducts: RecyclerView

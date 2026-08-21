@@ -11,11 +11,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.databinding.ActivityReviewsBinding
 import com.anga9.seller.utils.UiState
 import kotlinx.coroutines.launch
 
-class ReviewsActivity : AppCompatActivity() {
+class ReviewsActivity : BaseActivity() {
 
     private lateinit var binding: ActivityReviewsBinding
     private val viewModel: ReviewsViewModel by viewModels()

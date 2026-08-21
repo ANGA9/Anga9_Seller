@@ -12,6 +12,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.network.model.SellerOrderResponse
 import com.anga9.seller.network.model.StatusHistoryResponse
@@ -23,7 +24,7 @@ import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
 
-class OrderDetailActivity : AppCompatActivity() {
+class OrderDetailActivity : BaseActivity() {
 
     private val viewModel: OrdersViewModel by viewModels()
     private lateinit var orderId: String

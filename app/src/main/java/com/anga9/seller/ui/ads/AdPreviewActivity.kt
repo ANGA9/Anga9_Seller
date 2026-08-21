@@ -13,6 +13,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import coil.load
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.data.model.AdStatus
 import com.anga9.seller.data.model.AdType
@@ -20,7 +21,7 @@ import com.anga9.seller.utils.UiState
 import com.google.android.material.tabs.TabLayout
 import kotlinx.coroutines.launch
 
-class AdPreviewActivity : AppCompatActivity() {
+class AdPreviewActivity : BaseActivity() {
 
     private val viewModel: AdsViewModel by viewModels()
 

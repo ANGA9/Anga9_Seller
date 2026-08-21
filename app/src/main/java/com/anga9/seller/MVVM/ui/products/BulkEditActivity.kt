@@ -17,12 +17,13 @@ import androidx.core.view.isVisible
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.MVVM.data.repository.ProductRepository
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class BulkEditActivity : AppCompatActivity() {
+class BulkEditActivity : BaseActivity() {
 
     private lateinit var viewModel: BulkEditViewModel
     private lateinit var priceAdapter: BulkEditPriceAdapter

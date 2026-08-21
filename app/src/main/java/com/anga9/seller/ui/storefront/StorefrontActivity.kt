@@ -16,15 +16,16 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SwitchCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import coil.load
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.network.model.SellerProfileResponse
 import com.anga9.seller.utils.TokenManager
 import com.google.android.material.button.MaterialButton
-import coil.load
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class StorefrontActivity : AppCompatActivity() {
+class StorefrontActivity : BaseActivity() {
 
     private lateinit var viewModel: StorefrontViewModel
 

@@ -14,12 +14,13 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.databinding.ActivityRaiseTicketBinding
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class RaiseTicketActivity : AppCompatActivity() {
+class RaiseTicketActivity : BaseActivity() {
 
     private lateinit var binding: ActivityRaiseTicketBinding
     private val viewModel: SupportViewModel by viewModels()

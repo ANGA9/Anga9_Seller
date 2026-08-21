@@ -9,8 +9,12 @@
     <!-- Center Logo -->
     <ImageView
         android:id="@+id/ivSplashLogo"
-        android:layout_width="240dp"
-        android:layout_height="240dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintWidth_percent="0.55"
+        app:layout_constraintDimensionRatio="1:1"
+        android:maxWidth="260dp"
+        android:maxHeight="260dp"
         android:src="@drawable/ic_seller_brand_logo"
         android:scaleType="fitCenter"
         app:layout_constraintBottom_toTopOf="@id/llFooter"

@@ -12,9 +12,9 @@ import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import coil.load
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.data.model.AdCampaign
 import com.anga9.seller.data.model.AdPricing
@@ -28,7 +28,7 @@ import com.anga9.seller.utils.UiState
 import com.google.android.material.textfield.TextInputEditText
 import kotlinx.coroutines.launch
 
-class RequestAdActivity : AppCompatActivity() {
+class RequestAdActivity : BaseActivity() {
 
     private val viewModel: AdsViewModel by viewModels()
 

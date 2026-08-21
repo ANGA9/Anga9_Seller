@@ -7,12 +7,13 @@
     android:fillViewport="true">
 
     <LinearLayout
+        android:id="@+id/rootLangContent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:paddingLeft="24dp"
         android:paddingRight="24dp"
-        android:paddingTop="56dp"
+        android:paddingTop="24dp"
         android:paddingBottom="32dp">
 
         <!-- ANGA9 Logo -->

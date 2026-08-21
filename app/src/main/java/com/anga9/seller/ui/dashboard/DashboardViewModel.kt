@@ -26,7 +26,7 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
     private val _sellerProfile = MutableStateFlow<SellerProfileResponse?>(null)
     val sellerProfile: StateFlow<SellerProfileResponse?> = _sellerProfile.asStateFlow()
 
-    private val _selectedPeriod = MutableStateFlow("today")
+    private val _selectedPeriod = MutableStateFlow("30d")
     val selectedPeriod: StateFlow<String> = _selectedPeriod.asStateFlow()
 
     init {

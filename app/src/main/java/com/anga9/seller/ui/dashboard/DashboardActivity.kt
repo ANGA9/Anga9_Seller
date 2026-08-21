@@ -12,14 +12,16 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.NestedScrollView
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.anga9.seller.BaseActivity
 import com.anga9.seller.MVVM.ui.products.AddProductWizardActivity
 import com.anga9.seller.MVVM.ui.products.MyProductsActivity
 import com.anga9.seller.R
@@ -52,7 +54,7 @@ import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-class DashboardActivity : AppCompatActivity() {
+class DashboardActivity : BaseActivity() {
 
     private val viewModel: DashboardViewModel by viewModels()
     private lateinit var prefs: SharedPreferences
@@ -120,7 +122,7 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var tvEmptyTopProducts: TextView
     private lateinit var topProductsAdapter: TopProductsAdapter
 
-    private var currentPeriodLabel = "today"
+    private var currentPeriodLabel = "30d"
     private lateinit var networkMonitor: com.anga9.seller.utils.NetworkMonitor
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -315,6 +317,11 @@ class DashboardActivity : AppCompatActivity() {
             startActivity(Intent(this, SellerProfileActivity::class.java))
         }
 
+        findViewById<View>(R.id.rowDrawerPrivacy).setOnClickListener {
+            drawerLayout.closeDrawer(GravityCompat.START)
+            startActivity(Intent(this, com.anga9.seller.ui.privacy.DataPrivacyActivity::class.java))
+        }
+
         findViewById<View>(R.id.rowDrawerLogout).setOnClickListener {
             drawerLayout.closeDrawer(GravityCompat.START)
             showLogoutConfirmation()
@@ -379,6 +386,17 @@ class DashboardActivity : AppCompatActivity() {
     }
 
     private fun setupBottomNavigation() {
+        ViewCompat.setOnApplyWindowInsetsListener(bottomNavigation) { view, insets ->
+            val sysBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(
+                view.paddingLeft,
+                view.paddingTop,
+                view.paddingRight,
+                sysBarInsets.bottom
+            )
+            insets
+        }
+
         bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.nav_home -> true
@@ -520,8 +538,14 @@ class DashboardActivity : AppCompatActivity() {
             textColor = if (stats.pendingOrders > 0) 0xFFB45309.toInt() else 0xFF6B7280.toInt()
         )
 
-        // 5. Revenue Trend Sparkline
+        // 5. Revenue Trend Sparkline & Badge
         sparklineRevenueTrend.setData(stats.revenueTrend)
+        val badgeText = when (currentPeriodLabel) {
+            "today" -> "Today"
+            "7d" -> "Last 7 days"
+            else -> "Last 30 days"
+        }
+        findViewById<TextView>(R.id.tvRevenueTrendBadge)?.text = badgeText
 
         // 6. Wallet Row
         tvWalletBalance.text = AppFormatters.formatINR(stats.walletBalance)
