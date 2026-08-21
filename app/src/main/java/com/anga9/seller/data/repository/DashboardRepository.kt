@@ -7,6 +7,8 @@ import com.anga9.seller.network.ApiClient
 import com.anga9.seller.utils.Resource
 import com.anga9.seller.utils.TokenManager
 import com.google.gson.Gson
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.text.SimpleDateFormat
@@ -56,37 +58,48 @@ class DashboardRepository(private val context: Context) {
             emit(Resource.Loading())
         }
 
-        // 2. Fetch fresh data from network
+        // 2. Fetch fresh data from network in PARALLEL for maximum speed
         try {
             var anyCallSucceeded = false
 
-            // 1. Fetch Analytics for the selected period
-            val analyticsRes = try {
-                val res = apiService.getSellerAnalytics(period = period)
-                if (res.isSuccessful) { anyCallSucceeded = true; res } else null
-            } catch (e: Exception) { null }
-            val analytics = analyticsRes?.body()
+            var analytics: com.anga9.seller.network.model.SellerAnalyticsResponse? = null
+            var stats: com.anga9.seller.network.model.SellerStatsResponse? = null
+            var earnings: com.anga9.seller.network.model.SellerEarningsResponse? = null
+            var ordersBody: com.anga9.seller.network.model.SellerOrderListResponse? = null
 
-            // 2. Fetch Seller Stats
-            val statsRes = try {
-                val res = apiService.getSellerStats()
-                if (res.isSuccessful) { anyCallSucceeded = true; res } else null
-            } catch (e: Exception) { null }
-            val stats = statsRes?.body()
+            kotlinx.coroutines.coroutineScope {
+                val analyticsDeferred = async(kotlinx.coroutines.Dispatchers.IO) {
+                    try {
+                        val res = apiService.getSellerAnalytics(period = period)
+                        if (res.isSuccessful) res.body() else null
+                    } catch (e: Exception) { null }
+                }
+                val statsDeferred = async(kotlinx.coroutines.Dispatchers.IO) {
+                    try {
+                        val res = apiService.getSellerStats()
+                        if (res.isSuccessful) res.body() else null
+                    } catch (e: Exception) { null }
+                }
+                val earningsDeferred = async(kotlinx.coroutines.Dispatchers.IO) {
+                    try {
+                        val res = apiService.getSellerEarnings()
+                        if (res.isSuccessful) res.body() else null
+                    } catch (e: Exception) { null }
+                }
+                val ordersDeferred = async(kotlinx.coroutines.Dispatchers.IO) {
+                    try {
+                        val res = apiService.getSellerOrders(status = null, page = 1, limit = 5)
+                        if (res.isSuccessful) res.body() else null
+                    } catch (e: Exception) { null }
+                }
 
-            // 3. Fetch Earnings / Wallet
-            val earningsRes = try {
-                val res = apiService.getSellerEarnings()
-                if (res.isSuccessful) { anyCallSucceeded = true; res } else null
-            } catch (e: Exception) { null }
-            val earnings = earningsRes?.body()
+                analytics = analyticsDeferred.await()
+                stats = statsDeferred.await()
+                earnings = earningsDeferred.await()
+                ordersBody = ordersDeferred.await()
+            }
 
-            // 4. Fetch Recent Orders
-            val ordersRes = try {
-                val res = apiService.getSellerOrders(status = null, page = 1, limit = 5)
-                if (res.isSuccessful) { anyCallSucceeded = true; res } else null
-            } catch (e: Exception) { null }
-            val ordersBody = ordersRes?.body()
+            anyCallSucceeded = analytics != null || stats != null || earnings != null || ordersBody != null
 
             // If ALL network requests failed (e.g. offline / connection lost)
             if (!anyCallSucceeded) {

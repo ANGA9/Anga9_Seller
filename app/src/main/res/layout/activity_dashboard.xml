@@ -195,7 +195,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:weightSum="4"
+                            android:weightSum="3"
                             android:baselineAligned="false"
                             android:layout_marginBottom="24dp">
 
@@ -223,15 +223,6 @@
                                 android:layout_weight="1">
                                 <include
                                     android:id="@+id/btnQuickSupport"
-                                    layout="@layout/layout_quick_action_tile" />
-                            </FrameLayout>
-
-                            <FrameLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1">
-                                <include
-                                    android:id="@+id/btnQuickAnalytics"
                                     layout="@layout/layout_quick_action_tile" />
                             </FrameLayout>
                         </LinearLayout>

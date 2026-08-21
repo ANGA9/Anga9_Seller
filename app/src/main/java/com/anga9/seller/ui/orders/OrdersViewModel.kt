@@ -50,18 +50,27 @@ class OrdersViewModel(application: Application) : AndroidViewModel(application) 
     // ── Methods ───────────────────────────────────────────────────────
 
     fun loadOrders() {
-        _filteredOrders.value = Resource.Loading()
+        if (_allOrders.value.isNullOrEmpty()) {
+            _filteredOrders.value = Resource.Loading()
+        }
         viewModelScope.launch {
             repository.getSellerOrders("all").collectLatest { resource ->
                 when (resource) {
-                    is Resource.Loading -> _filteredOrders.postValue(Resource.Loading())
+                    is Resource.Loading -> {
+                        if (_allOrders.value.isNullOrEmpty()) {
+                            _filteredOrders.postValue(Resource.Loading())
+                        }
+                    }
                     is Resource.Success -> {
                         val orders = resource.data ?: emptyList()
                         _allOrders.postValue(orders)
-                        // Pass data directly to avoid postValue race condition
                         applyFilters(orders)
                     }
-                    is Resource.Error -> _filteredOrders.postValue(Resource.Error(resource.message ?: "Failed"))
+                    is Resource.Error -> {
+                        if (_allOrders.value.isNullOrEmpty()) {
+                            _filteredOrders.postValue(Resource.Error(resource.message ?: "Failed"))
+                        }
+                    }
                 }
             }
         }

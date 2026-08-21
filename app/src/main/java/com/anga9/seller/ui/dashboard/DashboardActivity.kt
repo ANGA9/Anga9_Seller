@@ -107,7 +107,6 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var btnQuickAddProduct: View
     private lateinit var btnQuickOrders: View
     private lateinit var btnQuickSupport: View
-    private lateinit var btnQuickAnalytics: View
 
     // Recent Orders
     private lateinit var rvRecentOrders: RecyclerView
@@ -212,12 +211,10 @@ class DashboardActivity : AppCompatActivity() {
         btnQuickAddProduct = findViewById(R.id.btnQuickAddProduct)
         btnQuickOrders = findViewById(R.id.btnQuickOrders)
         btnQuickSupport = findViewById(R.id.btnQuickSupport)
-        btnQuickAnalytics = findViewById(R.id.btnQuickAnalytics)
 
         setupQuickAction(btnQuickAddProduct, "Add Product", R.drawable.ic_baseline_add_24)
         setupQuickAction(btnQuickOrders, "Orders", R.drawable.ic_orders)
         setupQuickAction(btnQuickSupport, "Support", R.drawable.ic_baseline_help_outline_24)
-        setupQuickAction(btnQuickAnalytics, "Analytics", R.drawable.ic_baseline_insert_chart_outlined_24)
 
         // Recent Orders
         rvRecentOrders = findViewById(R.id.rvRecentOrders)
@@ -370,10 +367,6 @@ class DashboardActivity : AppCompatActivity() {
 
         btnQuickSupport.setOnClickListener {
             startActivity(Intent(this, SupportHomeActivity::class.java))
-        }
-
-        btnQuickAnalytics.setOnClickListener {
-            startActivity(Intent(this, AnalyticsActivity::class.java))
         }
 
         tvViewAllOrders.setOnClickListener {

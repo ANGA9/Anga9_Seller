@@ -23,7 +23,9 @@ class EarningsViewModel(application: Application) : AndroidViewModel(application
     val historyState: LiveData<Resource<EarningHistoryResponse>> = _historyState
 
     fun loadEarnings() {
-        _earningsState.value = Resource.Loading()
+        if (_earningsState.value !is Resource.Success) {
+            _earningsState.value = Resource.Loading()
+        }
         viewModelScope.launch {
             repository.getEarnings().collectLatest { resource ->
                 _earningsState.postValue(resource)

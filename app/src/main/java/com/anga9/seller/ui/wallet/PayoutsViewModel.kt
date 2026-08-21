@@ -37,7 +37,9 @@ class PayoutsViewModel(application: Application) : AndroidViewModel(application)
 
     private fun fetchEarnings() {
         viewModelScope.launch {
-            _earningsState.value = Resource.Loading()
+            if (_earningsState.value !is Resource.Success) {
+                _earningsState.value = Resource.Loading()
+            }
             repository.getEarnings().collect { result ->
                 _earningsState.value = result
             }
@@ -46,7 +48,9 @@ class PayoutsViewModel(application: Application) : AndroidViewModel(application)
 
     private fun fetchPayouts() {
         viewModelScope.launch {
-            _payoutsState.value = Resource.Loading()
+            if (_payoutsState.value !is Resource.Success) {
+                _payoutsState.value = Resource.Loading()
+            }
             repository.getPayouts(page = 1).collect { result ->
                 _payoutsState.value = result
             }

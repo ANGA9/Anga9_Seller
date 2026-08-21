@@ -78,6 +78,8 @@ class MyProductsActivity : AppCompatActivity() {
         setupOverflowMenu()
         setupSubHeaderActions()
         observeViewModel()
+
+        viewModel.loadProducts(currentFilter)
     }
 
     private fun initViews() {

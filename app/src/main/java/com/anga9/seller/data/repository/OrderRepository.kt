@@ -64,38 +64,45 @@ class OrderRepository(private val context: Context) {
             )
             if (response.isSuccessful) {
                 val orders = response.body()?.getList() ?: emptyList()
-                if (orders.isNotEmpty()) {
-                    val first = orders[0]
-                    // Fetch products to enrich images
-                    try {
-                        val currentSellerId = first.sellerId
-                        if (currentSellerId.isNotEmpty()) {
-                            val productsRes = apiService.getSellerProducts(sellerId = currentSellerId, limit = 100)
-                            if (productsRes.isSuccessful) {
-                                val products = productsRes.body()?.data ?: emptyList()
-                                val imageMap = products.associate { it.id to it.images?.firstOrNull() }
-                                for (order in orders) {
-                                    for (item in order.items) {
-                                        if (item.productImage.isNullOrEmpty()) {
-                                            item.productImage = imageMap[item.productId]
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } catch (e: Exception) {
-                        // Image enrichment is non-critical
-                    }
-                }
 
-                // Cache fresh orders
+                // Cache fresh orders immediately
                 try {
                     prefs.edit().putString(cacheKey, gson.toJson(orders)).apply()
                 } catch (e: Exception) {
                     // Ignore cache write error
                 }
 
+                // 1. Emit orders instantly so user sees data without waiting
                 emit(Resource.Success(orders))
+
+                // 2. Enrich images in background if needed
+                if (orders.isNotEmpty() && orders.any { o -> o.items.any { it.productImage.isNullOrEmpty() } }) {
+                    try {
+                        val currentSellerId = orders[0].sellerId
+                        if (currentSellerId.isNotEmpty()) {
+                            val productsRes = apiService.getSellerProducts(sellerId = currentSellerId, limit = 100)
+                            if (productsRes.isSuccessful) {
+                                val products = productsRes.body()?.data ?: emptyList()
+                                val imageMap = products.associate { it.id to it.images?.firstOrNull() }
+                                var updated = false
+                                for (order in orders) {
+                                    for (item in order.items) {
+                                        if (item.productImage.isNullOrEmpty() && imageMap.containsKey(item.productId)) {
+                                            item.productImage = imageMap[item.productId]
+                                            updated = true
+                                        }
+                                    }
+                                }
+                                if (updated) {
+                                    prefs.edit().putString(cacheKey, gson.toJson(orders)).apply()
+                                    emit(Resource.Success(orders))
+                                }
+                            }
+                        }
+                    } catch (e: Exception) {
+                        // Non-critical background enrichment
+                    }
+                }
             } else {
                 if (cachedOrders != null) {
                     // Keep showing cached data

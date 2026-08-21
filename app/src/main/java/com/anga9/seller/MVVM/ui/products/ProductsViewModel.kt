@@ -71,10 +71,20 @@ class ProductsViewModel(application: Application) : AndroidViewModel(application
     fun loadProducts(statusFilter: String = "all") {
         viewModelScope.launch {
             repository.getMyProducts(statusFilter).collectLatest { resource ->
-                _productsState.value = when (resource) {
-                    is Resource.Loading -> UiState.Loading
-                    is Resource.Success -> UiState.Success(resource.data ?: emptyList())
-                    is Resource.Error -> UiState.Error(resource.message ?: "Failed to load products")
+                when (resource) {
+                    is Resource.Loading -> {
+                        if (_productsState.value !is UiState.Success) {
+                            _productsState.value = UiState.Loading
+                        }
+                    }
+                    is Resource.Success -> {
+                        _productsState.value = UiState.Success(resource.data ?: emptyList())
+                    }
+                    is Resource.Error -> {
+                        if (_productsState.value !is UiState.Success) {
+                            _productsState.value = UiState.Error(resource.message ?: "Failed to load products")
+                        }
+                    }
                 }
             }
         }
