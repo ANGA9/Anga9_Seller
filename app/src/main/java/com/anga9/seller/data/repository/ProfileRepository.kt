@@ -23,6 +23,8 @@ import com.anga9.seller.utils.TokenManager
 class ProfileRepository(private val context: Context) {
 
     private val apiService = ApiClient.getApiService(context)
+    private val gson = com.google.gson.Gson()
+    private val prefs = context.getSharedPreferences("seller_profile_cache", Context.MODE_PRIVATE)
 
     suspend fun getSellerProfile(): Result<SellerProfileResponse> {
         return try {
@@ -30,13 +32,27 @@ class ProfileRepository(private val context: Context) {
             if (response.isSuccessful) {
                 val body = response.body()
                 val profile = body?.sellerProfile
-                if (profile != null) Result.success(profile)
-                else Result.failure(Exception("Empty profile in response"))
+                if (profile != null) {
+                    prefs.edit().putString("cached_seller_profile", gson.toJson(profile)).apply()
+                    Result.success(profile)
+                } else {
+                    getCachedProfile() ?: Result.failure(Exception("Empty profile in response"))
+                }
             } else {
-                Result.failure(Exception("Failed to get profile: ${response.code()}"))
+                getCachedProfile() ?: Result.failure(Exception("Failed to get profile: ${response.code()}"))
             }
         } catch (e: Exception) {
-            Result.failure(Exception("Network error: ${e.message}"))
+            getCachedProfile() ?: Result.failure(Exception("Network error: ${e.message}"))
+        }
+    }
+
+    private fun getCachedProfile(): Result<SellerProfileResponse>? {
+        val json = prefs.getString("cached_seller_profile", null) ?: return null
+        return try {
+            val profile = gson.fromJson(json, SellerProfileResponse::class.java)
+            if (profile != null) Result.success(profile) else null
+        } catch (e: Exception) {
+            null
         }
     }
 

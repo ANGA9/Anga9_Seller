@@ -120,13 +120,14 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var topProductsAdapter: TopProductsAdapter
 
     private var currentPeriodLabel = "today"
-    private var isKycApproved = false
+    private lateinit var networkMonitor: com.anga9.seller.utils.NetworkMonitor
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_dashboard)
 
         prefs = getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE)
+        networkMonitor = com.anga9.seller.utils.NetworkMonitor(this)
 
         initViews()
         setupDrawer()
@@ -393,6 +394,19 @@ class DashboardActivity : AppCompatActivity() {
 
     private fun observeViewModel() {
         lifecycleScope.launch {
+            networkMonitor.isConnected.collectLatest { isConnected ->
+                if (!isConnected) {
+                    tvOfflineBanner.visibility = View.VISIBLE
+                } else {
+                    if (tvOfflineBanner.visibility == View.VISIBLE) {
+                        tvOfflineBanner.visibility = View.GONE
+                        viewModel.refresh()
+                    }
+                }
+            }
+        }
+
+        lifecycleScope.launch {
             viewModel.sellerProfile.collectLatest { profile ->
                 profile?.let { updateProfileUI(it) }
             }
@@ -410,7 +424,9 @@ class DashboardActivity : AppCompatActivity() {
                     }
                     is UiState.Error -> {
                         swipeRefresh.isRefreshing = false
-                        Toast.makeText(this@DashboardActivity, state.message, Toast.LENGTH_SHORT).show()
+                        if (networkMonitor.isOnline()) {
+                            Toast.makeText(this@DashboardActivity, state.message, Toast.LENGTH_SHORT).show()
+                        }
                     }
                     UiState.Idle -> {
                         swipeRefresh.isRefreshing = false

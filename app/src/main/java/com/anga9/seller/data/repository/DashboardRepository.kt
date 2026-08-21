@@ -5,6 +5,8 @@ import com.anga9.seller.data.model.RecentOrderItem
 import com.anga9.seller.data.model.SellerDashboardStats
 import com.anga9.seller.network.ApiClient
 import com.anga9.seller.utils.Resource
+import com.anga9.seller.utils.TokenManager
+import com.google.gson.Gson
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import java.text.SimpleDateFormat
@@ -19,37 +21,83 @@ import java.util.TimeZone
  *   - GET /api/users/seller-analytics?period={period}
  *   - GET /api/seller/earnings
  *   - GET /api/orders/seller
+ *
+ * Features:
+ *   - Offline caching: Persists latest dashboard numbers so loss of connection
+ *     never replaces real data with 0s or empty widgets.
  */
 class DashboardRepository(private val context: Context) {
 
     private val apiService = ApiClient.getApiService(context)
+    private val gson = Gson()
+    private val prefs = context.getSharedPreferences("seller_dashboard_cache", Context.MODE_PRIVATE)
 
     fun getDashboardStats(period: String = "30d"): Flow<Resource<SellerDashboardStats>> = flow {
-        emit(Resource.Loading())
+        val sellerId = TokenManager.getEffectiveSellerId(context)
+            ?: TokenManager.getUserId(context)
+            ?: "default"
+        val cacheKey = "stats_${sellerId}_$period"
+
+        // 1. Emit cached stats immediately if available
+        var cachedStats: SellerDashboardStats? = null
+        val cachedJson = prefs.getString(cacheKey, null)
+        if (!cachedJson.isNullOrBlank()) {
+            try {
+                cachedStats = gson.fromJson(cachedJson, SellerDashboardStats::class.java)
+                if (cachedStats != null) {
+                    emit(Resource.Success(cachedStats))
+                }
+            } catch (e: Exception) {
+                // Ignore corrupted cache
+            }
+        }
+
+        if (cachedStats == null) {
+            emit(Resource.Loading())
+        }
+
+        // 2. Fetch fresh data from network
         try {
+            var anyCallSucceeded = false
+
             // 1. Fetch Analytics for the selected period
             val analyticsRes = try {
-                apiService.getSellerAnalytics(period = period)
+                val res = apiService.getSellerAnalytics(period = period)
+                if (res.isSuccessful) { anyCallSucceeded = true; res } else null
             } catch (e: Exception) { null }
             val analytics = analyticsRes?.body()
 
             // 2. Fetch Seller Stats
             val statsRes = try {
-                apiService.getSellerStats()
+                val res = apiService.getSellerStats()
+                if (res.isSuccessful) { anyCallSucceeded = true; res } else null
             } catch (e: Exception) { null }
             val stats = statsRes?.body()
 
             // 3. Fetch Earnings / Wallet
             val earningsRes = try {
-                apiService.getSellerEarnings()
+                val res = apiService.getSellerEarnings()
+                if (res.isSuccessful) { anyCallSucceeded = true; res } else null
             } catch (e: Exception) { null }
             val earnings = earningsRes?.body()
 
             // 4. Fetch Recent Orders
             val ordersRes = try {
-                apiService.getSellerOrders(status = null, page = 1, limit = 5)
+                val res = apiService.getSellerOrders(status = null, page = 1, limit = 5)
+                if (res.isSuccessful) { anyCallSucceeded = true; res } else null
             } catch (e: Exception) { null }
             val ordersBody = ordersRes?.body()
+
+            // If ALL network requests failed (e.g. offline / connection lost)
+            if (!anyCallSucceeded) {
+                if (cachedStats != null) {
+                    // Do NOT overwrite valid cached data with zeroes
+                    return@flow
+                } else {
+                    emit(Resource.Error("No internet connection"))
+                    return@flow
+                }
+            }
 
             val isoFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.US).apply {
                 timeZone = TimeZone.getTimeZone("UTC")
@@ -77,46 +125,73 @@ class DashboardRepository(private val context: Context) {
                     createdAt = parsedTime,
                     itemCount = order.items.size
                 )
-            } ?: emptyList()
+            } ?: cachedStats?.recentOrders ?: emptyList()
 
-            val revenueTrendPoints = analytics?.revenueChart?.map { it.revenue } ?: emptyList()
-            val topProducts = analytics?.topProducts?.take(3) ?: emptyList()
+            val revenueTrendPoints = analytics?.revenueChart?.map { it.revenue }
+                ?: cachedStats?.revenueTrend
+                ?: emptyList()
+
+            val topProducts = analytics?.topProducts?.take(3)
+                ?: cachedStats?.topProducts
+                ?: emptyList()
 
             val activeProductsCount = if (stats?.activeProducts != null && stats.activeProducts > 0) {
                 stats.activeProducts
+            } else if (stats?.totalProducts != null) {
+                stats.totalProducts
             } else {
-                stats?.totalProducts ?: 0
+                cachedStats?.activeProducts ?: 0
             }
 
-            val toFulfillCount = stats?.pendingOrders ?: analytics?.activeOrders ?: 0
-            val totalRevenueVal = analytics?.totalRevenue ?: stats?.totalEarnings ?: 0.0
-            val totalOrdersVal = analytics?.totalOrders ?: stats?.totalOrders ?: 0
+            val toFulfillCount = stats?.pendingOrders
+                ?: analytics?.activeOrders
+                ?: cachedStats?.pendingOrders
+                ?: 0
 
-            val dashboardStats = SellerDashboardStats(
-                todayOrders = if (period == "today") totalOrdersVal else 0,
+            val totalRevenueVal = analytics?.totalRevenue
+                ?: stats?.totalEarnings
+                ?: cachedStats?.totalRevenue
+                ?: 0.0
+
+            val totalOrdersVal = analytics?.totalOrders
+                ?: stats?.totalOrders
+                ?: cachedStats?.totalOrders
+                ?: 0
+
+            val freshStats = SellerDashboardStats(
+                todayOrders = if (period == "today") totalOrdersVal else cachedStats?.todayOrders ?: 0,
                 pendingOrders = toFulfillCount,
                 totalOrders = totalOrdersVal,
-                activeOrders = analytics?.activeOrders ?: 0,
+                activeOrders = analytics?.activeOrders ?: cachedStats?.activeOrders ?: 0,
                 totalRevenue = totalRevenueVal,
-                previousOrders = 0,
-                previousRevenue = 0.0,
-                walletBalance = earnings?.available ?: stats?.totalEarnings ?: 0.0,
-                pendingPayout = earnings?.pending ?: stats?.pendingPayout ?: 0.0,
-                totalProducts = stats?.totalProducts ?: 0,
+                previousOrders = cachedStats?.previousOrders ?: 0,
+                previousRevenue = cachedStats?.previousRevenue ?: 0.0,
+                walletBalance = earnings?.available ?: stats?.totalEarnings ?: cachedStats?.walletBalance ?: 0.0,
+                pendingPayout = earnings?.pending ?: stats?.pendingPayout ?: cachedStats?.pendingPayout ?: 0.0,
+                totalProducts = stats?.totalProducts ?: cachedStats?.totalProducts ?: 0,
                 activeProducts = activeProductsCount,
-                pendingProducts = 0,
-                lowStockProducts = 0,
+                pendingProducts = cachedStats?.pendingProducts ?: 0,
+                lowStockProducts = cachedStats?.lowStockProducts ?: 0,
                 recentOrders = recentOrders,
                 topProducts = topProducts,
                 revenueTrend = revenueTrendPoints,
-                sellerBadge = if (stats?.rating != null && stats.rating >= 4.5) "top_seller" else "verified",
-                pendingReturns = stats?.pendingReturns ?: 0,
-                openTickets = stats?.openTickets ?: 0
+                sellerBadge = if (stats?.rating != null && stats.rating >= 4.5) "top_seller" else cachedStats?.sellerBadge ?: "verified",
+                pendingReturns = stats?.pendingReturns ?: cachedStats?.pendingReturns ?: 0,
+                openTickets = stats?.openTickets ?: cachedStats?.openTickets ?: 0
             )
 
-            emit(Resource.Success(dashboardStats))
+            // Save fresh stats into cache
+            try {
+                prefs.edit().putString(cacheKey, gson.toJson(freshStats)).apply()
+            } catch (e: Exception) {
+                // Ignore caching write errors
+            }
+
+            emit(Resource.Success(freshStats))
         } catch (e: Exception) {
-            emit(Resource.Error("Network error: ${e.message}"))
+            if (cachedStats == null) {
+                emit(Resource.Error("Network error: ${e.message}"))
+            }
         }
     }
 }

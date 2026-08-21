@@ -29,6 +29,16 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
     private val _selectedPeriod = MutableStateFlow("today")
     val selectedPeriod: StateFlow<String> = _selectedPeriod.asStateFlow()
 
+    init {
+        // Pre-load cached profile immediately
+        viewModelScope.launch {
+            val cached = profileRepository.getSellerProfile()
+            if (cached.isSuccess) {
+                _sellerProfile.value = cached.getOrNull()
+            }
+        }
+    }
+
     fun setPeriod(period: String) {
         _selectedPeriod.value = period
         loadDashboard(period)
@@ -36,17 +46,27 @@ class DashboardViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun loadDashboard(period: String = _selectedPeriod.value) {
         viewModelScope.launch {
-            // Fetch profile in parallel
             val profileResult = profileRepository.getSellerProfile()
             if (profileResult.isSuccess) {
                 _sellerProfile.value = profileResult.getOrNull()
             }
 
             repository.getDashboardStats(period = period).collectLatest { resource ->
-                _dashboardState.value = when (resource) {
-                    is Resource.Loading -> UiState.Loading
-                    is Resource.Success -> UiState.Success(resource.data!!)
-                    is Resource.Error -> UiState.Error(resource.message ?: "Failed to load dashboard")
+                when (resource) {
+                    is Resource.Loading -> {
+                        if (_dashboardState.value !is UiState.Success) {
+                            _dashboardState.value = UiState.Loading
+                        }
+                    }
+                    is Resource.Success -> {
+                        _dashboardState.value = UiState.Success(resource.data!!)
+                    }
+                    is Resource.Error -> {
+                        // If we already have data on screen, do not wipe it on network error
+                        if (_dashboardState.value !is UiState.Success) {
+                            _dashboardState.value = UiState.Error(resource.message ?: "Failed to load dashboard")
+                        }
+                    }
                 }
             }
         }
