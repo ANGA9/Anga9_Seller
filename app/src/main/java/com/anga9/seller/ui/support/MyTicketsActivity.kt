@@ -56,6 +56,10 @@ class MyTicketsActivity : BaseActivity() {
         repository = SupportRepository(this)
         initViews()
         setupAdapters()
+    }
+
+    override fun onResume() {
+        super.onResume()
         loadTickets(reset = true)
     }
 
@@ -96,17 +100,20 @@ class MyTicketsActivity : BaseActivity() {
 
     private fun setupAdapters() {
         ticketAdapter = TicketAdapter { ticket ->
-            // Assume we navigate to detail
-            // val intent = Intent(this, TicketDetailActivity::class.java)
-            // intent.putExtra("ticket_id", ticket.id)
-            // startActivity(intent)
+            val intent = Intent(this, TicketDetailActivity::class.java).apply {
+                putExtra(TicketDetailActivity.EXTRA_TICKET_ID, ticket.id)
+                putExtra(TicketDetailActivity.EXTRA_TICKET_NUMBER, ticket.ticketNumber)
+            }
+            startActivity(intent)
         }
+        rvTickets.layoutManager = LinearLayoutManager(this)
         rvTickets.adapter = ticketAdapter
         
         chipAdapter = ChipAdapter(filters, currentFilter) { selected ->
             currentFilter = selected
             applyFilter()
         }
+        rvFilterChips.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         rvFilterChips.adapter = chipAdapter
     }
 
@@ -116,7 +123,6 @@ class MyTicketsActivity : BaseActivity() {
             currentPage = 1
             hasMore = true
             allTickets.clear()
-            applyFilter()
         }
         isLoading = true
         progressBar.visibility = View.VISIBLE
@@ -128,8 +134,9 @@ class MyTicketsActivity : BaseActivity() {
             progressBar.visibility = View.GONE
             result.fold(
                 onSuccess = { response ->
-                    allTickets.addAll(response.tickets)
-                    hasMore = response.tickets.size >= 20
+                    val newTickets = response.tickets
+                    allTickets.addAll(newTickets)
+                    hasMore = newTickets.size >= 20
                     currentPage++
                     applyFilter()
                 },
@@ -180,37 +187,30 @@ class ChipAdapter(
         private val tvLabel: TextView = view.findViewById(R.id.tvChipLabel)
 
         fun bind(statusKey: String, isSelected: Boolean) {
-            if (statusKey == "all") {
-                tvLabel.text = "All"
-            } else {
-                tvLabel.text = TicketStatusConfig.getStyle(statusKey).label
-            }
+            val style = TicketStatusConfig.getFilterStyle(statusKey)
+            tvLabel.text = style.label
 
             if (isSelected) {
-                tvLabel.setBackgroundResource(R.drawable.bg_filter_chip_selected)
+                val bg = androidx.core.content.ContextCompat.getDrawable(itemView.context, R.drawable.bg_filter_chip_selected)?.mutate()
+                bg?.setTint(style.textColor)
+                tvLabel.background = bg
                 tvLabel.setTextColor(Color.WHITE)
             } else {
                 if (statusKey == "all") {
-                    tvLabel.setBackgroundResource(R.drawable.bg_filter_chip_unselected)
-                    tvLabel.setTextColor(Color.parseColor("#444441"))
+                    val bg = androidx.core.content.ContextCompat.getDrawable(itemView.context, R.drawable.bg_filter_chip_unselected)?.mutate()
+                    tvLabel.background = bg
+                    tvLabel.setTextColor(Color.parseColor("#4B5563"))
                 } else {
-                    val style = TicketStatusConfig.getStyle(statusKey)
-                    if (style.bgColor == Color.parseColor("#FFFFFF")) {
-                        tvLabel.setBackgroundResource(R.drawable.bg_filter_chip_unselected)
-                    } else {
-                        val bg = androidx.core.content.ContextCompat.getDrawable(itemView.context, R.drawable.bg_status_pill)?.mutate()
-                        bg?.setTint(style.bgColor)
-                        tvLabel.background = bg
-                    }
+                    val bg = androidx.core.content.ContextCompat.getDrawable(itemView.context, R.drawable.bg_status_pill)?.mutate()
+                    bg?.setTint(style.bgColor)
+                    tvLabel.background = bg
                     tvLabel.setTextColor(style.textColor)
                 }
             }
             
             itemView.setOnClickListener {
                 if (!isSelected) {
-                    val oldSelected = selectedItem
                     selectedItem = statusKey
-                    // Since it's a small list, notifyDataSetChanged is fine, but we can do it properly
                     notifyDataSetChanged()
                     onSelect(statusKey)
                 }
@@ -260,7 +260,7 @@ class TicketAdapter(
             ivBadgeIcon.imageTintList = ColorStateList.valueOf(style.textColor)
 
             // Meta Line
-            val timeStr = getRelativeTime(ticket.updatedAt)
+            val timeStr = getRelativeTime(ticket.updatedAt.ifEmpty { ticket.createdAt })
             val categoryStr = if(ticket.category.isNullOrEmpty()) "General" else ticket.category
             tvMeta.text = "$categoryStr · #${ticket.ticketNumber} · $timeStr"
 

@@ -29,7 +29,7 @@ data class SupportAttachment(
 
 /**
  * SECURITY: isInternal == true messages MUST be filtered before rendering.
- * authorRole: "customer" | "admin" | "system"
+ * authorRole: "customer" | "seller" | "admin" | "system"
  */
 data class TicketMessage(
     @SerializedName("id")          val id: String = "",
@@ -87,47 +87,75 @@ data class ArticleFeedbackRequest(
     @SerializedName("helpful") val helpful: Boolean
 )
 
-data class TicketListResponse(
-    @SerializedName("tickets")  val tickets: List<SupportTicket> = emptyList(),
-    @SerializedName("total")    val total: Int = 0,
-    @SerializedName("page")     val page: Int = 1,
-    @SerializedName("limit")    val limit: Int = 20,
-    @SerializedName("has_more") val hasMore: Boolean = false
-)
-
-data class TicketResponse(
-    @SerializedName("ticket") val ticket: SupportTicket = SupportTicket()
-)
-
-data class ArticleListResponse(
-    @SerializedName("articles") val articles: List<SupportArticle> = emptyList(),
-    @SerializedName("total")    val total: Int = 0,
-    @SerializedName("has_more") val hasMore: Boolean = false
-)
-
-data class ArticleResponse(
-    @SerializedName("article") val article: SupportArticle = SupportArticle()
-)
-
-data class AttachmentUploadResponse(
-    @SerializedName("id")            val id: String = "",
-    @SerializedName("url")           val url: String = "",
-    @SerializedName("filename")      val filename: String = "",
-    @SerializedName("mime_type")     val mimeType: String = "",
-    @SerializedName("size_bytes")    val sizeBytes: Long = 0L,
-    @SerializedName("presigned_url") val presignedUrl: String? = null
-)
-
 data class MessageResponse(
-    @SerializedName("id")         val id: String = "",
-    @SerializedName("body")       val body: String = "",
-    @SerializedName("created_at") val createdAt: String = ""
+    @SerializedName("id")          val id: String = "",
+    @SerializedName("message")     val message: TicketMessage? = null,
+    @SerializedName("author_role") val authorRole: String = "seller",
+    @SerializedName("body")        val body: String = "",
+    @SerializedName("created_at")  val createdAt: String = ""
 )
 
 data class RateTicketResponse(
     @SerializedName("success") val success: Boolean = true
 )
 
+data class AttachmentUploadResponse(
+    @SerializedName("id")            val id: String = "",
+    @SerializedName("url")           val url: String = "",
+    @SerializedName("presigned_url") val presignedUrl: String? = null,
+    @SerializedName("filename")      val filename: String = ""
+)
+
 data class ArticleFeedbackResponse(
     @SerializedName("success") val success: Boolean = true
+)
+
+data class TicketListResponse(
+    @SerializedName("data")     val data: List<SupportTicket>? = null,
+    @SerializedName("tickets")  val rawTickets: List<SupportTicket>? = null,
+    @SerializedName("total")    val total: Int = 0,
+    @SerializedName("page")     val page: Int = 1,
+    @SerializedName("limit")    val limit: Int = 20,
+    @SerializedName("has_more") val hasMore: Boolean = false
+) {
+    val tickets: List<SupportTicket>
+        get() = data ?: rawTickets ?: emptyList()
+}
+
+data class TicketResponse(
+    @SerializedName("ticket")        val nestedTicket: SupportTicket? = null,
+    @SerializedName("id")            val id: String = "",
+    @SerializedName("ticket_number") val ticketNumber: String = "",
+    @SerializedName("subject")       val subject: String = "",
+    @SerializedName("status")        val status: String = "open",
+    @SerializedName("priority")      val priority: String = "medium",
+    @SerializedName("category")      val category: String = "",
+    @SerializedName("created_at")    val createdAt: String = "",
+    @SerializedName("updated_at")    val updatedAt: String = ""
+) {
+    val ticket: SupportTicket
+        get() = nestedTicket ?: SupportTicket(
+            id = id,
+            ticketNumber = ticketNumber,
+            subject = subject,
+            status = status,
+            priority = priority,
+            category = category,
+            createdAt = createdAt,
+            updatedAt = updatedAt
+        )
+}
+
+data class ArticleListResponse(
+    @SerializedName("data")     val data: List<SupportArticle>? = null,
+    @SerializedName("articles") val rawArticles: List<SupportArticle>? = null,
+    @SerializedName("total")    val total: Int = 0,
+    @SerializedName("has_more") val hasMore: Boolean = false
+) {
+    val articles: List<SupportArticle>
+        get() = data ?: rawArticles ?: emptyList()
+}
+
+data class ArticleResponse(
+    @SerializedName("article") val article: SupportArticle = SupportArticle()
 )

@@ -55,9 +55,13 @@ class AddProductWizardViewModel(application: Application) : AndroidViewModel(app
             // 1. Upload Images to Supabase if any
             val uploadedImageUrls = mutableListOf<String>()
             for (uri in selectedImageUris) {
-                val uploadResult = repository.uploadProductImage(uri, "prod_${System.currentTimeMillis()}")
+                val uploadResult = repository.uploadProductImage(uri)
                 if (uploadResult.isSuccess) {
                     uploadedImageUrls.add(uploadResult.getOrThrow())
+                } else {
+                    val errorMsg = uploadResult.exceptionOrNull()?.message ?: "Image upload failed"
+                    _createState.value = UiState.Error("Image upload failed: $errorMsg")
+                    return@launch
                 }
             }
 

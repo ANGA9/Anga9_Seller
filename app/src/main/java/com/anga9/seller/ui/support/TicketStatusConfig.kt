@@ -54,4 +54,16 @@ object TicketStatusConfig {
     fun getStyle(status: String?): TicketUIStyle {
         return statusMap[status?.lowercase()] ?: statusMap["open"]!!
     }
+
+    fun getFilterStyle(filter: String): TicketUIStyle {
+        if (filter.equals("all", ignoreCase = true)) {
+            return TicketUIStyle(
+                label = "All tickets",
+                bgColor = Color.parseColor("#FFFFFF"),
+                textColor = Color.parseColor("#1A6FD4"),
+                iconRes = R.drawable.ic_circle
+            )
+        }
+        return getStyle(filter)
+    }
 }

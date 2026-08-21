@@ -162,20 +162,34 @@ class ProductRepository(private val context: Context) {
     }
 
     /**
-     * Upload product image to Supabase Storage via REST API (no SDK).
-     * Uses same bucket as Seller Web — images are shared/synced.
-     *
-     * Endpoint: POST /storage/v1/object/product-images/<path>
-     * Headers: apikey, Authorization: Bearer <anon_key>, Content-Type: image/jpeg
+     * Upload product image to Supabase Storage.
+     * Uses same bucket and format as Seller Web (`product-images`).
      *
      * @param uri  Local file URI from image picker
-     * @param productId  Used to organize files in storage (seller_id/product_id/filename)
+     * @param productId  Optional product identifier
      * @return Public URL of the uploaded image
      */
-    suspend fun uploadProductImage(uri: Uri, productId: String): Result<String> {
+    suspend fun uploadProductImage(uri: Uri, productId: String = ""): Result<String> {
         return try {
-            val sellerId = TokenManager.getEffectiveSellerId(context) // Phase 4: brand-scoped storage folder
-                ?: return Result.failure(Exception("Not logged in"))
+            val sellerId = TokenManager.getEffectiveSellerId(context)
+                ?: TokenManager.getUserId(context)
+                ?: "seller"
+
+            val userToken = TokenManager.getToken(context)
+            val refreshToken = TokenManager.getRefreshToken(context)
+
+            // Ensure SupabaseClient session is initialized
+            if (userToken != null && com.anga9.seller.network.SupabaseClient.auth.currentSessionOrNull() == null) {
+                try {
+                    com.anga9.seller.network.SupabaseClient.auth.importAuthToken(
+                        accessToken = userToken,
+                        refreshToken = refreshToken ?: "",
+                        autoRefresh = true
+                    )
+                } catch (e: Exception) {
+                    // Ignore session import failure and proceed with REST fallback
+                }
+            }
 
             val inputStream = context.contentResolver.openInputStream(uri)
                 ?: return Result.failure(Exception("Cannot read image file"))
@@ -183,34 +197,48 @@ class ProductRepository(private val context: Context) {
             inputStream.close()
 
             val mimeType = context.contentResolver.getType(uri) ?: "image/jpeg"
-            val extension = when (mimeType) {
-                "image/png" -> "png"
-                "image/webp" -> "webp"
+            val extension = when {
+                mimeType.contains("png") -> "png"
+                mimeType.contains("webp") -> "webp"
                 else -> "jpg"
             }
 
-            val fileName = "${UUID.randomUUID()}.$extension"
-            val storagePath = "$sellerId/$productId/$fileName"
+            val fileName = "${System.currentTimeMillis()}-${UUID.randomUUID().toString().take(6)}.$extension"
+            val storagePath = "$sellerId/$fileName"
             val bucketName = "product-images"
 
-            // Upload via Supabase Storage REST API
+            // 1. Try Supabase Kotlin SDK upload
+            try {
+                val bucket = com.anga9.seller.network.SupabaseClient.storage.from(bucketName)
+                bucket.upload(storagePath, bytes) {
+                    upsert = true
+                }
+                val publicUrl = bucket.publicUrl(storagePath)
+                return Result.success(publicUrl)
+            } catch (sdkEx: Exception) {
+                android.util.Log.w("ProductRepo", "SDK upload failed (${sdkEx.message}), attempting REST fallback")
+            }
+
+            // 2. Fallback to Supabase Storage REST API with User JWT
+            val authHeader = if (!userToken.isNullOrBlank()) "Bearer $userToken" else "Bearer $supabaseAnonKey"
             val uploadUrl = "$supabaseUrl/storage/v1/object/$bucketName/$storagePath"
             val requestBody = bytes.toRequestBody(mimeType.toMediaType())
             val request = Request.Builder()
                 .url(uploadUrl)
                 .post(requestBody)
                 .addHeader("apikey", supabaseAnonKey)
-                .addHeader("Authorization", "Bearer $supabaseAnonKey")
+                .addHeader("Authorization", authHeader)
                 .addHeader("Content-Type", mimeType)
+                .addHeader("x-upsert", "true")
                 .build()
 
             val response = httpClient.newCall(request).execute()
             if (!response.isSuccessful) {
-                return Result.failure(Exception("Upload failed: ${response.code} ${response.body?.string()}"))
+                val errBody = response.body?.string()
+                return Result.failure(Exception("Upload failed [${response.code}]: $errBody"))
             }
             response.close()
 
-            // Construct public URL (same format as SDK)
             val publicUrl = "$supabaseUrl/storage/v1/object/public/$bucketName/$storagePath"
             Result.success(publicUrl)
         } catch (e: Exception) {
@@ -219,17 +247,29 @@ class ProductRepository(private val context: Context) {
     }
 
     /**
-     * Upload product video to Supabase Storage via REST API (no SDK).
+     * Upload product video to Supabase Storage.
      * Bucket: "product-videos"
-     *
-     * @param uri  Local video URI from file picker
-     * @param productId  Used to organize files in storage
-     * @return Public URL of the uploaded video
      */
-    suspend fun uploadProductVideo(uri: Uri, productId: String): Result<String> {
+    suspend fun uploadProductVideo(uri: Uri, productId: String = ""): Result<String> {
         return try {
-            val sellerId = TokenManager.getEffectiveSellerId(context) // Phase 4: brand-scoped storage folder
-                ?: return Result.failure(Exception("Not logged in"))
+            val sellerId = TokenManager.getEffectiveSellerId(context)
+                ?: TokenManager.getUserId(context)
+                ?: "seller"
+
+            val userToken = TokenManager.getToken(context)
+            val refreshToken = TokenManager.getRefreshToken(context)
+
+            if (userToken != null && com.anga9.seller.network.SupabaseClient.auth.currentSessionOrNull() == null) {
+                try {
+                    com.anga9.seller.network.SupabaseClient.auth.importAuthToken(
+                        accessToken = userToken,
+                        refreshToken = refreshToken ?: "",
+                        autoRefresh = true
+                    )
+                } catch (e: Exception) {
+                    // Ignore
+                }
+            }
 
             val inputStream = context.contentResolver.openInputStream(uri)
                 ?: return Result.failure(Exception("Cannot read video file"))
@@ -237,30 +277,43 @@ class ProductRepository(private val context: Context) {
             inputStream.close()
 
             val mimeType = context.contentResolver.getType(uri) ?: "video/mp4"
-            val extension = when (mimeType) {
-                "video/quicktime" -> "mov"
-                "video/x-msvideo" -> "avi"
-                "video/webm" -> "webm"
+            val extension = when {
+                mimeType.contains("webm") -> "webm"
+                mimeType.contains("mov") -> "mov"
                 else -> "mp4"
             }
 
-            val fileName = "${UUID.randomUUID()}.$extension"
-            val storagePath = "$sellerId/$productId/$fileName"
+            val fileName = "${System.currentTimeMillis()}-${UUID.randomUUID().toString().take(6)}.$extension"
+            val storagePath = "$sellerId/$fileName"
             val bucketName = "product-videos"
 
+            try {
+                val bucket = com.anga9.seller.network.SupabaseClient.storage.from(bucketName)
+                bucket.upload(storagePath, bytes) {
+                    upsert = true
+                }
+                val publicUrl = bucket.publicUrl(storagePath)
+                return Result.success(publicUrl)
+            } catch (sdkEx: Exception) {
+                android.util.Log.w("ProductRepo", "SDK video upload failed (${sdkEx.message}), attempting REST fallback")
+            }
+
+            val authHeader = if (!userToken.isNullOrBlank()) "Bearer $userToken" else "Bearer $supabaseAnonKey"
             val uploadUrl = "$supabaseUrl/storage/v1/object/$bucketName/$storagePath"
             val requestBody = bytes.toRequestBody(mimeType.toMediaType())
             val request = Request.Builder()
                 .url(uploadUrl)
                 .post(requestBody)
                 .addHeader("apikey", supabaseAnonKey)
-                .addHeader("Authorization", "Bearer $supabaseAnonKey")
+                .addHeader("Authorization", authHeader)
                 .addHeader("Content-Type", mimeType)
+                .addHeader("x-upsert", "true")
                 .build()
 
             val response = httpClient.newCall(request).execute()
             if (!response.isSuccessful) {
-                return Result.failure(Exception("Upload failed: ${response.code} ${response.body?.string()}"))
+                val errBody = response.body?.string()
+                return Result.failure(Exception("Video upload failed [${response.code}]: $errBody"))
             }
             response.close()
 

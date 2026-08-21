@@ -22,7 +22,10 @@ class SupportHomeActivity : AppCompatActivity() {
 
         setupClickListeners()
         observeViewModel()
-        
+    }
+
+    override fun onResume() {
+        super.onResume()
         viewModel.loadHomeData()
     }
 
@@ -41,21 +44,20 @@ class SupportHomeActivity : AppCompatActivity() {
             viewModel.homeState.collectLatest { state ->
                 when (state) {
                     is SupportUiState.Loading -> {
-                        // Optional: show shimmer or loading
+                        // Keep current UI or show placeholder
                     }
                     is SupportUiState.Success -> {
                         val count = state.openTickets
                         if (count > 0) {
                             binding.tvTicketCountBadge.visibility = View.VISIBLE
                             binding.tvTicketCountBadge.text = count.toString()
-                            binding.tvOpenConversations.text = "$count open conversations"
+                            binding.tvOpenConversations.text = "$count open conversation${if (count > 1) "s" else ""}"
                         } else {
                             binding.tvTicketCountBadge.visibility = View.GONE
                             binding.tvOpenConversations.text = "No open conversations"
                         }
                     }
                     is SupportUiState.Error -> {
-                        // Show error or keep default "0 open conversations"
                         binding.tvTicketCountBadge.visibility = View.GONE
                     }
                     else -> {}

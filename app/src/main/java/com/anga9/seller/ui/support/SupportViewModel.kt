@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.anga9.seller.data.model.support.CreateTicketRequest
 import com.anga9.seller.network.ApiClient
 import com.anga9.seller.network.SupabaseClient
+import com.anga9.seller.utils.TokenManager
 import io.github.jan.supabase.storage.storage
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,6 +34,7 @@ class SupportViewModel(application: Application) : AndroidViewModel(application)
 
     private val api = ApiClient.getApiService(application.applicationContext)
     private val contentResolver = application.contentResolver
+    private val context = application.applicationContext
 
     private val _homeState = MutableStateFlow<SupportUiState>(SupportUiState.Idle)
     val homeState: StateFlow<SupportUiState> = _homeState.asStateFlow()
@@ -44,16 +46,13 @@ class SupportViewModel(application: Application) : AndroidViewModel(application)
         viewModelScope.launch {
             _homeState.value = SupportUiState.Loading
             try {
-                // Fetch first page to get total count or open count
-                // Assuming status="open" works if passed, but api only takes page/limit.
-                // We'll fetch all and count open ones, or use total if it means all open.
                 val response = api.getSupportTickets(page = 1, limit = 50)
                 if (response.isSuccessful) {
                     val tickets = response.body()?.tickets ?: emptyList()
-                    val openCount = tickets.count { it.status == "open" || it.status == "in_progress" }
+                    val openCount = tickets.count { it.status == "open" || it.status == "in_progress" || it.status == "pending_user" }
                     _homeState.value = SupportUiState.Success(openCount)
                 } else {
-                    _homeState.value = SupportUiState.Error("Failed to load tickets")
+                    _homeState.value = SupportUiState.Error("Failed to load tickets: ${response.code()}")
                 }
             } catch (e: Exception) {
                 _homeState.value = SupportUiState.Error(e.message ?: "Unknown error")
@@ -71,6 +70,16 @@ class SupportViewModel(application: Application) : AndroidViewModel(application)
         viewModelScope.launch {
             _createState.value = CreateTicketState.Loading
             try {
+                val userToken = TokenManager.getToken(context)
+                val refreshToken = TokenManager.getRefreshToken(context)
+                if (userToken != null && SupabaseClient.auth.currentSessionOrNull() == null) {
+                    try {
+                        SupabaseClient.auth.importAuthToken(userToken, refreshToken ?: "", autoRefresh = true)
+                    } catch (e: Exception) {
+                        // Continue
+                    }
+                }
+
                 val uploadedUrls = mutableListOf<String>()
 
                 // 1. Upload attachments to Supabase Storage
@@ -82,9 +91,10 @@ class SupportViewModel(application: Application) : AndroidViewModel(application)
                             val ext = getFileExtension(uri) ?: "bin"
                             val filename = "tickets/${System.currentTimeMillis()}-${UUID.randomUUID().toString().substring(0, 8)}.$ext"
                             
-                            bucket.upload(filename, bytes)
+                            bucket.upload(filename, bytes) {
+                                upsert = true
+                            }
                             
-                            // Get public URL
                             val publicUrl = bucket.publicUrl(filename)
                             uploadedUrls.add(publicUrl)
                         }
@@ -93,10 +103,10 @@ class SupportViewModel(application: Application) : AndroidViewModel(application)
 
                 // 2. Create the ticket via backend API
                 val request = CreateTicketRequest(
-                    subject = subject,
-                    category = category,
-                    initialMessage = description,
-                    priority = priority,
+                    subject = subject.trim(),
+                    category = category.trim(),
+                    initialMessage = description.trim(),
+                    priority = priority.ifEmpty { "medium" },
                     attachments = if (uploadedUrls.isNotEmpty()) uploadedUrls else null
                 )
 
@@ -104,7 +114,8 @@ class SupportViewModel(application: Application) : AndroidViewModel(application)
                 if (response.isSuccessful) {
                     _createState.value = CreateTicketState.Success
                 } else {
-                    _createState.value = CreateTicketState.Error("Failed to create ticket")
+                    val errorBody = response.errorBody()?.string()
+                    _createState.value = CreateTicketState.Error("Failed to create ticket [${response.code()}]: $errorBody")
                 }
             } catch (e: Exception) {
                 _createState.value = CreateTicketState.Error(e.message ?: "Failed to create ticket")
