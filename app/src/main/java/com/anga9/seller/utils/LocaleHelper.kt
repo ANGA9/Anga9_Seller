@@ -1,4 +1,4 @@
-﻿package com.anga9.seller.utils
+package com.anga9.seller.utils
 
 import android.content.Context
 import android.content.res.Configuration
@@ -51,14 +51,18 @@ object LocaleHelper {
             .getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
             .edit()
             .putString(KEY_LANGUAGE, languageCode)
-            .apply()
+            .commit()
     }
 
     private fun applyLocale(context: Context, languageCode: String): Context {
         val locale = Locale(languageCode)
         Locale.setDefault(locale)
-        val config = Configuration(context.resources.configuration)
+        val res = context.resources
+        val config = Configuration(res.configuration)
         config.setLocale(locale)
+        config.setLayoutDirection(locale)
+        @Suppress("DEPRECATION")
+        res.updateConfiguration(config, res.displayMetrics)
         return context.createConfigurationContext(config)
     }
 }

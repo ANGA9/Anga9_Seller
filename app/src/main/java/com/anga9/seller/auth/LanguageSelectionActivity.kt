@@ -32,6 +32,8 @@ class LanguageSelectionActivity : BaseActivity() {
     private lateinit var checkPunjabi: View
     private lateinit var checkTamil: View
 
+    private lateinit var tvLangTitle: android.widget.TextView
+    private lateinit var tvLangSubtitle: android.widget.TextView
     private lateinit var btnContinue: android.widget.TextView
 
     private val selectedColor by lazy { getColor(R.color.language_card_selected) }
@@ -44,10 +46,14 @@ class LanguageSelectionActivity : BaseActivity() {
 
         initViews()
         setupClickListeners()
-        selectLanguage("en") // Default
+        val currentLang = LocaleHelper.getSavedLanguage(this)
+        selectLanguage(if (currentLang.isNotEmpty()) currentLang else "en")
     }
 
     private fun initViews() {
+        tvLangTitle = findViewById(R.id.tvLangTitle)
+        tvLangSubtitle = findViewById(R.id.tvLangSubtitle)
+
         cardHindi = findViewById(R.id.cardHindi)
         cardEnglish = findViewById(R.id.cardEnglish)
         cardMarathi = findViewById(R.id.cardMarathi)
@@ -97,6 +103,40 @@ class LanguageSelectionActivity : BaseActivity() {
         }
         card.setCardBackgroundColor(selectedColor)
         check.visibility = View.VISIBLE
+
+        // Dynamically update screen texts in selected language
+        when (code) {
+            "hi" -> {
+                tvLangTitle.text = "अपनी भाषा चुनें"
+                tvLangSubtitle.text = "आगे बढ़ने के लिए अपनी पसंदीदा भाषा चुनें"
+                btnContinue.text = "आगे बढ़ें"
+            }
+            "gu" -> {
+                tvLangTitle.text = "તમારી ભાષા પસંદ કરો"
+                tvLangSubtitle.text = "આગળ વધવા માટે તમારી પસંદગીની ભાષા પસંદ કરો"
+                btnContinue.text = "આગળ વધો"
+            }
+            "mr" -> {
+                tvLangTitle.text = "तुमची भाषा निवडा"
+                tvLangSubtitle.text = "पुढे जाण्यासाठी तुमची पसंतीची भाषा निवडा"
+                btnContinue.text = "पुढे सुरू ठेवा"
+            }
+            "pa" -> {
+                tvLangTitle.text = "ਆਪਣੀ ਭਾਸ਼ਾ ਚੁਣੋ"
+                tvLangSubtitle.text = "ਅੱਗੇ ਵਧਣ ਲਈ ਆਪਣੀ ਪਸੰਦੀਦਾ ਭਾਸ਼ਾ ਚੁਣੋ"
+                btnContinue.text = "ਅੱਗੇ ਵਧੋ"
+            }
+            "ta" -> {
+                tvLangTitle.text = "உங்கள் மொழியை தேர்ந்தெடுக்கவும்"
+                tvLangSubtitle.text = "தொடர உங்கள் விருப்பமான மொழியைத் தேர்ந்தெடுக்கவும்"
+                btnContinue.text = "தொடரவும்"
+            }
+            else -> {
+                tvLangTitle.text = "Select Your Language"
+                tvLangSubtitle.text = "Choose your preferred language to continue"
+                btnContinue.text = "Continue"
+            }
+        }
     }
 
     private fun onContinue() {

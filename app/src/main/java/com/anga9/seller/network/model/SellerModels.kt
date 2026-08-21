@@ -10,6 +10,7 @@ data class SellerProfileWrapperResponse(
 
 data class SellerProfileResponse(
     @SerializedName("id") val id: String = "",
+    @SerializedName("user_id") val userId: String? = null,
     @SerializedName("auth_uid") val authUid: String? = null,
     @SerializedName("phone") val phone: String? = null,
     @SerializedName("email") val email: String? = null,

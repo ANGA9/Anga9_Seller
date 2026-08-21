@@ -58,7 +58,7 @@ class ProfileRepository(private val context: Context) {
         val json = prefs.getString("cached_seller_profile", null) ?: return null
         return try {
             val profile = gson.fromJson(json, SellerProfileResponse::class.java)
-            if (profile != null && (profile.id.isEmpty() || profile.id == currentUid || profile.authUid == currentUid)) {
+            if (profile != null && (profile.userId == currentUid || profile.id == currentUid || profile.authUid == currentUid || profile.phone == TokenManager.getUserPhone(context))) {
                 Result.success(profile)
             } else {
                 null

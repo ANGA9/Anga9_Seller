@@ -51,8 +51,10 @@ object TokenManager {
     }
 
     fun getToken(context: Context): String? {
+        val storedToken = getPrefs(context).getString(KEY_ACCESS_TOKEN, null)
+        if (storedToken.isNullOrEmpty()) return null
         val supabaseToken = com.anga9.seller.network.SupabaseClient.auth.currentAccessTokenOrNull()
-        return supabaseToken ?: getPrefs(context).getString(KEY_ACCESS_TOKEN, null)
+        return supabaseToken ?: storedToken
     }
 
     fun getRefreshToken(context: Context): String? {
@@ -64,7 +66,7 @@ object TokenManager {
             .putString(KEY_USER_ID, userId)
             .putString(KEY_USER_ROLE, role)
             .putString(KEY_USER_PHONE, phone)
-            .apply()
+            .commit()
     }
 
     fun getUserId(context: Context): String? =
@@ -76,17 +78,25 @@ object TokenManager {
     fun getUserPhone(context: Context): String? =
         getPrefs(context).getString(KEY_USER_PHONE, null)
 
-    fun isLoggedIn(context: Context): Boolean =
-        getToken(context) != null
+    fun isLoggedIn(context: Context): Boolean {
+        val token = getPrefs(context).getString(KEY_ACCESS_TOKEN, null)
+        val uid = getPrefs(context).getString(KEY_USER_ID, null)
+        return !token.isNullOrEmpty() && !uid.isNullOrEmpty()
+    }
 
     fun clearAll(context: Context) {
-        getPrefs(context).edit().clear().apply()
-        context.getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE).edit().clear().apply()
-        context.getSharedPreferences("seller_profile_cache", Context.MODE_PRIVATE).edit().clear().apply()
-        context.getSharedPreferences("anga9_seller_prefs", Context.MODE_PRIVATE).edit().clear().apply()
-        kotlinx.coroutines.GlobalScope.launch {
+        getPrefs(context).edit().clear().commit()
+        context.getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE).edit().clear().commit()
+        context.getSharedPreferences("seller_profile_cache", Context.MODE_PRIVATE).edit().clear().commit()
+        context.getSharedPreferences("anga9_seller_prefs", Context.MODE_PRIVATE).edit().clear().commit()
+        kotlinx.coroutines.GlobalScope.launch(kotlinx.coroutines.Dispatchers.IO) {
             try {
                 com.anga9.seller.network.SupabaseClient.auth.signOut()
+            } catch (e: Exception) {
+                // Ignore
+            }
+            try {
+                com.anga9.seller.network.SupabaseClient.auth.clearSession()
             } catch (e: Exception) {
                 // Ignore
             }

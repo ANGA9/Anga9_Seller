@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">ANGA9 Seller</string>
+    <string name="app_name">ANGA9 Seller Hub</string>
 
     <!-- Language Selection -->
     <string name="select_language">உங்கள் மொழியை தேர்ந்தெடுக்கவும்</string>

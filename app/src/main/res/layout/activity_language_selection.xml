@@ -24,8 +24,9 @@
             android:src="@drawable/ic_seller_logo"
             android:contentDescription="ANGA9 Logo" />
 
-        <!-- Title — hardcoded, NOT from @string/ (locale not set yet) -->
+        <!-- Title and Subtitle -->
         <TextView
+            android:id="@+id/tvLangTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -36,12 +37,13 @@
             android:textColor="#1C1B1F" />
 
         <TextView
+            android:id="@+id/tvLangSubtitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="6dp"
             android:layout_marginBottom="32dp"
-            android:text="Apni bhasha chunein"
+            android:text="Choose your preferred language"
             android:textSize="14sp"
             android:textColor="#6B7280" />
 

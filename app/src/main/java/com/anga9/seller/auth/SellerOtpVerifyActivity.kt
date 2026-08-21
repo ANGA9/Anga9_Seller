@@ -202,15 +202,23 @@ class SellerOtpVerifyActivity : BaseActivity() {
                         
                         profileResult.fold(
                             onSuccess = { profile ->
-                                val verificationStatus = profile.kycStatus // Maps to verification_status
+                                val verificationStatus = profile.kycStatus ?: user.kycStatus
+                                val isApproved = verificationStatus == "verified" ||
+                                        verificationStatus == "approved" ||
+                                        verificationStatus == Constants.KYC_APPROVED ||
+                                        profile.isVerified ||
+                                        user.role == "seller"
+
                                 when {
-                                    verificationStatus == "verified" -> {
+                                    isApproved -> {
+                                        getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE)
+                                            .edit().putString("cached_kyc_status", Constants.KYC_APPROVED).apply()
                                         startActivity(
                                             Intent(this@SellerOtpVerifyActivity, DashboardActivity::class.java)
                                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
                                         )
                                     }
-                                    verificationStatus == "pending" -> {
+                                    verificationStatus == "pending" || verificationStatus == Constants.KYC_PENDING -> {
                                         startActivity(
                                             Intent(this@SellerOtpVerifyActivity, KycStatusActivity::class.java)
                                                 .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -226,11 +234,34 @@ class SellerOtpVerifyActivity : BaseActivity() {
                                 finish()
                             },
                             onFailure = {
-                                // Profile doesn't exist or network error -> route to registration
-                                startActivity(
-                                    Intent(this@SellerOtpVerifyActivity, SellerRegistrationActivity::class.java)
-                                        .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                                )
+                                val userStatus = user.kycStatus
+                                val isApproved = userStatus == "verified" ||
+                                        userStatus == "approved" ||
+                                        userStatus == Constants.KYC_APPROVED ||
+                                        user.role == "seller"
+
+                                when {
+                                    isApproved -> {
+                                        getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE)
+                                            .edit().putString("cached_kyc_status", Constants.KYC_APPROVED).apply()
+                                        startActivity(
+                                            Intent(this@SellerOtpVerifyActivity, DashboardActivity::class.java)
+                                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                        )
+                                    }
+                                    userStatus == "pending" || userStatus == Constants.KYC_PENDING -> {
+                                        startActivity(
+                                            Intent(this@SellerOtpVerifyActivity, KycStatusActivity::class.java)
+                                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                        )
+                                    }
+                                    else -> {
+                                        startActivity(
+                                            Intent(this@SellerOtpVerifyActivity, SellerRegistrationActivity::class.java)
+                                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                                        )
+                                    }
+                                }
                                 finish()
                             }
                         )

@@ -32,11 +32,14 @@ class SellerApplication : Application() {
             com.anga9.seller.network.SupabaseClient.auth.sessionStatus.collect { status ->
                 when (status) {
                     is io.github.jan.supabase.auth.status.SessionStatus.Authenticated -> {
-                        com.anga9.seller.utils.TokenManager.saveTokens(
-                            this@SellerApplication,
-                            status.session.accessToken,
-                            status.session.refreshToken ?: ""
-                        )
+                        val uid = com.anga9.seller.utils.TokenManager.getUserId(this@SellerApplication)
+                        if (!uid.isNullOrEmpty()) {
+                            com.anga9.seller.utils.TokenManager.saveTokens(
+                                this@SellerApplication,
+                                status.session.accessToken,
+                                status.session.refreshToken ?: ""
+                            )
+                        }
                     }
                     else -> {}
                 }
