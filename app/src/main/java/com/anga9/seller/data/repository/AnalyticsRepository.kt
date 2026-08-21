@@ -60,7 +60,7 @@ class AnalyticsRepository(private val context: Context) {
                 netEarnings = earnings?.total ?: 0.0
             )))
         } catch (e: Exception) {
-            emit(Resource.Error("Network error: ${e.message}"))
+            emit(Resource.Error(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to load analytics")))
         }
     }
 
@@ -85,7 +85,7 @@ class AnalyticsRepository(private val context: Context) {
 
             emit(Resource.Success(chartPoints))
         } catch (e: Exception) {
-            emit(Resource.Error("Network error: ${e.message}"))
+            emit(Resource.Error(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to load revenue chart")))
         }
     }
 
@@ -132,7 +132,7 @@ class AnalyticsRepository(private val context: Context) {
 
             emit(Resource.Success(topProducts))
         } catch (e: Exception) {
-            emit(Resource.Error("Network error: ${e.message}"))
+            emit(Resource.Error(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to load top products")))
         }
     }
 

@@ -127,7 +127,7 @@ class SellerDisputeDetailActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 progressBar.visibility = View.GONE
                 Toast.makeText(this@SellerDisputeDetailActivity,
-                    "Network error: ${e.message}", Toast.LENGTH_SHORT).show()
+                    com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to load dispute"), Toast.LENGTH_SHORT).show()
             }
         }
     }

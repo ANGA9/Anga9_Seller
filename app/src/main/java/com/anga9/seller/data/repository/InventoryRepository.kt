@@ -53,7 +53,7 @@ class InventoryRepository(private val context: Context) {
                 emit(Resource.Error("Failed to get stock: ${response.code()}"))
             }
         } catch (e: Exception) {
-            emit(Resource.Error("Network error: ${e.message}"))
+            emit(Resource.Error(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to get stock")))
         }
     }
 
@@ -69,7 +69,6 @@ class InventoryRepository(private val context: Context) {
                 request = UpdateStockRequest(
                     quantity = newQuantity,
                     lowStockThreshold = threshold,
-                    lowStockThresholdCamel = threshold,
                     stock = newQuantity,
                     reason = reason
                 )
@@ -77,27 +76,24 @@ class InventoryRepository(private val context: Context) {
             if (response.isSuccessful) {
                 val json = response.body()
                 val stockObj: InventoryResponse? = when {
-                    json != null && json.isJsonArray && json.asJsonArray.size() > 0 -> {
+                    json?.isJsonArray == true && json.asJsonArray.size() > 0 -> {
                         gson.fromJson(json.asJsonArray[0], InventoryResponse::class.java)
                     }
-                    json != null && json.isJsonObject -> {
+                    json?.isJsonObject == true -> {
                         gson.fromJson(json.asJsonObject, InventoryResponse::class.java)
                     }
                     else -> null
                 }
-                Result.success(
-                    stockObj ?: InventoryResponse(
-                        productId = productId,
-                        quantity = newQuantity,
-                        stock = newQuantity,
-                        lowStockThreshold = threshold
-                    )
-                )
+                if (stockObj != null) {
+                    Result.success(stockObj)
+                } else {
+                    Result.success(InventoryResponse(productId = productId, quantity = newQuantity))
+                }
             } else {
                 Result.failure(Exception("Failed to update stock: ${response.code()}"))
             }
         } catch (e: Exception) {
-            Result.failure(Exception("Network error: ${e.message}"))
+            Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to update stock")))
         }
     }
 
@@ -111,7 +107,7 @@ class InventoryRepository(private val context: Context) {
                 emit(Resource.Error("Failed to get low stock: ${response.code()}"))
             }
         } catch (e: Exception) {
-            emit(Resource.Error("Network error: ${e.message}"))
+            emit(Resource.Error(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to get low stock")))
         }
     }
 
@@ -121,7 +117,7 @@ class InventoryRepository(private val context: Context) {
             if (response.isSuccessful) Result.success(true)
             else Result.failure(Exception("Bulk update failed: ${response.code()}"))
         } catch (e: Exception) {
-            Result.failure(Exception("Network error: ${e.message}"))
+            Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Bulk update failed")))
         }
     }
 }

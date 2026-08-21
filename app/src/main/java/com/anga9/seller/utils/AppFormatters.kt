@@ -83,4 +83,26 @@ object AppFormatters {
             else -> StatusBadgeConfig(s.replaceFirstChar { it.uppercase() }, 0xFF4B5563.toInt(), 0xFFF3F4F6.toInt())
         }
     }
+
+    /**
+     * Sanitizes raw exceptions, socket dumps, and DNS failures into clean human-friendly messages.
+     * Prevents raw "Unable to resolve host" dumps from displaying on user screens.
+     */
+    fun getHumanErrorMessage(e: Throwable?, defaultMsg: String = "Unable to complete request"): String {
+        if (e == null) return defaultMsg
+        val msg = e.message ?: ""
+        if (e is java.net.UnknownHostException || e is java.net.SocketTimeoutException || e is java.net.ConnectException ||
+            e is java.io.IOException || msg.contains("Unable to resolve host", ignoreCase = true) ||
+            msg.contains("timeout", ignoreCase = true) || msg.contains("Failed to connect", ignoreCase = true) ||
+            msg.contains("Network error", ignoreCase = true)) {
+            return "No internet connection. Please check your network."
+        }
+        if (msg.contains("401") || msg.contains("403") || msg.contains("Unauthorized", ignoreCase = true)) {
+            return "Session expired. Please log in again."
+        }
+        if (msg.contains("500") || msg.contains("502") || msg.contains("503") || msg.contains("504")) {
+            return "Server is temporarily busy. Please try again shortly."
+        }
+        return if (msg.length > 80) defaultMsg else msg.ifEmpty { defaultMsg }
+    }
 }

@@ -59,7 +59,7 @@ class MyProductsActivity : AppCompatActivity() {
     private lateinit var btnEmptyAction: Button
     
     // Offline Banner
-    private lateinit var tvOfflineBanner: TextView
+    private var tvOfflineBanner: View? = null
     
     private lateinit var fabAddProduct: FloatingActionButton
 
@@ -110,7 +110,7 @@ class MyProductsActivity : AppCompatActivity() {
         tvEmptyDesc = findViewById(R.id.tvEmptyDesc)
         btnEmptyAction = findViewById(R.id.btnEmptyAction)
         
-        tvOfflineBanner = findViewById(R.id.tvOfflineBanner)
+        tvOfflineBanner = findViewById(R.id.layoutOfflineBanner) ?: findViewById(R.id.tvOfflineBanner)
         fabAddProduct = findViewById(R.id.fabAddProduct)
 
         btnBack.setOnClickListener { finish() }

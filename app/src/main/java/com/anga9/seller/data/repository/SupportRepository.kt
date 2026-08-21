@@ -1,4 +1,4 @@
-﻿package com.anga9.seller.data.repository
+package com.anga9.seller.data.repository
 
 import android.content.Context
 import android.net.Uri
@@ -60,7 +60,7 @@ class SupportRepository(private val context: Context) {
             }
         } catch (e: Exception) {
             Log.e(TAG, "createTicket error", e)
-            Result.failure(Exception("Network error: ${e.message}"))
+            Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to create ticket")))
         }
     }
 
@@ -74,7 +74,7 @@ class SupportRepository(private val context: Context) {
             }
         } catch (e: Exception) {
             Log.e(TAG, "getTickets error", e)
-            Result.failure(Exception("Network error: ${e.message}"))
+            Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to load tickets")))
         }
     }
 
@@ -95,7 +95,7 @@ class SupportRepository(private val context: Context) {
             }
         } catch (e: Exception) {
             Log.e(TAG, "getTicketById error", e)
-            Result.failure(Exception("Network error: ${e.message}"))
+            Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to load ticket details")))
         }
     }
 
@@ -109,7 +109,7 @@ class SupportRepository(private val context: Context) {
             }
         } catch (e: Exception) {
             Log.e(TAG, "replyToTicket error", e)
-            Result.failure(Exception("Network error: ${e.message}"))
+            Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to send reply")))
         }
     }
 
@@ -127,7 +127,7 @@ class SupportRepository(private val context: Context) {
             }
         } catch (e: Exception) {
             Log.e(TAG, "updateTicketStatus error", e)
-            Result.failure(Exception("Network error: ${e.message}"))
+            Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to update ticket status")))
         }
     }
 
@@ -140,7 +140,7 @@ class SupportRepository(private val context: Context) {
             else Result.failure(Exception("Failed to submit rating: ${response.code()}"))
         } catch (e: Exception) {
             Log.e(TAG, "rateTicket error", e)
-            Result.failure(Exception("Network error: ${e.message}"))
+            Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to submit rating")))
         }
     }
 
@@ -243,7 +243,7 @@ class SupportRepository(private val context: Context) {
             }
         } catch (e: Exception) {
             Log.e(TAG, "getArticles error", e)
-            Result.failure(Exception("Network error: ${e.message}"))
+            Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to load articles")))
         }
     }
 
@@ -260,7 +260,7 @@ class SupportRepository(private val context: Context) {
             }
         } catch (e: Exception) {
             Log.e(TAG, "getArticleBySlug error", e)
-            Result.failure(Exception("Network error: ${e.message}"))
+            Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to load article")))
         }
     }
 
@@ -271,7 +271,7 @@ class SupportRepository(private val context: Context) {
             else Result.failure(Exception("Failed to submit feedback: ${response.code()}"))
         } catch (e: Exception) {
             Log.e(TAG, "rateArticle error", e)
-            Result.failure(Exception("Network error: ${e.message}"))
+            Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to submit feedback")))
         }
     }
 }

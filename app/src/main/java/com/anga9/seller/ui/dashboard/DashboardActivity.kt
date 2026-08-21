@@ -80,9 +80,11 @@ class DashboardActivity : AppCompatActivity() {
     private lateinit var tvDrawerSellerId: TextView
     private lateinit var ivDrawerVerified: ImageView
 
-    // Banners
+    // Banners & Offline Fullscreen
     private lateinit var tvOfflineBanner: View
     private lateinit var cvOnboardingBanner: MaterialCardView
+    private lateinit var layoutOfflineFullscreen: View
+    private lateinit var btnOfflineRetry: MaterialButton
 
     // Time Toggle
     private lateinit var toggleTimeRange: MaterialButtonToggleGroup
@@ -167,9 +169,21 @@ class DashboardActivity : AppCompatActivity() {
         tvDrawerSellerId = findViewById(R.id.tvDrawerSellerId)
         ivDrawerVerified = findViewById(R.id.ivDrawerVerified)
 
-        // Banners
+        // Banners & Fullscreen Offline
         tvOfflineBanner = findViewById(R.id.layoutOfflineBanner)
         cvOnboardingBanner = findViewById(R.id.layoutOnboarding)
+        layoutOfflineFullscreen = findViewById(R.id.layoutOfflineFullscreen)
+        btnOfflineRetry = layoutOfflineFullscreen.findViewById(R.id.btnOfflineRetry)
+
+        btnOfflineRetry.setOnClickListener {
+            btnOfflineRetry.isEnabled = false
+            btnOfflineRetry.text = "Checking..."
+            viewModel.refresh()
+            btnOfflineRetry.postDelayed({
+                btnOfflineRetry.isEnabled = true
+                btnOfflineRetry.text = "Retry Connection"
+            }, 1200)
+        }
 
         // Time Range
         toggleTimeRange = findViewById(R.id.toggleTimeRange)
@@ -396,12 +410,20 @@ class DashboardActivity : AppCompatActivity() {
         lifecycleScope.launch {
             networkMonitor.isConnected.collectLatest { isConnected ->
                 if (!isConnected) {
-                    tvOfflineBanner.visibility = View.VISIBLE
-                } else {
-                    if (tvOfflineBanner.visibility == View.VISIBLE) {
+                    if (viewModel.dashboardState.value !is UiState.Success) {
+                        layoutOfflineFullscreen.visibility = View.VISIBLE
+                        homeContent.visibility = View.GONE
                         tvOfflineBanner.visibility = View.GONE
-                        viewModel.refresh()
+                    } else {
+                        layoutOfflineFullscreen.visibility = View.GONE
+                        homeContent.visibility = View.VISIBLE
+                        tvOfflineBanner.visibility = View.VISIBLE
                     }
+                } else {
+                    layoutOfflineFullscreen.visibility = View.GONE
+                    homeContent.visibility = View.VISIBLE
+                    tvOfflineBanner.visibility = View.GONE
+                    viewModel.refresh()
                 }
             }
         }
@@ -420,11 +442,16 @@ class DashboardActivity : AppCompatActivity() {
                     }
                     is UiState.Success -> {
                         swipeRefresh.isRefreshing = false
+                        layoutOfflineFullscreen.visibility = View.GONE
+                        homeContent.visibility = View.VISIBLE
                         bindDashboardStats(state.data)
                     }
                     is UiState.Error -> {
                         swipeRefresh.isRefreshing = false
-                        if (networkMonitor.isOnline()) {
+                        if (!networkMonitor.isOnline() && viewModel.dashboardState.value !is UiState.Success) {
+                            layoutOfflineFullscreen.visibility = View.VISIBLE
+                            homeContent.visibility = View.GONE
+                        } else if (networkMonitor.isOnline()) {
                             Toast.makeText(this@DashboardActivity, state.message, Toast.LENGTH_SHORT).show()
                         }
                     }

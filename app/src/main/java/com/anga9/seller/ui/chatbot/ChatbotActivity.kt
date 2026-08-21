@@ -1,4 +1,4 @@
-﻿package com.anga9.seller.ui.chatbot
+package com.anga9.seller.ui.chatbot
 
 import android.content.Intent
 import android.os.Bundle
@@ -35,7 +35,7 @@ class ChatbotActivity : AppCompatActivity() {
     private lateinit var btnBack: ImageButton
     private lateinit var btnEscalate: TextView
     private lateinit var progressBar: ProgressBar
-    private lateinit var tvOfflineBanner: TextView
+    private lateinit var tvOfflineBanner: View
     private lateinit var tvError: TextView
     private lateinit var quickRepliesContainer: LinearLayout
     private lateinit var confirmationCard: CardView
@@ -62,7 +62,7 @@ class ChatbotActivity : AppCompatActivity() {
         btnBack = findViewById(R.id.btnBack)
         btnEscalate = findViewById(R.id.btnEscalate)
         progressBar = findViewById(R.id.progressBar)
-        tvOfflineBanner = findViewById(R.id.tvOfflineBanner)
+        tvOfflineBanner = findViewById(R.id.layoutOfflineBanner) ?: findViewById(R.id.tvOfflineBanner)
         tvError = findViewById(R.id.tvError)
         quickRepliesContainer = findViewById(R.id.quickRepliesContainer)
         confirmationCard = findViewById(R.id.confirmationCard)

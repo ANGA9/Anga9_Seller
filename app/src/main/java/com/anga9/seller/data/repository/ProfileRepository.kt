@@ -42,7 +42,7 @@ class ProfileRepository(private val context: Context) {
                 getCachedProfile() ?: Result.failure(Exception("Failed to get profile: ${response.code()}"))
             }
         } catch (e: Exception) {
-            getCachedProfile() ?: Result.failure(Exception("Network error: ${e.message}"))
+            getCachedProfile() ?: Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to load profile")))
         }
     }
 
@@ -68,7 +68,7 @@ class ProfileRepository(private val context: Context) {
                 Result.failure(Exception("Failed to create profile: ${response.code()}"))
             }
         } catch (e: Exception) {
-            Result.failure(Exception("Network error: ${e.message}"))
+            Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to create profile")))
         }
     }
 
@@ -84,7 +84,7 @@ class ProfileRepository(private val context: Context) {
                 Result.failure(Exception("Failed to update profile: ${response.code()}"))
             }
         } catch (e: Exception) {
-            Result.failure(Exception("Network error: ${e.message}"))
+            Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to update profile")))
         }
     }
 
@@ -100,7 +100,7 @@ class ProfileRepository(private val context: Context) {
                 Result.failure(Exception("KYC submission failed: ${response.code()}"))
             }
         } catch (e: Exception) {
-            Result.failure(Exception("Network error: ${e.message}"))
+            Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "KYC submission failed")))
         }
     }
 
@@ -115,7 +115,7 @@ class ProfileRepository(private val context: Context) {
                 Result.failure(Exception("Failed to get stats: ${response.code()}"))
             }
         } catch (e: Exception) {
-            Result.failure(Exception("Network error: ${e.message}"))
+            Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to get stats")))
         }
     }
 
@@ -135,7 +135,7 @@ class ProfileRepository(private val context: Context) {
                 Result.failure(Exception(errorMsg))
             }
         } catch (e: Exception) {
-            Result.failure(Exception("Network error: ${e.message}"))
+            Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to delete account")))
         }
     }
 

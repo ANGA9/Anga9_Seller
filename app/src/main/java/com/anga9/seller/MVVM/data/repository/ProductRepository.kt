@@ -38,15 +38,37 @@ class ProductRepository(private val context: Context) {
 
     private val httpClient = OkHttpClient()
 
+    private val gson = com.google.gson.Gson()
+    private val prefs = context.getSharedPreferences("seller_products_cache", Context.MODE_PRIVATE)
+
     /** Get all products for this seller. Optionally filter by status. */
     fun getMyProducts(statusFilter: String = "all"): Flow<Resource<List<SellerProductResponse>>> = flow {
-        emit(Resource.Loading())
-        try {
-            // Phase 4 (Multi-Brand): use effective seller ID so child brand products load correctly
-            val sellerId = TokenManager.getEffectiveSellerId(context) ?: run {
-                emit(Resource.Error("Not logged in"))
-                return@flow
+        val sellerId = TokenManager.getEffectiveSellerId(context) ?: run {
+            emit(Resource.Error("Not logged in"))
+            return@flow
+        }
+        val cacheKey = "products_${sellerId}_$statusFilter"
+
+        // 1. Emit cached products if present
+        var cachedProducts: List<SellerProductResponse>? = null
+        val cachedJson = prefs.getString(cacheKey, null)
+        if (!cachedJson.isNullOrBlank()) {
+            try {
+                val type = object : com.google.gson.reflect.TypeToken<List<SellerProductResponse>>() {}.type
+                cachedProducts = gson.fromJson(cachedJson, type)
+                if (!cachedProducts.isNullOrEmpty()) {
+                    emit(Resource.Success(cachedProducts))
+                }
+            } catch (e: Exception) {
+                // Ignore cache parsing errors
             }
+        }
+
+        if (cachedProducts == null) {
+            emit(Resource.Loading())
+        }
+
+        try {
             val status = if (statusFilter == "all") null else statusFilter
             val response = apiService.getSellerProducts(
                 sellerId = sellerId,
@@ -55,12 +77,21 @@ class ProductRepository(private val context: Context) {
                 limit = 100
             )
             if (response.isSuccessful) {
-                emit(Resource.Success(response.body()?.getList() ?: emptyList()))
+                val products = response.body()?.getList() ?: emptyList()
+                try {
+                    prefs.edit().putString(cacheKey, gson.toJson(products)).apply()
+                } catch (e: Exception) {
+                    // Ignore
+                }
+                emit(Resource.Success(products))
             } else {
+                if (cachedProducts != null) return@flow
                 emit(Resource.Error("Failed to load products: ${response.code()}"))
             }
         } catch (e: Exception) {
-            emit(Resource.Error("Network error: ${e.message}"))
+            if (cachedProducts == null) {
+                emit(Resource.Error(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to load products")))
+            }
         }
     }
     /** Get all categories. */
@@ -74,7 +105,7 @@ class ProductRepository(private val context: Context) {
                 emit(Resource.Error("Failed to load categories: ${response.code()}"))
             }
         } catch (e: Exception) {
-            emit(Resource.Error("Network error: ${e.message}"))
+            emit(Resource.Error(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to load categories")))
         }
     }
 
@@ -91,7 +122,7 @@ class ProductRepository(private val context: Context) {
                 emit(Resource.Error("Failed to get product: ${response.code()}"))
             }
         } catch (e: Exception) {
-            emit(Resource.Error("Network error: ${e.message}"))
+            emit(Resource.Error(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to get product")))
         }
     }
 
@@ -107,7 +138,7 @@ class ProductRepository(private val context: Context) {
                 Result.failure(Exception("Failed to create product: ${response.code()}"))
             }
         } catch (e: Exception) {
-            Result.failure(Exception("Network error: ${e.message}"))
+            Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to create product")))
         }
     }
 
@@ -123,7 +154,7 @@ class ProductRepository(private val context: Context) {
                 Result.failure(Exception("Failed to update product: ${response.code()}"))
             }
         } catch (e: Exception) {
-            Result.failure(Exception("Network error: ${e.message}"))
+            Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to update product")))
         }
     }
     
@@ -146,7 +177,7 @@ class ProductRepository(private val context: Context) {
                 Result.failure(Exception(message))
             }
         } catch (e: Exception) {
-            Result.failure(Exception("Network error: ${e.message}"))
+            Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Upload failed")))
         }
     }
 
@@ -157,7 +188,7 @@ class ProductRepository(private val context: Context) {
             if (response.isSuccessful) Result.success(true)
             else Result.failure(Exception("Failed to delete product: ${response.code()}"))
         } catch (e: Exception) {
-            Result.failure(Exception("Network error: ${e.message}"))
+            Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to delete product")))
         }
     }
 

@@ -209,7 +209,12 @@ class MyOrdersActivity : AppCompatActivity() {
                 }
                 is Resource.Error -> {
                     progressBar.visibility = View.GONE
-                    Toast.makeText(this, result.message ?: "Failed to load orders", Toast.LENGTH_SHORT).show()
+                    if (adapter.currentList.isEmpty()) {
+                        tvEmpty.visibility = View.VISIBLE
+                        tvEmpty.text = "No internet connection\nPull down to retry"
+                    }
+                    val msg = result.message ?: "Unable to load orders"
+                    Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
                 }
             }
         }

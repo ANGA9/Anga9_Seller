@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/layoutOfflineFullscreen"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingHorizontal="24dp"
+    android:paddingVertical="32dp"
+    android:visibility="gone">
+
+    <!-- 3D Aesthetic Illustration -->
+    <ImageView
+        android:id="@+id/ivOfflineIllustration"
+        android:layout_width="220dp"
+        android:layout_height="220dp"
+        android:src="@drawable/ill_no_internet"
+        android:scaleType="fitCenter"
+        android:contentDescription="No Internet Connection" />
+
+    <!-- Title -->
+    <TextView
+        android:id="@+id/tvOfflineTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="No Internet Connection"
+        android:textColor="@color/seller_text_primary"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:gravity="center" />
+
+    <!-- Subtitle -->
+    <TextView
+        android:id="@+id/tvOfflineSubtitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginHorizontal="16dp"
+        android:gravity="center"
+        android:lineSpacingExtra="3dp"
+        android:text="Please check your Wi-Fi or mobile network and tap retry to load your dashboard."
+        android:textColor="@color/seller_text_secondary"
+        android:textSize="14sp" />
+
+    <!-- Retry Button -->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnOfflineRetry"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="28dp"
+        android:paddingHorizontal="32dp"
+        android:text="Retry Connection"
+        android:textAllCaps="false"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        app:backgroundTint="@color/seller_primary"
+        app:cornerRadius="12dp"
+        app:elevation="0dp"
+        app:icon="@drawable/ic_refresh"
+        app:iconGravity="textStart"
+        app:iconPadding="8dp"
+        app:iconTint="@color/white" />
+
+    <!-- Status Helper Footer -->
+    <TextView
+        android:id="@+id/tvOfflineAutoSync"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="Auto-syncs as soon as connection is restored"
+        android:textColor="@color/seller_text_muted"
+        android:textSize="12sp" />
+
+</LinearLayout>
