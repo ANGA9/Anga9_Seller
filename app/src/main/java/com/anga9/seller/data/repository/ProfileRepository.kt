@@ -36,10 +36,17 @@ class ProfileRepository(private val context: Context) {
                     prefs.edit().putString("cached_seller_profile", gson.toJson(profile)).apply()
                     Result.success(profile)
                 } else {
-                    getCachedProfile() ?: Result.failure(Exception("Empty profile in response"))
+                    clearCache()
+                    Result.failure(Exception("Seller profile not found"))
                 }
             } else {
-                getCachedProfile() ?: Result.failure(Exception("Failed to get profile: ${response.code()}"))
+                val code = response.code()
+                if (code == 404 || code == 401 || code == 403) {
+                    clearCache()
+                    Result.failure(Exception("Seller profile not found"))
+                } else {
+                    getCachedProfile() ?: Result.failure(Exception("Failed to get profile: $code"))
+                }
             }
         } catch (e: Exception) {
             getCachedProfile() ?: Result.failure(Exception(com.anga9.seller.utils.AppFormatters.getHumanErrorMessage(e, "Failed to load profile")))
@@ -47,13 +54,22 @@ class ProfileRepository(private val context: Context) {
     }
 
     private fun getCachedProfile(): Result<SellerProfileResponse>? {
+        val currentUid = TokenManager.getUserId(context) ?: return null
         val json = prefs.getString("cached_seller_profile", null) ?: return null
         return try {
             val profile = gson.fromJson(json, SellerProfileResponse::class.java)
-            if (profile != null) Result.success(profile) else null
+            if (profile != null && (profile.id.isEmpty() || profile.id == currentUid || profile.authUid == currentUid)) {
+                Result.success(profile)
+            } else {
+                null
+            }
         } catch (e: Exception) {
             null
         }
+    }
+
+    fun clearCache() {
+        prefs.edit().clear().apply()
     }
 
     suspend fun createSellerProfile(request: UpdateSellerProfileRequest): Result<SellerProfileResponse> {

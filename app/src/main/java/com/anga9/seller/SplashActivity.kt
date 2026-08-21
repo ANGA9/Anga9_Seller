@@ -81,13 +81,23 @@ class SplashActivity : AppCompatActivity() {
                             }
                         },
                         onFailure = { error ->
-                            // Never auto-logout the user, just route to Dashboard
-                            // and let it handle offline or background refresh state
-                            goTo(DashboardActivity::class.java)
+                            val cachedKyc = getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE)
+                                .getString("cached_kyc_status", null)
+                            if (cachedKyc == "verified" || cachedKyc == Constants.KYC_APPROVED) {
+                                goTo(DashboardActivity::class.java)
+                            } else {
+                                goTo(KycStatusActivity::class.java)
+                            }
                         }
                     )
                 } catch (e: Exception) {
-                    goTo(DashboardActivity::class.java)
+                    val cachedKyc = getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE)
+                        .getString("cached_kyc_status", null)
+                    if (cachedKyc == "verified" || cachedKyc == Constants.KYC_APPROVED) {
+                        goTo(DashboardActivity::class.java)
+                    } else {
+                        goTo(KycStatusActivity::class.java)
+                    }
                 }
             }
         }

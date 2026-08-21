@@ -81,6 +81,9 @@ object TokenManager {
 
     fun clearAll(context: Context) {
         getPrefs(context).edit().clear().apply()
+        context.getSharedPreferences(Constants.PREFS_NAME, Context.MODE_PRIVATE).edit().clear().apply()
+        context.getSharedPreferences("seller_profile_cache", Context.MODE_PRIVATE).edit().clear().apply()
+        context.getSharedPreferences("anga9_seller_prefs", Context.MODE_PRIVATE).edit().clear().apply()
         kotlinx.coroutines.GlobalScope.launch {
             try {
                 com.anga9.seller.network.SupabaseClient.auth.signOut()

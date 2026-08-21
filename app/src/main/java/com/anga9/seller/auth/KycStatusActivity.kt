@@ -87,6 +87,50 @@ class KycStatusActivity : BaseActivity() {
             viewModel.signOut()
             goToLogin()
         }
+
+        checkKycStatus(showToastOnPending = false)
+    }
+
+    private fun checkKycStatus(showToastOnPending: Boolean = false) {
+        lifecycleScope.launch {
+            try {
+                val profileRepo = ProfileRepository(applicationContext)
+                val result = profileRepo.getSellerProfile()
+                result.fold(
+                    onSuccess = { profile ->
+                        val status = profile.kycStatus ?: "pending"
+                        runOnUiThread { updateUi(status, profile.rejectionReason) }
+                        if (status == Constants.KYC_APPROVED || status == "verified") {
+                            getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE)
+                                .edit().putString("cached_kyc_status", Constants.KYC_APPROVED).apply()
+                            startActivity(
+                                Intent(this@KycStatusActivity, DashboardActivity::class.java)
+                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            )
+                            finish()
+                        } else if (showToastOnPending) {
+                            Toast.makeText(
+                                this@KycStatusActivity,
+                                "Account is currently under review by admin. Please check back soon.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    },
+                    onFailure = {
+                        runOnUiThread { updateUi("pending", null) }
+                        if (showToastOnPending) {
+                            Toast.makeText(
+                                this@KycStatusActivity,
+                                "Account is currently under review by admin.",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                )
+            } catch (e: Exception) {
+                runOnUiThread { updateUi("pending", null) }
+            }
+        }
     }
 
     private fun initViews() {
@@ -108,8 +152,8 @@ class KycStatusActivity : BaseActivity() {
 
     private fun updateUi(status: String, rejectionReason: String?) {
         when (status) {
-            Constants.KYC_APPROVED -> showApprovedState()
-            Constants.KYC_REJECTED -> showRejectedState(rejectionReason)
+            Constants.KYC_APPROVED, "verified" -> showApprovedState()
+            Constants.KYC_REJECTED, "rejected" -> showRejectedState(rejectionReason)
             else -> showPendingState()
         }
     }
@@ -124,7 +168,7 @@ class KycStatusActivity : BaseActivity() {
         tvStatusTitle.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
         tvStatusMessage.text = getString(R.string.kyc_time_info)
 
-        // Stepper  step 2 active (orange), step 3 inactive
+        // Stepper — step 2 active (orange), step 3 inactive
         tvStep2Circle.setBackgroundResource(R.drawable.stepper_circle_active)
         tvStep2Circle.setTextColor(ContextCompat.getColor(this, android.R.color.white))
         tvStep2Label.setTextColor(ContextCompat.getColor(this, R.color.warning_orange))
@@ -137,12 +181,12 @@ class KycStatusActivity : BaseActivity() {
         tvSubmittedInfo.visibility = View.VISIBLE
         layoutRejectionReason.visibility = View.GONE
 
-        // Button
-        btnAction.text = getString(R.string.explore_dashboard)
+        // Button — Check Status (Dashboard blocked until admin approves)
+        btnAction.text = "Check Status"
+        tvLimitedAccess.text = "Dashboard will unlock once approved by admin"
         tvLimitedAccess.visibility = View.VISIBLE
         btnAction.setOnClickListener {
-            // Allow limited access to dashboard
-            startActivity(Intent(this, DashboardActivity::class.java))
+            checkKycStatus(showToastOnPending = true)
         }
     }
 
@@ -156,13 +200,13 @@ class KycStatusActivity : BaseActivity() {
         tvStatusTitle.setTextColor(ContextCompat.getColor(this, R.color.success_green))
         tvStatusMessage.text = getString(R.string.kyc_approved_msg)
 
-        // Stepper  all 3 steps green
+        // Stepper — all 3 steps green
         tvStep2Circle.setBackgroundResource(R.drawable.stepper_circle_active)
-        tvStep2Circle.text = ""
+        tvStep2Circle.text = "✓"
         tvStep2Circle.setTextColor(ContextCompat.getColor(this, android.R.color.white))
         tvStep2Label.setTextColor(ContextCompat.getColor(this, R.color.success_green))
         tvStep3Circle.setBackgroundResource(R.drawable.stepper_circle_active)
-        tvStep3Circle.text = ""
+        tvStep3Circle.text = "✓"
         tvStep3Circle.setTextColor(ContextCompat.getColor(this, android.R.color.white))
         tvStep3Label.setTextColor(ContextCompat.getColor(this, R.color.success_green))
         stepLine2.setBackgroundColor(ContextCompat.getColor(this, R.color.success_green))
@@ -171,13 +215,12 @@ class KycStatusActivity : BaseActivity() {
         tvSubmittedInfo.visibility = View.GONE
         layoutRejectionReason.visibility = View.GONE
 
-        // Button  navigate to full dashboard
+        // Button — navigate to full dashboard
         btnAction.text = getString(R.string.start_selling)
         tvLimitedAccess.visibility = View.GONE
         btnAction.setOnClickListener {
-            // Save KYC approved status to SharedPrefs so Dashboard knows immediately
-            getSharedPreferences(com.anga9.seller.utils.Constants.PREFS_NAME, MODE_PRIVATE)
-                .edit().putString("cached_kyc_status", com.anga9.seller.utils.Constants.KYC_APPROVED).apply()
+            getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE)
+                .edit().putString("cached_kyc_status", Constants.KYC_APPROVED).apply()
             val intent = Intent(this, DashboardActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)

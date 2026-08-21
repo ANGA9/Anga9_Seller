@@ -233,11 +233,11 @@ class MyProductsActivity : BaseActivity() {
                         true
                     }
                     2 -> {
-                        Toast.makeText(this, "Add Brand clicked", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Add Brand feature coming soon", Toast.LENGTH_SHORT).show()
                         true
                     }
                     3 -> {
-                        Toast.makeText(this, "Export list clicked", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this, "Export list coming soon", Toast.LENGTH_SHORT).show()
                         true
                     }
                     else -> false
