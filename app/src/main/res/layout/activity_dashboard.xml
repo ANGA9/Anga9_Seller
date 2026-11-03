@@ -365,16 +365,11 @@
             android:visibility="gone" />
 
         <!-- Bottom Navigation (4 Core Tabs) -->
-        <com.google.android.material.bottomnavigation.BottomNavigationView
+        <com.anga9.seller.ui.views.FlipkartBottomBar
             android:id="@+id/bottomNavigation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:background="#FFFFFF"
-            app:menu="@menu/menu_seller_bottom_nav"
-            app:itemIconTint="@color/bottom_nav_color"
-            app:itemTextColor="@color/bottom_nav_color"
-            app:labelVisibilityMode="labeled" />
+            android:layout_gravity="bottom" />
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 

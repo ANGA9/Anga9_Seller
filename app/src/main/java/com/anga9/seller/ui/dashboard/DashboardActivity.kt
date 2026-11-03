@@ -47,7 +47,7 @@ import com.anga9.seller.utils.AppFormatters
 import com.anga9.seller.utils.Constants
 import com.anga9.seller.utils.TokenManager
 import com.anga9.seller.utils.UiState
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.anga9.seller.ui.views.FlipkartBottomBar
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.card.MaterialCardView
@@ -61,7 +61,7 @@ class DashboardActivity : BaseActivity() {
 
     // Root Drawer & Navigation
     private lateinit var drawerLayout: DrawerLayout
-    private lateinit var bottomNavigation: BottomNavigationView
+    private lateinit var bottomNavigation: FlipkartBottomBar
 
     // Layout views
     private lateinit var swipeRefresh: SwipeRefreshLayout
