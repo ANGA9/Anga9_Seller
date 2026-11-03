@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFFFF"
@@ -10,20 +11,33 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:paddingLeft="24dp"
-        android:paddingRight="24dp"
-        android:paddingTop="24dp"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
+        android:paddingTop="20dp"
         android:paddingBottom="32dp">
+
+        <!-- Top Navigation / Back button -->
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="6dp"
+            android:src="@drawable/ic_back"
+            android:contentDescription="Back"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            app:tint="#1A1A2E"
+            android:layout_marginBottom="24dp" />
 
         <!-- Title -->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="40dp"
-            android:text="@string/otp_sent_to"
-            android:textSize="22sp"
+            android:text="Verify OTP"
+            android:textSize="26sp"
             android:textStyle="bold"
-            android:textColor="#1C1B1F" />
+            android:textColor="#1A1A2E" />
 
         <!-- Phone + Change row -->
         <LinearLayout
@@ -31,17 +45,25 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center_vertical"
-            android:layout_marginTop="6dp"
-            android:layout_marginBottom="40dp">
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="36dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Code sent to "
+                android:textSize="14sp"
+                android:textColor="#64748B" />
 
             <TextView
                 android:id="@+id/tvPhone"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:textSize="15sp"
-                android:textColor="#6B7280"
-                android:text="+91 XXXXXXXXXX" />
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:textColor="#1A1A2E"
+                android:text="+91 ******" />
 
             <TextView
                 android:id="@+id/tvChange"
@@ -49,14 +71,18 @@
                 android:layout_height="wrap_content"
                 android:text="@string/btn_change"
                 android:textSize="14sp"
-                android:textColor="#7C3AED"
+                android:textColor="#1A6FD4"
                 android:textStyle="bold"
                 android:clickable="true"
                 android:focusable="true"
-                android:paddingLeft="8dp" />
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:paddingStart="10dp"
+                android:paddingEnd="4dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp" />
         </LinearLayout>
 
-        <!-- 6 OTP Boxes (Responsive: weight-based width for all screen sizes) -->
+        <!-- 6 OTP Boxes (Clean, responsive, with active focus indicator) -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -66,85 +92,92 @@
             <EditText
                 android:id="@+id/etOtp1"
                 android:layout_width="0dp"
-                android:layout_height="52dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:layout_marginEnd="6dp"
-                android:background="@drawable/input_background"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/bg_otp_box_selector"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textSize="20sp"
+                android:textSize="22sp"
                 android:textStyle="bold"
-                android:textColor="#1C1B1F" />
+                android:textColor="#1A1A2E" />
 
             <EditText
                 android:id="@+id/etOtp2"
                 android:layout_width="0dp"
-                android:layout_height="52dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:layout_marginEnd="6dp"
-                android:background="@drawable/input_background"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/bg_otp_box_selector"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textSize="20sp"
+                android:textSize="22sp"
                 android:textStyle="bold"
-                android:textColor="#1C1B1F" />
+                android:textColor="#1A1A2E" />
 
             <EditText
                 android:id="@+id/etOtp3"
                 android:layout_width="0dp"
-                android:layout_height="52dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:layout_marginEnd="6dp"
-                android:background="@drawable/input_background"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/bg_otp_box_selector"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textSize="20sp"
+                android:textSize="22sp"
                 android:textStyle="bold"
-                android:textColor="#1C1B1F" />
+                android:textColor="#1A1A2E" />
 
             <EditText
                 android:id="@+id/etOtp4"
                 android:layout_width="0dp"
-                android:layout_height="52dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:layout_marginEnd="6dp"
-                android:background="@drawable/input_background"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/bg_otp_box_selector"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textSize="20sp"
+                android:textSize="22sp"
                 android:textStyle="bold"
-                android:textColor="#1C1B1F" />
+                android:textColor="#1A1A2E" />
 
             <EditText
                 android:id="@+id/etOtp5"
                 android:layout_width="0dp"
-                android:layout_height="52dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:layout_marginEnd="6dp"
-                android:background="@drawable/input_background"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/bg_otp_box_selector"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textSize="20sp"
+                android:textSize="22sp"
                 android:textStyle="bold"
-                android:textColor="#1C1B1F" />
+                android:textColor="#1A1A2E" />
 
             <EditText
                 android:id="@+id/etOtp6"
                 android:layout_width="0dp"
-                android:layout_height="52dp"
+                android:layout_height="56dp"
                 android:layout_weight="1"
-                android:background="@drawable/input_background"
+                android:layout_marginStart="3dp"
+                android:layout_marginEnd="3dp"
+                android:background="@drawable/bg_otp_box_selector"
                 android:gravity="center"
                 android:inputType="number"
                 android:maxLength="1"
-                android:textSize="20sp"
+                android:textSize="22sp"
                 android:textStyle="bold"
-                android:textColor="#1C1B1F" />
+                android:textColor="#1A1A2E" />
 
         </LinearLayout>
 
@@ -154,9 +187,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="28dp"
             android:textSize="13sp"
-            android:textColor="#9CA3AF"
+            android:textColor="#64748B"
             android:visibility="gone" />
 
         <!-- Resend OTP -->
@@ -168,10 +201,15 @@
             android:layout_marginTop="8dp"
             android:text="@string/btn_resend_otp"
             android:textSize="14sp"
-            android:textColor="#7C3AED"
+            android:textColor="#1A6FD4"
             android:textStyle="bold"
             android:clickable="true"
-            android:focusable="true" />
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            android:paddingStart="12dp"
+            android:paddingEnd="12dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp" />
 
         <!-- Progress -->
         <ProgressBar
@@ -180,6 +218,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="16dp"
+            android:indeterminateTint="#1A6FD4"
             android:visibility="gone" />
 
         <!-- Spacer -->

@@ -62,6 +62,10 @@ dependencies {
     // Security — EncryptedSharedPreferences for JWT token storage
     implementation("androidx.security:security-crypto:1.1.0-alpha06")
 
+    // SMS Retriever for automatic OTP capture
+    implementation("com.google.android.gms:play-services-auth:21.0.0")
+    implementation("com.google.android.gms:play-services-auth-api-phone:18.0.2")
+
     // UI Components
     implementation("androidx.cardview:cardview:1.0.0")
     implementation("androidx.recyclerview:recyclerview:1.3.2")
