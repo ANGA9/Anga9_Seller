@@ -65,416 +65,447 @@
             android:gravity="center"
             android:textAlignment="center" />
 
-        <!-- Row 1: Hindi + English -->
-        <LinearLayout
+        <!-- Grid Container with Floating/Running Selection Indicator Box -->
+        <FrameLayout
+            android:id="@+id/gridContainer"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="14dp">
+            android:layout_height="wrap_content">
 
-            <!-- Hindi -->
+            <!-- The Running Selection Indicator Box -->
             <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardHindi"
+                android:id="@+id/selectedIndicator"
                 android:layout_width="0dp"
                 android:layout_height="90dp"
-                android:layout_weight="1"
-                android:layout_marginEnd="7dp"
-                android:layout_marginRight="7dp"
+                android:visibility="invisible"
                 app:cardCornerRadius="14dp"
                 app:cardElevation="0dp"
-                app:strokeWidth="1.5dp"
-                app:strokeColor="@color/language_card_unselected_stroke"
-                app:cardBackgroundColor="@color/language_card_unselected"
-                app:rippleColor="@color/seller_primary_light">
+                app:strokeWidth="2dp"
+                app:strokeColor="@color/language_card_selected_stroke"
+                app:cardBackgroundColor="@color/language_card_selected" />
 
-                <FrameLayout
+            <!-- The 3 Rows of Cards -->
+            <LinearLayout
+                android:id="@+id/cardsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- Row 1: Hindi + English -->
+                <LinearLayout
+                    android:id="@+id/row1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="12dp">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="14dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:orientation="vertical"
-                        android:gravity="center">
+                    <!-- Hindi -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardHindi"
+                        android:layout_width="0dp"
+                        android:layout_height="90dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="7dp"
+                        android:layout_marginRight="7dp"
+                        app:cardCornerRadius="14dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="1.5dp"
+                        app:strokeColor="@color/language_card_unselected_stroke"
+                        app:cardBackgroundColor="@android:color/transparent"
+                        app:rippleColor="@color/seller_primary_light">
 
-                        <TextView
-                            android:id="@+id/tvHindiTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="हिंदी"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/language_card_unselected_text"
-                            android:includeFontPadding="false"
-                            android:gravity="center"
-                            android:textAlignment="center" />
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="12dp">
 
-                        <TextView
-                            android:id="@+id/tvHindiSub"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Hindi"
-                            android:textSize="12sp"
-                            android:textColor="@color/language_card_unselected_sub"
-                            android:includeFontPadding="false"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center"
-                            android:textAlignment="center" />
-                    </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:orientation="vertical"
+                                android:gravity="center">
 
-                    <ImageView
-                        android:id="@+id/checkHindi"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="top|end"
-                        android:src="@drawable/ic_check_circle"
-                        android:visibility="gone"
-                        app:tint="@color/language_card_selected_stroke"
-                        android:contentDescription="Selected" />
-                </FrameLayout>
-            </com.google.android.material.card.MaterialCardView>
+                                <TextView
+                                    android:id="@+id/tvHindiTitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="हिंदी"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/language_card_unselected_text"
+                                    android:includeFontPadding="false"
+                                    android:gravity="center"
+                                    android:textAlignment="center" />
 
-            <!-- English -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardEnglish"
-                android:layout_width="0dp"
-                android:layout_height="90dp"
-                android:layout_weight="1"
-                android:layout_marginStart="7dp"
-                android:layout_marginLeft="7dp"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1.5dp"
-                app:strokeColor="@color/language_card_unselected_stroke"
-                app:cardBackgroundColor="@color/language_card_unselected"
-                app:rippleColor="@color/seller_primary_light">
+                                <TextView
+                                    android:id="@+id/tvHindiSub"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Hindi"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/language_card_unselected_sub"
+                                    android:includeFontPadding="false"
+                                    android:layout_marginTop="4dp"
+                                    android:gravity="center"
+                                    android:textAlignment="center" />
+                            </LinearLayout>
 
-                <FrameLayout
+                            <ImageView
+                                android:id="@+id/checkHindi"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="top|end"
+                                android:src="@drawable/ic_check_circle"
+                                android:visibility="gone"
+                                app:tint="@color/language_card_selected_stroke"
+                                android:contentDescription="Selected" />
+                        </FrameLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <!-- English -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardEnglish"
+                        android:layout_width="0dp"
+                        android:layout_height="90dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginLeft="7dp"
+                        app:cardCornerRadius="14dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="1.5dp"
+                        app:strokeColor="@color/language_card_unselected_stroke"
+                        app:cardBackgroundColor="@android:color/transparent"
+                        app:rippleColor="@color/seller_primary_light">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="12dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:orientation="vertical"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:id="@+id/tvEnglishTitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="English"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/language_card_unselected_text"
+                                    android:includeFontPadding="false"
+                                    android:gravity="center"
+                                    android:textAlignment="center" />
+
+                                <TextView
+                                    android:id="@+id/tvEnglishSub"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="English"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/language_card_unselected_sub"
+                                    android:includeFontPadding="false"
+                                    android:layout_marginTop="4dp"
+                                    android:gravity="center"
+                                    android:textAlignment="center" />
+                            </LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/checkEnglish"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="top|end"
+                                android:src="@drawable/ic_check_circle"
+                                android:visibility="gone"
+                                app:tint="@color/language_card_selected_stroke"
+                                android:contentDescription="Selected" />
+                        </FrameLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+                <!-- Row 2: Marathi + Gujarati -->
+                <LinearLayout
+                    android:id="@+id/row2"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="12dp">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginBottom="14dp">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:orientation="vertical"
-                        android:gravity="center">
+                    <!-- Marathi -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardMarathi"
+                        android:layout_width="0dp"
+                        android:layout_height="90dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="7dp"
+                        android:layout_marginRight="7dp"
+                        app:cardCornerRadius="14dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="1.5dp"
+                        app:strokeColor="@color/language_card_unselected_stroke"
+                        app:cardBackgroundColor="@android:color/transparent"
+                        app:rippleColor="@color/seller_primary_light">
 
-                        <TextView
-                            android:id="@+id/tvEnglishTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="English"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/language_card_unselected_text"
-                            android:includeFontPadding="false"
-                            android:gravity="center"
-                            android:textAlignment="center" />
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="12dp">
 
-                        <TextView
-                            android:id="@+id/tvEnglishSub"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="English"
-                            android:textSize="12sp"
-                            android:textColor="@color/language_card_unselected_sub"
-                            android:includeFontPadding="false"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center"
-                            android:textAlignment="center" />
-                    </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:orientation="vertical"
+                                android:gravity="center">
 
-                    <ImageView
-                        android:id="@+id/checkEnglish"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="top|end"
-                        android:src="@drawable/ic_check_circle"
-                        android:visibility="gone"
-                        app:tint="@color/language_card_selected_stroke"
-                        android:contentDescription="Selected" />
-                </FrameLayout>
-            </com.google.android.material.card.MaterialCardView>
+                                <TextView
+                                    android:id="@+id/tvMarathiTitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="मराठी"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/language_card_unselected_text"
+                                    android:includeFontPadding="false"
+                                    android:gravity="center"
+                                    android:textAlignment="center" />
 
-        </LinearLayout>
+                                <TextView
+                                    android:id="@+id/tvMarathiSub"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Marathi"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/language_card_unselected_sub"
+                                    android:includeFontPadding="false"
+                                    android:layout_marginTop="4dp"
+                                    android:gravity="center"
+                                    android:textAlignment="center" />
+                            </LinearLayout>
 
-        <!-- Row 2: Marathi + Gujarati -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="14dp">
+                            <ImageView
+                                android:id="@+id/checkMarathi"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="top|end"
+                                android:src="@drawable/ic_check_circle"
+                                android:visibility="gone"
+                                app:tint="@color/language_card_selected_stroke"
+                                android:contentDescription="Selected" />
+                        </FrameLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
-            <!-- Marathi -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardMarathi"
-                android:layout_width="0dp"
-                android:layout_height="90dp"
-                android:layout_weight="1"
-                android:layout_marginEnd="7dp"
-                android:layout_marginRight="7dp"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1.5dp"
-                app:strokeColor="@color/language_card_unselected_stroke"
-                app:cardBackgroundColor="@color/language_card_unselected"
-                app:rippleColor="@color/seller_primary_light">
+                    <!-- Gujarati -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardGujarati"
+                        android:layout_width="0dp"
+                        android:layout_height="90dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginLeft="7dp"
+                        app:cardCornerRadius="14dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="1.5dp"
+                        app:strokeColor="@color/language_card_unselected_stroke"
+                        app:cardBackgroundColor="@android:color/transparent"
+                        app:rippleColor="@color/seller_primary_light">
 
-                <FrameLayout
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="12dp">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:orientation="vertical"
+                                android:gravity="center">
+
+                                <TextView
+                                    android:id="@+id/tvGujaratiTitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="ગુજરાતી"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/language_card_unselected_text"
+                                    android:includeFontPadding="false"
+                                    android:gravity="center"
+                                    android:textAlignment="center" />
+
+                                <TextView
+                                    android:id="@+id/tvGujaratiSub"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Gujarati"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/language_card_unselected_sub"
+                                    android:includeFontPadding="false"
+                                    android:layout_marginTop="4dp"
+                                    android:gravity="center"
+                                    android:textAlignment="center" />
+                            </LinearLayout>
+
+                            <ImageView
+                                android:id="@+id/checkGujarati"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="top|end"
+                                android:src="@drawable/ic_check_circle"
+                                android:visibility="gone"
+                                app:tint="@color/language_card_selected_stroke"
+                                android:contentDescription="Selected" />
+                        </FrameLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                </LinearLayout>
+
+                <!-- Row 3: Punjabi + Tamil -->
+                <LinearLayout
+                    android:id="@+id/row3"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="12dp">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:orientation="vertical"
-                        android:gravity="center">
+                    <!-- Punjabi -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardPunjabi"
+                        android:layout_width="0dp"
+                        android:layout_height="90dp"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="7dp"
+                        android:layout_marginRight="7dp"
+                        app:cardCornerRadius="14dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="1.5dp"
+                        app:strokeColor="@color/language_card_unselected_stroke"
+                        app:cardBackgroundColor="@android:color/transparent"
+                        app:rippleColor="@color/seller_primary_light">
 
-                        <TextView
-                            android:id="@+id/tvMarathiTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="मराठी"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/language_card_unselected_text"
-                            android:includeFontPadding="false"
-                            android:gravity="center"
-                            android:textAlignment="center" />
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="12dp">
 
-                        <TextView
-                            android:id="@+id/tvMarathiSub"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Marathi"
-                            android:textSize="12sp"
-                            android:textColor="@color/language_card_unselected_sub"
-                            android:includeFontPadding="false"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center"
-                            android:textAlignment="center" />
-                    </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:orientation="vertical"
+                                android:gravity="center">
 
-                    <ImageView
-                        android:id="@+id/checkMarathi"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="top|end"
-                        android:src="@drawable/ic_check_circle"
-                        android:visibility="gone"
-                        app:tint="@color/language_card_selected_stroke"
-                        android:contentDescription="Selected" />
-                </FrameLayout>
-            </com.google.android.material.card.MaterialCardView>
+                                <TextView
+                                    android:id="@+id/tvPunjabiTitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="ਪੰਜਾਬੀ"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/language_card_unselected_text"
+                                    android:includeFontPadding="false"
+                                    android:gravity="center"
+                                    android:textAlignment="center" />
 
-            <!-- Gujarati -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardGujarati"
-                android:layout_width="0dp"
-                android:layout_height="90dp"
-                android:layout_weight="1"
-                android:layout_marginStart="7dp"
-                android:layout_marginLeft="7dp"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1.5dp"
-                app:strokeColor="@color/language_card_unselected_stroke"
-                app:cardBackgroundColor="@color/language_card_unselected"
-                app:rippleColor="@color/seller_primary_light">
+                                <TextView
+                                    android:id="@+id/tvPunjabiSub"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Punjabi"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/language_card_unselected_sub"
+                                    android:includeFontPadding="false"
+                                    android:layout_marginTop="4dp"
+                                    android:gravity="center"
+                                    android:textAlignment="center" />
+                            </LinearLayout>
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="12dp">
+                            <ImageView
+                                android:id="@+id/checkPunjabi"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="top|end"
+                                android:src="@drawable/ic_check_circle"
+                                android:visibility="gone"
+                                app:tint="@color/language_card_selected_stroke"
+                                android:contentDescription="Selected" />
+                        </FrameLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:orientation="vertical"
-                        android:gravity="center">
+                    <!-- Tamil -->
+                    <com.google.android.material.card.MaterialCardView
+                        android:id="@+id/cardTamil"
+                        android:layout_width="0dp"
+                        android:layout_height="90dp"
+                        android:layout_weight="1"
+                        android:layout_marginStart="7dp"
+                        android:layout_marginLeft="7dp"
+                        app:cardCornerRadius="14dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="1.5dp"
+                        app:strokeColor="@color/language_card_unselected_stroke"
+                        app:cardBackgroundColor="@android:color/transparent"
+                        app:rippleColor="@color/seller_primary_light">
 
-                        <TextView
-                            android:id="@+id/tvGujaratiTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="ગુજરાતી"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/language_card_unselected_text"
-                            android:includeFontPadding="false"
-                            android:gravity="center"
-                            android:textAlignment="center" />
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:padding="12dp">
 
-                        <TextView
-                            android:id="@+id/tvGujaratiSub"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Gujarati"
-                            android:textSize="12sp"
-                            android:textColor="@color/language_card_unselected_sub"
-                            android:includeFontPadding="false"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center"
-                            android:textAlignment="center" />
-                    </LinearLayout>
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:orientation="vertical"
+                                android:gravity="center">
 
-                    <ImageView
-                        android:id="@+id/checkGujarati"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="top|end"
-                        android:src="@drawable/ic_check_circle"
-                        android:visibility="gone"
-                        app:tint="@color/language_card_selected_stroke"
-                        android:contentDescription="Selected" />
-                </FrameLayout>
-            </com.google.android.material.card.MaterialCardView>
+                                <TextView
+                                    android:id="@+id/tvTamilTitle"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="தமிழ்"
+                                    android:textSize="18sp"
+                                    android:textStyle="bold"
+                                    android:textColor="@color/language_card_unselected_text"
+                                    android:includeFontPadding="false"
+                                    android:gravity="center"
+                                    android:textAlignment="center" />
 
-        </LinearLayout>
+                                <TextView
+                                    android:id="@+id/tvTamilSub"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:text="Tamil"
+                                    android:textSize="12sp"
+                                    android:textColor="@color/language_card_unselected_sub"
+                                    android:includeFontPadding="false"
+                                    android:layout_marginTop="4dp"
+                                    android:gravity="center"
+                                    android:textAlignment="center" />
+                            </LinearLayout>
 
-        <!-- Row 3: Punjabi + Tamil -->
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:layout_marginBottom="14dp">
+                            <ImageView
+                                android:id="@+id/checkTamil"
+                                android:layout_width="20dp"
+                                android:layout_height="20dp"
+                                android:layout_gravity="top|end"
+                                android:src="@drawable/ic_check_circle"
+                                android:visibility="gone"
+                                app:tint="@color/language_card_selected_stroke"
+                                android:contentDescription="Selected" />
+                        </FrameLayout>
+                    </com.google.android.material.card.MaterialCardView>
 
-            <!-- Punjabi -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardPunjabi"
-                android:layout_width="0dp"
-                android:layout_height="90dp"
-                android:layout_weight="1"
-                android:layout_marginEnd="7dp"
-                android:layout_marginRight="7dp"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1.5dp"
-                app:strokeColor="@color/language_card_unselected_stroke"
-                app:cardBackgroundColor="@color/language_card_unselected"
-                app:rippleColor="@color/seller_primary_light">
+                </LinearLayout>
 
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="12dp">
+            </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:orientation="vertical"
-                        android:gravity="center">
-
-                        <TextView
-                            android:id="@+id/tvPunjabiTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="ਪੰਜਾਬੀ"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/language_card_unselected_text"
-                            android:includeFontPadding="false"
-                            android:gravity="center"
-                            android:textAlignment="center" />
-
-                        <TextView
-                            android:id="@+id/tvPunjabiSub"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Punjabi"
-                            android:textSize="12sp"
-                            android:textColor="@color/language_card_unselected_sub"
-                            android:includeFontPadding="false"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center"
-                            android:textAlignment="center" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/checkPunjabi"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="top|end"
-                        android:src="@drawable/ic_check_circle"
-                        android:visibility="gone"
-                        app:tint="@color/language_card_selected_stroke"
-                        android:contentDescription="Selected" />
-                </FrameLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-            <!-- Tamil -->
-            <com.google.android.material.card.MaterialCardView
-                android:id="@+id/cardTamil"
-                android:layout_width="0dp"
-                android:layout_height="90dp"
-                android:layout_weight="1"
-                android:layout_marginStart="7dp"
-                android:layout_marginLeft="7dp"
-                app:cardCornerRadius="14dp"
-                app:cardElevation="0dp"
-                app:strokeWidth="1.5dp"
-                app:strokeColor="@color/language_card_unselected_stroke"
-                app:cardBackgroundColor="@color/language_card_unselected"
-                app:rippleColor="@color/seller_primary_light">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:padding="12dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:orientation="vertical"
-                        android:gravity="center">
-
-                        <TextView
-                            android:id="@+id/tvTamilTitle"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="தமிழ்"
-                            android:textSize="18sp"
-                            android:textStyle="bold"
-                            android:textColor="@color/language_card_unselected_text"
-                            android:includeFontPadding="false"
-                            android:gravity="center"
-                            android:textAlignment="center" />
-
-                        <TextView
-                            android:id="@+id/tvTamilSub"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Tamil"
-                            android:textSize="12sp"
-                            android:textColor="@color/language_card_unselected_sub"
-                            android:includeFontPadding="false"
-                            android:layout_marginTop="4dp"
-                            android:gravity="center"
-                            android:textAlignment="center" />
-                    </LinearLayout>
-
-                    <ImageView
-                        android:id="@+id/checkTamil"
-                        android:layout_width="20dp"
-                        android:layout_height="20dp"
-                        android:layout_gravity="top|end"
-                        android:src="@drawable/ic_check_circle"
-                        android:visibility="gone"
-                        app:tint="@color/language_card_selected_stroke"
-                        android:contentDescription="Selected" />
-                </FrameLayout>
-            </com.google.android.material.card.MaterialCardView>
-
-        </LinearLayout>
+        </FrameLayout>
 
         <!-- Spacer -->
         <View
