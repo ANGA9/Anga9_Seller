@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clipToPadding="false"
+    android:clipChildren="false">
+
+    <!-- Floating Capsule Container with Soft Shadow -->
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardCapsule"
+        android:layout_width="match_parent"
+        android:layout_height="58dp"
+        android:layout_marginStart="14dp"
+        android:layout_marginEnd="14dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        app:cardCornerRadius="29dp"
+        app:cardElevation="6dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardPreventCornerOverlap="false">
+
+        <FrameLayout
+            android:id="@+id/pillContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:background="@drawable/bg_flipkart_nav_bar">
+
+            <!-- Active Pill Indicator (pill-shaped greyish background that smoothly runs across tabs) -->
+            <View
+                android:id="@+id/activePillIndicator"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/bg_nav_active_pill"
+                android:visibility="invisible" />
+
+            <!-- Tab Items Row -->
+            <LinearLayout
+                android:id="@+id/tabsContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:orientation="horizontal">
+
+                <!-- Tab: Home -->
+                <LinearLayout
+                    android:id="@+id/tabHome"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@android:color/transparent">
+
+                    <ImageView
+                        android:id="@+id/ivHome"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_home_filled"
+                        app:tint="#1A6FD4" />
+
+                    <TextView
+                        android:id="@+id/tvHome"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Home"
+                        android:textSize="11sp"
+                        android:textStyle="bold"
+                        android:textColor="#1A6FD4" />
+                </LinearLayout>
+
+                <!-- Tab: Orders -->
+                <LinearLayout
+                    android:id="@+id/tabOrders"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@android:color/transparent">
+
+                    <ImageView
+                        android:id="@+id/ivOrders"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_orders_outline"
+                        app:tint="#6B7280" />
+
+                    <TextView
+                        android:id="@+id/tvOrders"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Orders"
+                        android:textSize="11sp"
+                        android:textColor="#6B7280" />
+                </LinearLayout>
+
+                <!-- Tab: Products -->
+                <LinearLayout
+                    android:id="@+id/tabProducts"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@android:color/transparent">
+
+                    <ImageView
+                        android:id="@+id/ivProducts"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_products_outline"
+                        app:tint="#6B7280" />
+
+                    <TextView
+                        android:id="@+id/tvProducts"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Products"
+                        android:textSize="11sp"
+                        android:textColor="#6B7280" />
+                </LinearLayout>
+
+                <!-- Tab: Inventory -->
+                <LinearLayout
+                    android:id="@+id/tabInventory"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:background="@android:color/transparent">
+
+                    <ImageView
+                        android:id="@+id/ivInventory"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_inventory_outline"
+                        app:tint="#6B7280" />
+
+                    <TextView
+                        android:id="@+id/tvInventory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="2dp"
+                        android:text="Inventory"
+                        android:textSize="11sp"
+                        android:textColor="#6B7280" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</FrameLayout>
