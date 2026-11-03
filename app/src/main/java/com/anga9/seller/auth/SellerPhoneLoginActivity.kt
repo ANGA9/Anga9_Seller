@@ -84,8 +84,7 @@ class SellerPhoneLoginActivity : BaseActivity() {
 
     /**
      * Handles status bar and software keyboard (IME) insets dynamically.
-     * When the keyboard pops up, the content bottom padding expands to match the keyboard height
-     * and the ScrollView auto-scrolls so the 'Get OTP' button is elevated directly above the keys.
+     * Content adjusts to remain above the keypad while keeping the top logo intact.
      */
     private fun setupWindowInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(rootLoginContent) { view, windowInsets ->
@@ -100,11 +99,9 @@ class SellerPhoneLoginActivity : BaseActivity() {
                 bottomInset
             )
 
-            // When keyboard opens, ensure Get OTP button remains fully visible above the keys
-            if (ime.bottom > 0) {
-                scrollView.post {
-                    scrollView.smoothScrollTo(0, btnGetOtp.top - 32)
-                }
+            // Keep top logo and full content visible without scrolling off screen
+            scrollView.post {
+                scrollView.scrollTo(0, 0)
             }
 
             windowInsets
