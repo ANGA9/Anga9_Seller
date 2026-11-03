@@ -30,7 +30,7 @@
         <!-- Auth Flow -->
         <activity android:name=".auth.SellerPhoneLoginActivity"
             android:exported="false"
-            android:windowSoftInputMode="adjustResize" />
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity android:name=".auth.SellerOtpVerifyActivity"
             android:exported="false"
             android:windowSoftInputMode="adjustResize" />

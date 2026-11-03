@@ -7,18 +7,20 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
+import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import android.widget.ProgressBar
+import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.lifecycleScope
 import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
-import com.anga9.seller.data.repository.AuthRepository
-import com.anga9.seller.data.repository.ProfileRepository
-import com.anga9.seller.ui.dashboard.DashboardActivity
-import com.anga9.seller.utils.Constants
 import com.anga9.seller.utils.PhoneUtils
+import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -37,6 +39,9 @@ import org.json.JSONObject
  */
 class SellerPhoneLoginActivity : BaseActivity() {
 
+    private lateinit var scrollView: ScrollView
+    private lateinit var rootLoginContent: View
+    private lateinit var cardInputPhone: MaterialCardView
     private lateinit var etPhone: EditText
     private lateinit var btnGetOtp: TextView
     private lateinit var progressBar: ProgressBar
@@ -55,19 +60,15 @@ class SellerPhoneLoginActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_seller_phone_login)
 
-        // Apply system insets for proper status bar padding on notched phones
-        applySystemInsets(findViewById(R.id.rootLoginContent))
+        scrollView       = findViewById(R.id.scrollView)
+        rootLoginContent = findViewById(R.id.rootLoginContent)
+        cardInputPhone   = findViewById(R.id.cardInputPhone)
+        etPhone          = findViewById(R.id.etPhone)
+        btnGetOtp        = findViewById(R.id.btnGetOtp)
+        progressBar      = findViewById(R.id.progressBar)
 
-        etPhone     = findViewById(R.id.etPhone)
-        btnGetOtp   = findViewById(R.id.btnGetOtp)
-        progressBar = findViewById(R.id.progressBar)
-
-        etPhone.hint = "Enter 10-digit mobile number"
-        etPhone.inputType = android.text.InputType.TYPE_CLASS_PHONE
-
-        btnGetOtp.isEnabled = false
-        btnGetOtp.alpha = 0.5f
-
+        setupWindowInsets()
+        setupPhoneInput()
         setupInputWatcher()
 
         btnGetOtp.setOnClickListener {
@@ -79,6 +80,69 @@ class SellerPhoneLoginActivity : BaseActivity() {
             }
             sendPhoneOtp(normalized)
         }
+    }
+
+    /**
+     * Handles status bar and software keyboard (IME) insets dynamically.
+     * When the keyboard pops up, the content bottom padding expands to match the keyboard height
+     * and the ScrollView auto-scrolls so the 'Get OTP' button is elevated directly above the keys.
+     */
+    private fun setupWindowInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(rootLoginContent) { view, windowInsets ->
+            val sysBars = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars())
+            val ime = windowInsets.getInsets(WindowInsetsCompat.Type.ime())
+            val bottomInset = if (ime.bottom > 0) ime.bottom else sysBars.bottom
+
+            view.setPadding(
+                view.paddingLeft,
+                sysBars.top,
+                view.paddingRight,
+                bottomInset
+            )
+
+            // When keyboard opens, ensure Get OTP button remains fully visible above the keys
+            if (ime.bottom > 0) {
+                scrollView.post {
+                    scrollView.smoothScrollTo(0, btnGetOtp.top - 32)
+                }
+            }
+
+            windowInsets
+        }
+    }
+
+    private fun setupPhoneInput() {
+        etPhone.hint = "Enter 10-digit mobile number"
+        etPhone.inputType = android.text.InputType.TYPE_CLASS_PHONE
+
+        btnGetOtp.isEnabled = false
+        btnGetOtp.alpha = 0.5f
+
+        val strokeActive = ContextCompat.getColor(this, R.color.seller_primary)
+        val strokeInactive = ContextCompat.getColor(this, R.color.language_card_unselected_stroke)
+        val density = resources.displayMetrics.density
+        val widthActive = (2 * density).toInt()
+        val widthInactive = (1.5f * density).toInt()
+
+        // Dynamic stroke highlight on focus
+        etPhone.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                cardInputPhone.strokeColor = strokeActive
+                cardInputPhone.strokeWidth = widthActive
+            } else {
+                cardInputPhone.strokeColor = strokeInactive
+                cardInputPhone.strokeWidth = widthInactive
+            }
+        }
+
+        // Auto-open keyboard immediately on entering this screen
+        etPhone.requestFocus()
+        etPhone.postDelayed({
+            if (!isFinishing && !isDestroyed) {
+                val imm = getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+                imm?.showSoftInput(etPhone, InputMethodManager.SHOW_IMPLICIT)
+            }
+        }, 200)
     }
 
     private fun setupInputWatcher() {
@@ -101,8 +165,6 @@ class SellerPhoneLoginActivity : BaseActivity() {
         lifecycleScope.launch {
             try {
                 val result = withContext(Dispatchers.IO) {
-                    // Direct REST API call to /auth/v1/otp endpoint
-                    // This is the correct OTP endpoint (same as web app's signInWithOtp)
                     val body = JSONObject().apply {
                         put("phone", e164Phone)
                     }.toString()
@@ -147,7 +209,6 @@ class SellerPhoneLoginActivity : BaseActivity() {
             }
         }
     }
-
 
     private fun navigateToOtp(e164Phone: String) {
         val intent = Intent(this, SellerOtpVerifyActivity::class.java).apply {
