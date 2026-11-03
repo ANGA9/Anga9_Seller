@@ -1,6 +1,10 @@
 package com.anga9.seller.auth
 
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
@@ -8,6 +12,7 @@ import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
 import android.widget.EditText
+import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
@@ -16,36 +21,39 @@ import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.data.repository.AuthRepository
 import com.anga9.seller.data.repository.ProfileRepository
-import io.github.jan.supabase.auth.OtpType
-import kotlinx.coroutines.launch
 import com.anga9.seller.network.SupabaseClient
 import com.anga9.seller.ui.dashboard.DashboardActivity
 import com.anga9.seller.utils.Constants
+import com.google.android.gms.auth.api.phone.SmsRetriever
+import com.google.android.gms.common.api.CommonStatusCodes
+import com.google.android.gms.common.api.Status
+import io.github.jan.supabase.auth.OtpType
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.auth.providers.builtin.Email
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import org.json.JSONObject
+import java.util.regex.Pattern
 
 /**
  * OTP Verification - Seller App
  *
  * Supports:
- *   auth_type = "phone" -> verifyPhoneOtp() via Supabase -> MSG91 SMS
- *   auth_type = "email" -> verifyEmailOtp() via Supabase -> email
- *
- * After verification:
- *   - kycStatus == "approved"          -> DashboardActivity
- *   - kycStatus == null/pending/not_submitted -> SellerRegistrationActivity
- *   - kycStatus == rejected            -> KycStatusActivity
+ *   - Automatic SMS retrieval via Google Play Services SMS Retriever API
+ *   - Auto-advance & auto-submission when the 6th digit is typed or filled via SMS
+ *   - Instant fast-path navigation to DashboardActivity for verified sellers
+ *   - auth_type = "phone" -> verifyPhoneOtp() via Supabase
+ *   - auth_type = "email" -> verifyEmailOtp() via Supabase
  */
 class SellerOtpVerifyActivity : BaseActivity() {
 
     private val otpBoxes = arrayOfNulls<EditText>(6)
+    private lateinit var btnBack: ImageView
     private lateinit var tvPhone: TextView
     private lateinit var tvChange: TextView
     private lateinit var tvResendTimer: TextView
@@ -58,6 +66,8 @@ class SellerOtpVerifyActivity : BaseActivity() {
     private var countDownTimer: CountDownTimer? = null
     private var resendAttempts = 0
     private val maxResendAttempts = 3
+    private var isVerifying = false
+    private var smsReceiver: BroadcastReceiver? = null
 
     private lateinit var authRepository: AuthRepository
 
@@ -74,9 +84,10 @@ class SellerOtpVerifyActivity : BaseActivity() {
         initViews()
         setupOtpBoxes()
 
-        // Show masked identifier
+        // Masked phone / email
         tvPhone.text = if (authType == "phone") maskPhone(identifier) else maskEmail(identifier)
 
+        btnBack.setOnClickListener { finish() }
         tvChange.setOnClickListener { finish() }
 
         btnVerify.setOnClickListener { attemptVerify() }
@@ -90,15 +101,20 @@ class SellerOtpVerifyActivity : BaseActivity() {
         }
 
         startResendTimer(30)
+
+        if (authType == "phone") {
+            startSmsRetriever()
+        }
     }
 
     private fun initViews() {
-        otpBoxes[0] = findViewById(R.id.etOtp1)
-        otpBoxes[1] = findViewById(R.id.etOtp2)
-        otpBoxes[2] = findViewById(R.id.etOtp3)
-        otpBoxes[3] = findViewById(R.id.etOtp4)
-        otpBoxes[4] = findViewById(R.id.etOtp5)
-        otpBoxes[5] = findViewById(R.id.etOtp6)
+        btnBack       = findViewById(R.id.btnBack)
+        otpBoxes[0]   = findViewById(R.id.etOtp1)
+        otpBoxes[1]   = findViewById(R.id.etOtp2)
+        otpBoxes[2]   = findViewById(R.id.etOtp3)
+        otpBoxes[3]   = findViewById(R.id.etOtp4)
+        otpBoxes[4]   = findViewById(R.id.etOtp5)
+        otpBoxes[5]   = findViewById(R.id.etOtp6)
 
         tvPhone       = findViewById(R.id.tvPhone)
         tvChange      = findViewById(R.id.tvChange)
@@ -119,8 +135,8 @@ class SellerOtpVerifyActivity : BaseActivity() {
                     if (s?.length == 1 && i < 5) {
                         otpBoxes[i + 1]?.requestFocus()
                     }
-                    // Auto-submit when all 6 digits filled
-                    if (getOtpString().length == 6) {
+                    // Auto-validate immediately when all 6 digits are filled
+                    if (getOtpString().length == 6 && !isVerifying) {
                         attemptVerify()
                     }
                 }
@@ -142,10 +158,59 @@ class SellerOtpVerifyActivity : BaseActivity() {
         otpBoxes[0]?.requestFocus()
     }
 
+    // ── SMS Retriever API ─────────────────────────────────────────────────
+
+    private fun startSmsRetriever() {
+        try {
+            val client = SmsRetriever.getClient(this)
+            client.startSmsRetriever()
+
+            smsReceiver = object : BroadcastReceiver() {
+                override fun onReceive(context: Context, intent: Intent) {
+                    if (SmsRetriever.SMS_RETRIEVED_ACTION == intent.action) {
+                        val extras = intent.extras ?: return
+                        val status = extras.get(SmsRetriever.EXTRA_STATUS) as? Status ?: return
+                        if (status.statusCode == CommonStatusCodes.SUCCESS) {
+                            val message = extras.getString(SmsRetriever.EXTRA_SMS_MESSAGE) ?: return
+                            extractAndFillOtp(message)
+                        }
+                    }
+                }
+            }
+
+            val filter = IntentFilter(SmsRetriever.SMS_RETRIEVED_ACTION)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                registerReceiver(smsReceiver, filter, RECEIVER_EXPORTED)
+            } else {
+                registerReceiver(smsReceiver, filter)
+            }
+        } catch (e: Exception) {
+            // SMS retriever is an enhancement; proceed without blocking if unavailable
+        }
+    }
+
+    private fun extractAndFillOtp(message: String) {
+        val pattern = Pattern.compile("\\b\\d{6}\\b")
+        val matcher = pattern.matcher(message)
+        if (matcher.find()) {
+            val otp = matcher.group()
+            if (otp.length == 6) {
+                for (i in 0..5) {
+                    otpBoxes[i]?.setText(otp[i].toString())
+                }
+                otpBoxes[5]?.requestFocus()
+                if (!isVerifying) {
+                    attemptVerify()
+                }
+            }
+        }
+    }
+
     private fun getOtpString(): String =
         otpBoxes.joinToString("") { it?.text?.toString() ?: "" }
 
     private fun attemptVerify() {
+        if (isVerifying) return
         val otp = getOtpString()
         if (otp.length != 6) {
             Toast.makeText(this, "Please enter complete 6-digit OTP", Toast.LENGTH_SHORT).show()
@@ -154,9 +219,10 @@ class SellerOtpVerifyActivity : BaseActivity() {
         verifyOtpWithSupabase(otp)
     }
 
-    // ── Verification ─────────────────────────────────────────────────────
+    // ── Verification & Fast-Path Routing ──────────────────────────────────
 
     private fun verifyOtpWithSupabase(otp: String) {
+        isVerifying = true
         setLoading(true)
 
         lifecycleScope.launch {
@@ -176,12 +242,13 @@ class SellerOtpVerifyActivity : BaseActivity() {
                     )
                 }
 
-                val session     = SupabaseClient.auth.currentSessionOrNull()
+                val session = SupabaseClient.auth.currentSessionOrNull()
                 val accessToken = session?.accessToken
                 val refreshToken = session?.refreshToken
 
                 if (accessToken == null) {
                     setLoading(false)
+                    isVerifying = false
                     Toast.makeText(this@SellerOtpVerifyActivity, "Session error. Please try again.", Toast.LENGTH_LONG).show()
                     return@launch
                 }
@@ -196,21 +263,40 @@ class SellerOtpVerifyActivity : BaseActivity() {
                         getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE)
                             .edit().putString(Constants.PREF_SELLER_ID, user.id).apply()
 
-                        // Fetch seller profile to get exact verification_status
+                        val userStatus = user.kycStatus
+                        val isApproved = userStatus == "verified" ||
+                                userStatus == "approved" ||
+                                userStatus == Constants.KYC_APPROVED ||
+                                user.role == "seller"
+
+                        // FAST-PATH: If backend already confirmed seller approval, route instantly!
+                        if (isApproved) {
+                            getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE)
+                                .edit().putString("cached_kyc_status", Constants.KYC_APPROVED).apply()
+
+                            startActivity(
+                                Intent(this@SellerOtpVerifyActivity, DashboardActivity::class.java)
+                                    .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                            )
+                            finish()
+                            return@launch
+                        }
+
+                        // Secondary check if status is ambiguous
                         val profileRepo = ProfileRepository(applicationContext)
                         val profileResult = profileRepo.getSellerProfile()
-                        
+
                         profileResult.fold(
                             onSuccess = { profile ->
                                 val verificationStatus = profile.kycStatus ?: user.kycStatus
-                                val isApproved = verificationStatus == "verified" ||
+                                val isProfileApproved = verificationStatus == "verified" ||
                                         verificationStatus == "approved" ||
                                         verificationStatus == Constants.KYC_APPROVED ||
                                         profile.isVerified ||
                                         user.role == "seller"
 
                                 when {
-                                    isApproved -> {
+                                    isProfileApproved -> {
                                         getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE)
                                             .edit().putString("cached_kyc_status", Constants.KYC_APPROVED).apply()
                                         startActivity(
@@ -234,21 +320,7 @@ class SellerOtpVerifyActivity : BaseActivity() {
                                 finish()
                             },
                             onFailure = {
-                                val userStatus = user.kycStatus
-                                val isApproved = userStatus == "verified" ||
-                                        userStatus == "approved" ||
-                                        userStatus == Constants.KYC_APPROVED ||
-                                        user.role == "seller"
-
                                 when {
-                                    isApproved -> {
-                                        getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE)
-                                            .edit().putString("cached_kyc_status", Constants.KYC_APPROVED).apply()
-                                        startActivity(
-                                            Intent(this@SellerOtpVerifyActivity, DashboardActivity::class.java)
-                                                .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-                                        )
-                                    }
                                     userStatus == "pending" || userStatus == Constants.KYC_PENDING -> {
                                         startActivity(
                                             Intent(this@SellerOtpVerifyActivity, KycStatusActivity::class.java)
@@ -266,23 +338,27 @@ class SellerOtpVerifyActivity : BaseActivity() {
                             }
                         )
                     },
-                    onFailure = { e ->
-                        clearOtpBoxes()
-                        Toast.makeText(this@SellerOtpVerifyActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                    onFailure = { error ->
+                        isVerifying = false
+                        Toast.makeText(
+                            this@SellerOtpVerifyActivity,
+                            "Backend sync failed: ${error.message}",
+                            Toast.LENGTH_LONG
+                        ).show()
                     }
                 )
 
             } catch (e: Exception) {
                 setLoading(false)
-                clearOtpBoxes()
-                val message = when {
+                isVerifying = false
+                val msg = when {
                     e.message?.contains("invalid", ignoreCase = true) == true ->
-                        "Invalid OTP. Please check and try again"
+                        "Invalid OTP. Please check and enter again."
                     e.message?.contains("expired", ignoreCase = true) == true ->
-                        "OTP has expired. Please request a new one"
-                    else -> "Verification failed. Please try again"
+                        "OTP expired. Please tap 'Resend OTP'."
+                    else -> "Verification failed: ${e.message}"
                 }
-                Toast.makeText(this@SellerOtpVerifyActivity, message, Toast.LENGTH_LONG).show()
+                Toast.makeText(this@SellerOtpVerifyActivity, msg, Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -315,6 +391,7 @@ class SellerOtpVerifyActivity : BaseActivity() {
                     if (code == 200 || code == 204) {
                         Toast.makeText(this@SellerOtpVerifyActivity, "OTP resent successfully", Toast.LENGTH_SHORT).show()
                         startResendTimer(30)
+                        startSmsRetriever()
                     } else {
                         Toast.makeText(this@SellerOtpVerifyActivity, "Resend failed. Please try again", Toast.LENGTH_LONG).show()
                     }
@@ -390,5 +467,8 @@ class SellerOtpVerifyActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         countDownTimer?.cancel()
+        smsReceiver?.let {
+            try { unregisterReceiver(it) } catch (e: Exception) { }
+        }
     }
 }

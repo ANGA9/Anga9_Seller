@@ -1,0 +1,29 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Modern Outline Orders Clipboard -->
+    <path
+        android:strokeColor="#FF000000"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M9,2h6a1,1 0 0,1 1,1v1a1,1 0 0,1 -1,1h-6a1,1 0 0,1 -1,-1v-1a1,1 0 0,1 1,-1z" />
+    <path
+        android:strokeColor="#FF000000"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M7,5H5.5A2.5,2.5 0 0,0 3,7.5v12A2.5,2.5 0 0,0 5.5,22h13a2.5,2.5 0 0,0 2.5,-2.5v-12A2.5,2.5 0 0,0 18.5,5H17" />
+    <path
+        android:strokeColor="#FF000000"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M8,11h8" />
+    <path
+        android:strokeColor="#FF000000"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:pathData="M8,15h5" />
+</vector>

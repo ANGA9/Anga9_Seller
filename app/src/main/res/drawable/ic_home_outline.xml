@@ -1,0 +1,19 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <!-- Chubby Outline Home -->
+    <path
+        android:strokeColor="#FF000000"
+        android:strokeWidth="2.1"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M3.2,10.8 L10.7,3.5 C11.4,2.8 12.6,2.8 13.3,3.5 L20.8,10.8 C21.4,11.3 21.8,12 21.8,12.8 C21.8,14.1 20.7,15.2 19.4,15.2 H18.8 V19.2 C18.8,20.8 17.5,22.1 15.9,22.1 H8.1 C6.5,22.1 5.2,20.8 5.2,19.2 V15.2 H4.6 C3.3,15.2 2.2,14.1 2.2,12.8 C2.2,12 2.6,11.3 3.2,10.8 Z" />
+    <path
+        android:strokeColor="#FF000000"
+        android:strokeWidth="2.1"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M9.8,22.1 V15.5 C9.8,14.3 10.8,13.3 12,13.3 C13.2,13.3 14.2,14.3 14.2,15.5 V22.1" />
+</vector>
