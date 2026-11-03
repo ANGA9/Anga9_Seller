@@ -3,27 +3,28 @@ package com.anga9.seller.auth
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.appcompat.app.AppCompatActivity
-import androidx.cardview.widget.CardView
+import android.widget.TextView
+import androidx.core.content.ContextCompat
 import com.anga9.seller.BaseActivity
 import com.anga9.seller.R
 import com.anga9.seller.utils.LocaleHelper
+import com.google.android.material.card.MaterialCardView
 
 /**
  * Language Selection Screen — shown only on first app launch.
- * Language names are hardcoded (not from @string/) because locale is not yet set.
- * After selection, locale is applied and user proceeds to phone login.
+ * Follows ANGA9 Customer App brand styling:
+ * Royal Blue accent (#1A6FD4), crisp defined card strokes, and balanced typography.
  */
 class LanguageSelectionActivity : BaseActivity() {
 
     private var selectedLanguageCode: String = "en"
 
-    private lateinit var cardHindi: CardView
-    private lateinit var cardEnglish: CardView
-    private lateinit var cardMarathi: CardView
-    private lateinit var cardGujarati: CardView
-    private lateinit var cardPunjabi: CardView
-    private lateinit var cardTamil: CardView
+    private lateinit var cardHindi: MaterialCardView
+    private lateinit var cardEnglish: MaterialCardView
+    private lateinit var cardMarathi: MaterialCardView
+    private lateinit var cardGujarati: MaterialCardView
+    private lateinit var cardPunjabi: MaterialCardView
+    private lateinit var cardTamil: MaterialCardView
 
     private lateinit var checkHindi: View
     private lateinit var checkEnglish: View
@@ -32,12 +33,30 @@ class LanguageSelectionActivity : BaseActivity() {
     private lateinit var checkPunjabi: View
     private lateinit var checkTamil: View
 
-    private lateinit var tvLangTitle: android.widget.TextView
-    private lateinit var tvLangSubtitle: android.widget.TextView
-    private lateinit var btnContinue: android.widget.TextView
+    private lateinit var tvHindiTitle: TextView
+    private lateinit var tvHindiSub: TextView
+    private lateinit var tvEnglishTitle: TextView
+    private lateinit var tvEnglishSub: TextView
+    private lateinit var tvMarathiTitle: TextView
+    private lateinit var tvMarathiSub: TextView
+    private lateinit var tvGujaratiTitle: TextView
+    private lateinit var tvGujaratiSub: TextView
+    private lateinit var tvPunjabiTitle: TextView
+    private lateinit var tvPunjabiSub: TextView
+    private lateinit var tvTamilTitle: TextView
+    private lateinit var tvTamilSub: TextView
 
-    private val selectedColor by lazy { getColor(R.color.language_card_selected) }
-    private val unselectedColor by lazy { getColor(R.color.language_card_unselected) }
+    private lateinit var tvLangTitle: TextView
+    private lateinit var tvLangSubtitle: TextView
+    private lateinit var btnContinue: TextView
+
+    private val selectedBgColor by lazy { ContextCompat.getColor(this, R.color.language_card_selected) }
+    private val unselectedBgColor by lazy { ContextCompat.getColor(this, R.color.language_card_unselected) }
+    private val selectedStrokeColor by lazy { ContextCompat.getColor(this, R.color.language_card_selected_stroke) }
+    private val unselectedStrokeColor by lazy { ContextCompat.getColor(this, R.color.language_card_unselected_stroke) }
+    private val selectedTextColor by lazy { ContextCompat.getColor(this, R.color.language_card_selected_text) }
+    private val unselectedTextColor by lazy { ContextCompat.getColor(this, R.color.language_card_unselected_text) }
+    private val unselectedSubColor by lazy { ContextCompat.getColor(this, R.color.language_card_unselected_sub) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,6 +87,19 @@ class LanguageSelectionActivity : BaseActivity() {
         checkPunjabi = findViewById(R.id.checkPunjabi)
         checkTamil = findViewById(R.id.checkTamil)
 
+        tvHindiTitle = findViewById(R.id.tvHindiTitle)
+        tvHindiSub = findViewById(R.id.tvHindiSub)
+        tvEnglishTitle = findViewById(R.id.tvEnglishTitle)
+        tvEnglishSub = findViewById(R.id.tvEnglishSub)
+        tvMarathiTitle = findViewById(R.id.tvMarathiTitle)
+        tvMarathiSub = findViewById(R.id.tvMarathiSub)
+        tvGujaratiTitle = findViewById(R.id.tvGujaratiTitle)
+        tvGujaratiSub = findViewById(R.id.tvGujaratiSub)
+        tvPunjabiTitle = findViewById(R.id.tvPunjabiTitle)
+        tvPunjabiSub = findViewById(R.id.tvPunjabiSub)
+        tvTamilTitle = findViewById(R.id.tvTamilTitle)
+        tvTamilSub = findViewById(R.id.tvTamilSub)
+
         btnContinue = findViewById(R.id.btnContinue)
     }
 
@@ -86,23 +118,41 @@ class LanguageSelectionActivity : BaseActivity() {
 
         val allCards = listOf(cardHindi, cardEnglish, cardMarathi, cardGujarati, cardPunjabi, cardTamil)
         val allChecks = listOf(checkHindi, checkEnglish, checkMarathi, checkGujarati, checkPunjabi, checkTamil)
+        val allTitles = listOf(tvHindiTitle, tvEnglishTitle, tvMarathiTitle, tvGujaratiTitle, tvPunjabiTitle, tvTamilTitle)
+        val allSubtitles = listOf(tvHindiSub, tvEnglishSub, tvMarathiSub, tvGujaratiSub, tvPunjabiSub, tvTamilSub)
 
-        // Reset all
-        allCards.forEach { it.setCardBackgroundColor(unselectedColor) }
-        allChecks.forEach { it.visibility = View.GONE }
+        val density = resources.displayMetrics.density
+        val strokeSelected = (2 * density).toInt()
+        val strokeUnselected = (1.5f * density).toInt()
 
-        // Highlight selected
-        val (card, check) = when (code) {
-            "hi" -> Pair(cardHindi, checkHindi)
-            "en" -> Pair(cardEnglish, checkEnglish)
-            "mr" -> Pair(cardMarathi, checkMarathi)
-            "gu" -> Pair(cardGujarati, checkGujarati)
-            "pa" -> Pair(cardPunjabi, checkPunjabi)
-            "ta" -> Pair(cardTamil, checkTamil)
-            else -> Pair(cardEnglish, checkEnglish)
+        // Reset all cards to clean unselected state with defined outlines
+        allCards.forEach { card ->
+            card.setCardBackgroundColor(unselectedBgColor)
+            card.strokeColor = unselectedStrokeColor
+            card.strokeWidth = strokeUnselected
         }
-        card.setCardBackgroundColor(selectedColor)
-        check.visibility = View.VISIBLE
+        allChecks.forEach { it.visibility = View.GONE }
+        allTitles.forEach { it.setTextColor(unselectedTextColor) }
+        allSubtitles.forEach { it.setTextColor(unselectedSubColor) }
+
+        // Determine which card is selected
+        val (selectedCard, selectedCheck, selectedTitle, selectedSub) = when (code) {
+            "hi" -> Quad(cardHindi, checkHindi, tvHindiTitle, tvHindiSub)
+            "en" -> Quad(cardEnglish, checkEnglish, tvEnglishTitle, tvEnglishSub)
+            "mr" -> Quad(cardMarathi, checkMarathi, tvMarathiTitle, tvMarathiSub)
+            "gu" -> Quad(cardGujarati, checkGujarati, tvGujaratiTitle, tvGujaratiSub)
+            "pa" -> Quad(cardPunjabi, checkPunjabi, tvPunjabiTitle, tvPunjabiSub)
+            "ta" -> Quad(cardTamil, checkTamil, tvTamilTitle, tvTamilSub)
+            else -> Quad(cardEnglish, checkEnglish, tvEnglishTitle, tvEnglishSub)
+        }
+
+        // Apply ANGA9 brand active state
+        selectedCard.setCardBackgroundColor(selectedBgColor)
+        selectedCard.strokeColor = selectedStrokeColor
+        selectedCard.strokeWidth = strokeSelected
+        selectedCheck.visibility = View.VISIBLE
+        selectedTitle.setTextColor(selectedTextColor)
+        selectedSub.setTextColor(selectedTextColor)
 
         // Dynamically update screen texts in selected language
         when (code) {
@@ -138,6 +188,8 @@ class LanguageSelectionActivity : BaseActivity() {
             }
         }
     }
+
+    private data class Quad<A, B, C, D>(val first: A, val second: B, val third: C, val fourth: D)
 
     private fun onContinue() {
         LocaleHelper.setLocale(this, selectedLanguageCode)

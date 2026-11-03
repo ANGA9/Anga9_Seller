@@ -16,13 +16,25 @@
         android:paddingTop="24dp"
         android:paddingBottom="32dp">
 
-        <!-- ANGA9 Logo -->
-        <ImageView
+        <!-- ANGA9 Seller Logo with smooth rounded corners & elegant top spacing -->
+        <com.google.android.material.card.MaterialCardView
             android:layout_width="72dp"
             android:layout_height="72dp"
             android:layout_gravity="center_horizontal"
-            android:src="@drawable/ic_seller_logo"
-            android:contentDescription="ANGA9 Logo" />
+            android:layout_marginTop="36dp"
+            app:cardCornerRadius="16dp"
+            app:cardElevation="0dp"
+            app:strokeWidth="1dp"
+            app:strokeColor="#E2E8F0"
+            app:cardBackgroundColor="@color/white">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitCenter"
+                android:src="@drawable/ic_seller_logo"
+                android:contentDescription="ANGA9 Logo" />
+        </com.google.android.material.card.MaterialCardView>
 
         <!-- Title and Subtitle -->
         <TextView
@@ -30,11 +42,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="20dp"
             android:text="Select Your Language"
             android:textSize="22sp"
             android:textStyle="bold"
-            android:textColor="#1C1B1F" />
+            android:textColor="#1A1A2E"
+            android:includeFontPadding="false"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <TextView
             android:id="@+id/tvLangSubtitle"
@@ -42,27 +57,35 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="6dp"
-            android:layout_marginBottom="32dp"
-            android:text="Choose your preferred language"
+            android:layout_marginBottom="28dp"
+            android:text="Choose your preferred language to continue"
             android:textSize="14sp"
-            android:textColor="#6B7280" />
+            android:textColor="#6B7280"
+            android:includeFontPadding="false"
+            android:gravity="center"
+            android:textAlignment="center" />
 
         <!-- Row 1: Hindi + English -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="14dp">
 
-            <androidx.cardview.widget.CardView
+            <!-- Hindi -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardHindi"
                 android:layout_width="0dp"
-                android:layout_height="80dp"
+                android:layout_height="90dp"
                 android:layout_weight="1"
-                android:layout_marginRight="6dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFFFFF">
+                android:layout_marginEnd="7dp"
+                android:layout_marginRight="7dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1.5dp"
+                app:strokeColor="@color/language_card_unselected_stroke"
+                app:cardBackgroundColor="@color/language_card_unselected"
+                app:rippleColor="@color/seller_primary_light">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -77,43 +100,56 @@
                         android:gravity="center">
 
                         <TextView
+                            android:id="@+id/tvHindiTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="&#2361;&#2367;&#2306;&#2342;&#2368;"
+                            android:text="हिंदी"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="#1C1B1F" />
+                            android:textColor="@color/language_card_unselected_text"
+                            android:includeFontPadding="false"
+                            android:gravity="center"
+                            android:textAlignment="center" />
 
                         <TextView
+                            android:id="@+id/tvHindiSub"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Hindi"
-                            android:textSize="11sp"
-                            android:textColor="#6B7280"
-                            android:layout_marginTop="2dp" />
+                            android:textSize="12sp"
+                            android:textColor="@color/language_card_unselected_sub"
+                            android:includeFontPadding="false"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center"
+                            android:textAlignment="center" />
                     </LinearLayout>
 
                     <ImageView
                         android:id="@+id/checkHindi"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="top|end"
-                        android:src="@drawable/ic_check"
+                        android:src="@drawable/ic_check_circle"
                         android:visibility="gone"
-                        app:tint="#7C3AED"
+                        app:tint="@color/language_card_selected_stroke"
                         android:contentDescription="Selected" />
                 </FrameLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <!-- English -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardEnglish"
                 android:layout_width="0dp"
-                android:layout_height="80dp"
+                android:layout_height="90dp"
                 android:layout_weight="1"
-                android:layout_marginLeft="6dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFFFFF">
+                android:layout_marginStart="7dp"
+                android:layout_marginLeft="7dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1.5dp"
+                app:strokeColor="@color/language_card_unselected_stroke"
+                app:cardBackgroundColor="@color/language_card_unselected"
+                app:rippleColor="@color/seller_primary_light">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -128,33 +164,41 @@
                         android:gravity="center">
 
                         <TextView
+                            android:id="@+id/tvEnglishTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="English"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="#1C1B1F" />
+                            android:textColor="@color/language_card_unselected_text"
+                            android:includeFontPadding="false"
+                            android:gravity="center"
+                            android:textAlignment="center" />
 
                         <TextView
+                            android:id="@+id/tvEnglishSub"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="English"
-                            android:textSize="11sp"
-                            android:textColor="#6B7280"
-                            android:layout_marginTop="2dp" />
+                            android:textSize="12sp"
+                            android:textColor="@color/language_card_unselected_sub"
+                            android:includeFontPadding="false"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center"
+                            android:textAlignment="center" />
                     </LinearLayout>
 
                     <ImageView
                         android:id="@+id/checkEnglish"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="top|end"
-                        android:src="@drawable/ic_check"
+                        android:src="@drawable/ic_check_circle"
                         android:visibility="gone"
-                        app:tint="#7C3AED"
+                        app:tint="@color/language_card_selected_stroke"
                         android:contentDescription="Selected" />
                 </FrameLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 
@@ -163,17 +207,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="14dp">
 
-            <androidx.cardview.widget.CardView
+            <!-- Marathi -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardMarathi"
                 android:layout_width="0dp"
-                android:layout_height="80dp"
+                android:layout_height="90dp"
                 android:layout_weight="1"
-                android:layout_marginRight="6dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFFFFF">
+                android:layout_marginEnd="7dp"
+                android:layout_marginRight="7dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1.5dp"
+                app:strokeColor="@color/language_card_unselected_stroke"
+                app:cardBackgroundColor="@color/language_card_unselected"
+                app:rippleColor="@color/seller_primary_light">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -188,43 +237,56 @@
                         android:gravity="center">
 
                         <TextView
+                            android:id="@+id/tvMarathiTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="&#2350;&#2352;&#2366;&#2336;&#2368;"
+                            android:text="मराठी"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="#1C1B1F" />
+                            android:textColor="@color/language_card_unselected_text"
+                            android:includeFontPadding="false"
+                            android:gravity="center"
+                            android:textAlignment="center" />
 
                         <TextView
+                            android:id="@+id/tvMarathiSub"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Marathi"
-                            android:textSize="11sp"
-                            android:textColor="#6B7280"
-                            android:layout_marginTop="2dp" />
+                            android:textSize="12sp"
+                            android:textColor="@color/language_card_unselected_sub"
+                            android:includeFontPadding="false"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center"
+                            android:textAlignment="center" />
                     </LinearLayout>
 
                     <ImageView
                         android:id="@+id/checkMarathi"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="top|end"
-                        android:src="@drawable/ic_check"
+                        android:src="@drawable/ic_check_circle"
                         android:visibility="gone"
-                        app:tint="#7C3AED"
+                        app:tint="@color/language_card_selected_stroke"
                         android:contentDescription="Selected" />
                 </FrameLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <!-- Gujarati -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardGujarati"
                 android:layout_width="0dp"
-                android:layout_height="80dp"
+                android:layout_height="90dp"
                 android:layout_weight="1"
-                android:layout_marginLeft="6dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFFFFF">
+                android:layout_marginStart="7dp"
+                android:layout_marginLeft="7dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1.5dp"
+                app:strokeColor="@color/language_card_unselected_stroke"
+                app:cardBackgroundColor="@color/language_card_unselected"
+                app:rippleColor="@color/seller_primary_light">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -239,33 +301,41 @@
                         android:gravity="center">
 
                         <TextView
+                            android:id="@+id/tvGujaratiTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="&#2711;&#2753;&#2716;&#2736;&#2750;&#2724;&#2752;"
+                            android:text="ગુજરાતી"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="#1C1B1F" />
+                            android:textColor="@color/language_card_unselected_text"
+                            android:includeFontPadding="false"
+                            android:gravity="center"
+                            android:textAlignment="center" />
 
                         <TextView
+                            android:id="@+id/tvGujaratiSub"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Gujarati"
-                            android:textSize="11sp"
-                            android:textColor="#6B7280"
-                            android:layout_marginTop="2dp" />
+                            android:textSize="12sp"
+                            android:textColor="@color/language_card_unselected_sub"
+                            android:includeFontPadding="false"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center"
+                            android:textAlignment="center" />
                     </LinearLayout>
 
                     <ImageView
                         android:id="@+id/checkGujarati"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="top|end"
-                        android:src="@drawable/ic_check"
+                        android:src="@drawable/ic_check_circle"
                         android:visibility="gone"
-                        app:tint="#7C3AED"
+                        app:tint="@color/language_card_selected_stroke"
                         android:contentDescription="Selected" />
                 </FrameLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 
@@ -274,17 +344,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_marginBottom="12dp">
+            android:layout_marginBottom="14dp">
 
-            <androidx.cardview.widget.CardView
+            <!-- Punjabi -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardPunjabi"
                 android:layout_width="0dp"
-                android:layout_height="80dp"
+                android:layout_height="90dp"
                 android:layout_weight="1"
-                android:layout_marginRight="6dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFFFFF">
+                android:layout_marginEnd="7dp"
+                android:layout_marginRight="7dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1.5dp"
+                app:strokeColor="@color/language_card_unselected_stroke"
+                app:cardBackgroundColor="@color/language_card_unselected"
+                app:rippleColor="@color/seller_primary_light">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -299,43 +374,56 @@
                         android:gravity="center">
 
                         <TextView
+                            android:id="@+id/tvPunjabiTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="&#2602;&#2672;&#2588;&#2622;&#2604;&#2624;"
+                            android:text="ਪੰਜਾਬੀ"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="#1C1B1F" />
+                            android:textColor="@color/language_card_unselected_text"
+                            android:includeFontPadding="false"
+                            android:gravity="center"
+                            android:textAlignment="center" />
 
                         <TextView
+                            android:id="@+id/tvPunjabiSub"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Punjabi"
-                            android:textSize="11sp"
-                            android:textColor="#6B7280"
-                            android:layout_marginTop="2dp" />
+                            android:textSize="12sp"
+                            android:textColor="@color/language_card_unselected_sub"
+                            android:includeFontPadding="false"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center"
+                            android:textAlignment="center" />
                     </LinearLayout>
 
                     <ImageView
                         android:id="@+id/checkPunjabi"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="top|end"
-                        android:src="@drawable/ic_check"
+                        android:src="@drawable/ic_check_circle"
                         android:visibility="gone"
-                        app:tint="#7C3AED"
+                        app:tint="@color/language_card_selected_stroke"
                         android:contentDescription="Selected" />
                 </FrameLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
-            <androidx.cardview.widget.CardView
+            <!-- Tamil -->
+            <com.google.android.material.card.MaterialCardView
                 android:id="@+id/cardTamil"
                 android:layout_width="0dp"
-                android:layout_height="80dp"
+                android:layout_height="90dp"
                 android:layout_weight="1"
-                android:layout_marginLeft="6dp"
-                app:cardCornerRadius="12dp"
-                app:cardElevation="2dp"
-                app:cardBackgroundColor="#FFFFFF">
+                android:layout_marginStart="7dp"
+                android:layout_marginLeft="7dp"
+                app:cardCornerRadius="14dp"
+                app:cardElevation="0dp"
+                app:strokeWidth="1.5dp"
+                app:strokeColor="@color/language_card_unselected_stroke"
+                app:cardBackgroundColor="@color/language_card_unselected"
+                app:rippleColor="@color/seller_primary_light">
 
                 <FrameLayout
                     android:layout_width="match_parent"
@@ -350,33 +438,41 @@
                         android:gravity="center">
 
                         <TextView
+                            android:id="@+id/tvTamilTitle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="&#2980;&#2990;&#3007;&#2996;&#3021;"
+                            android:text="தமிழ்"
                             android:textSize="18sp"
                             android:textStyle="bold"
-                            android:textColor="#1C1B1F" />
+                            android:textColor="@color/language_card_unselected_text"
+                            android:includeFontPadding="false"
+                            android:gravity="center"
+                            android:textAlignment="center" />
 
                         <TextView
+                            android:id="@+id/tvTamilSub"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Tamil"
-                            android:textSize="11sp"
-                            android:textColor="#6B7280"
-                            android:layout_marginTop="2dp" />
+                            android:textSize="12sp"
+                            android:textColor="@color/language_card_unselected_sub"
+                            android:includeFontPadding="false"
+                            android:layout_marginTop="4dp"
+                            android:gravity="center"
+                            android:textAlignment="center" />
                     </LinearLayout>
 
                     <ImageView
                         android:id="@+id/checkTamil"
-                        android:layout_width="18dp"
-                        android:layout_height="18dp"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
                         android:layout_gravity="top|end"
-                        android:src="@drawable/ic_check"
+                        android:src="@drawable/ic_check_circle"
                         android:visibility="gone"
-                        app:tint="#7C3AED"
+                        app:tint="@color/language_card_selected_stroke"
                         android:contentDescription="Selected" />
                 </FrameLayout>
-            </androidx.cardview.widget.CardView>
+            </com.google.android.material.card.MaterialCardView>
 
         </LinearLayout>
 
@@ -386,7 +482,7 @@
             android:layout_height="24dp" />
 
         <!-- Continue Button -->
-        <TextView
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btnContinue"
             android:layout_width="match_parent"
             android:layout_height="56dp"
@@ -396,6 +492,7 @@
             android:textColor="#FFFFFF"
             android:textSize="16sp"
             android:textStyle="bold"
+            android:textAllCaps="false"
             android:clickable="true"
             android:focusable="true" />
 

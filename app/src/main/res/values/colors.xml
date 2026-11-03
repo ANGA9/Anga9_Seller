@@ -56,9 +56,14 @@
     <color name="badge_trusted">#10B981</color>
     <color name="badge_premium">#F59E0B</color>
 
-    <!-- Language Selection Card Colors -->
-    <color name="language_card_selected">#F3EEFF</color>
+    <!-- Language Selection Card Colors (ANGA9 Brand Parity) -->
+    <color name="language_card_selected">#EFF6FF</color>
+    <color name="language_card_selected_stroke">#1A6FD4</color>
+    <color name="language_card_selected_text">#1A6FD4</color>
     <color name="language_card_unselected">#FFFFFF</color>
+    <color name="language_card_unselected_stroke">#E2E8F0</color>
+    <color name="language_card_unselected_text">#1A1A2E</color>
+    <color name="language_card_unselected_sub">#6B7280</color>
 
     <!-- Common -->
     <color name="white">#FFFFFF</color>
