@@ -104,8 +104,10 @@ class DashboardActivity : BaseActivity() {
     private lateinit var layoutOfflineFullscreen: View
     private lateinit var btnOfflineRetry: MaterialButton
 
-    // Time Toggle
-    private lateinit var toggleTimeRange: MaterialButtonToggleGroup
+    // Time Range Tabs
+    private lateinit var tabToday: TextView
+    private lateinit var tab7Days: TextView
+    private lateinit var tab30Days: TextView
 
     // 2x2 Stat Cards
     private lateinit var cardOrdersStat: View
@@ -241,21 +243,24 @@ class DashboardActivity : BaseActivity() {
             }, 1200)
         }
 
-        // Time Range
-        toggleTimeRange = findViewById(R.id.toggleTimeRange)
+        // Time Range Tabs
+        tabToday = findViewById(R.id.tabToday)
+        tab7Days = findViewById(R.id.tab7Days)
+        tab30Days = findViewById(R.id.tab30Days)
+        setupTimeRangeTabs()
 
-        // Stat Cards
+        // Stat Cards (Uniform ANGA9 Royal Blue icon badges)
         cardOrdersStat = findViewById(R.id.cardOrdersStat)
         cardRevenueStat = findViewById(R.id.cardRevenueStat)
         cardActiveProductsStat = findViewById(R.id.cardActiveProductsStat)
         cardToFulfillStat = findViewById(R.id.cardToFulfillStat)
 
-        setupStatCardInitial(cardOrdersStat, "Total Orders", R.drawable.ic_orders, Color.parseColor("#1A6FD4"), Color.parseColor("#EFF6FF"))
-        setupStatCardInitial(cardRevenueStat, "Total Revenue", R.drawable.ic_rupee_24, Color.parseColor("#059669"), Color.parseColor("#ECFDF5"))
-        setupStatCardInitial(cardActiveProductsStat, "Active Products", R.drawable.ic_package, Color.parseColor("#4F46E5"), Color.parseColor("#EEF2FF"))
-        setupStatCardInitial(cardToFulfillStat, "Orders to Fulfill", R.drawable.ic_time, Color.parseColor("#D97706"), Color.parseColor("#FFFBEB"))
-
-        updateTimeRangeToggleStyle(toggleTimeRange.checkedButtonId.takeIf { it != View.NO_ID } ?: R.id.btn30Days)
+        val uniformIconColor = Color.parseColor("#1A6FD4")
+        val uniformBadgeBg = Color.parseColor("#EFF6FF")
+        setupStatCardInitial(cardOrdersStat, "Total Orders", R.drawable.ic_orders, uniformIconColor, uniformBadgeBg)
+        setupStatCardInitial(cardRevenueStat, "Total Revenue", R.drawable.ic_rupee_24, uniformIconColor, uniformBadgeBg)
+        setupStatCardInitial(cardActiveProductsStat, "Active Products", R.drawable.ic_package, uniformIconColor, uniformBadgeBg)
+        setupStatCardInitial(cardToFulfillStat, "Orders to Fulfill", R.drawable.ic_time, uniformIconColor, uniformBadgeBg)
 
         // Revenue Trend
         sparklineRevenueTrend = findViewById(R.id.sparklineRevenueTrend)
@@ -311,22 +316,30 @@ class DashboardActivity : BaseActivity() {
         badge?.background = bg
     }
 
-    private fun updateTimeRangeToggleStyle(checkedId: Int) {
-        val buttons = listOf(
-            findViewById<MaterialButton>(R.id.btnToday),
-            findViewById<MaterialButton>(R.id.btn7Days),
-            findViewById<MaterialButton>(R.id.btn30Days)
-        )
-        buttons.forEach { btn ->
-            if (btn != null) {
-                if (btn.id == checkedId) {
-                    btn.backgroundTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#1A6FD4"))
-                    btn.setTextColor(Color.WHITE)
-                } else {
-                    btn.backgroundTintList = android.content.res.ColorStateList.valueOf(Color.TRANSPARENT)
-                    btn.setTextColor(Color.parseColor("#64748B"))
-                }
-            }
+    private fun setupTimeRangeTabs() {
+        tabToday.setOnClickListener { selectTimeRange("today") }
+        tab7Days.setOnClickListener { selectTimeRange("7d") }
+        tab30Days.setOnClickListener { selectTimeRange("30d") }
+        selectTimeRange("30d", triggerFetch = false)
+    }
+
+    private fun selectTimeRange(period: String, triggerFetch: Boolean = true) {
+        currentPeriodLabel = period
+
+        tabToday.setBackgroundResource(if (period == "today") R.drawable.shape_pill_selected else R.drawable.shape_pill_unselected)
+        tabToday.setTextColor(if (period == "today") Color.WHITE else Color.parseColor("#475569"))
+        tabToday.setTypeface(null, if (period == "today") Typeface.BOLD else Typeface.NORMAL)
+
+        tab7Days.setBackgroundResource(if (period == "7d") R.drawable.shape_pill_selected else R.drawable.shape_pill_unselected)
+        tab7Days.setTextColor(if (period == "7d") Color.WHITE else Color.parseColor("#475569"))
+        tab7Days.setTypeface(null, if (period == "7d") Typeface.BOLD else Typeface.NORMAL)
+
+        tab30Days.setBackgroundResource(if (period == "30d") R.drawable.shape_pill_selected else R.drawable.shape_pill_unselected)
+        tab30Days.setTextColor(if (period == "30d") Color.WHITE else Color.parseColor("#475569"))
+        tab30Days.setTypeface(null, if (period == "30d") Typeface.BOLD else Typeface.NORMAL)
+
+        if (triggerFetch) {
+            viewModel.setPeriod(period)
         }
     }
 
@@ -436,25 +449,7 @@ class DashboardActivity : BaseActivity() {
             startActivity(Intent(this, com.anga9.seller.auth.KycStatusActivity::class.java))
         }
 
-        toggleTimeRange.addOnButtonCheckedListener { _, checkedId, isChecked ->
-            if (isChecked) {
-                updateTimeRangeToggleStyle(checkedId)
-                when (checkedId) {
-                    R.id.btnToday -> {
-                        currentPeriodLabel = "today"
-                        viewModel.setPeriod("today")
-                    }
-                    R.id.btn7Days -> {
-                        currentPeriodLabel = "7d"
-                        viewModel.setPeriod("7d")
-                    }
-                    R.id.btn30Days -> {
-                        currentPeriodLabel = "30d"
-                        viewModel.setPeriod("30d")
-                    }
-                }
-            }
-        }
+
 
         btnWithdraw.setOnClickListener {
             startActivity(Intent(this, EarningsActivity::class.java))
@@ -667,7 +662,7 @@ class DashboardActivity : BaseActivity() {
             label = "Active Products",
             value = stats.activeProducts.toString(),
             subtitle = "Live on marketplace",
-            textColor = 0xFF15803D.toInt()
+            textColor = Color.parseColor("#0F172A")
         )
 
         // 4. To Fulfill (Amber tinted actionable count)
@@ -676,7 +671,7 @@ class DashboardActivity : BaseActivity() {
             label = "Orders to Fulfill",
             value = stats.pendingOrders.toString(),
             subtitle = if (stats.pendingOrders > 0) "Needs immediate shipping" else "All orders fulfilled",
-            textColor = if (stats.pendingOrders > 0) 0xFFB45309.toInt() else 0xFF6B7280.toInt()
+            textColor = Color.parseColor("#0F172A")
         )
 
         // 5. Revenue Trend Sparkline & Badge
