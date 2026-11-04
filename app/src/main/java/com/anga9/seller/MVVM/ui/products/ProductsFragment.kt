@@ -86,7 +86,6 @@ class ProductsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initViews(view)
-        setupInsets()
         setupRecyclerView()
         setupSearch()
         setupTabs()
@@ -98,7 +97,7 @@ class ProductsFragment : Fragment() {
         viewModel.loadProducts(currentFilter)
     }
 
-    private fun setupInsets() {
+    private fun {
         ViewCompat.setOnApplyWindowInsetsListener(appBarLayout) { v, insets ->
             val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
             v.setPadding(v.paddingLeft, statusBar, v.paddingRight, v.paddingBottom)

@@ -66,7 +66,6 @@ class OrdersFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         initViews(view)
-        setupInsets()
         setupRecyclerView()
         setupTabs()
         setupSearch()
@@ -76,7 +75,7 @@ class OrdersFragment : Fragment() {
         viewModel.loadOrders()
     }
 
-    private fun setupInsets() {
+    private fun {
         ViewCompat.setOnApplyWindowInsetsListener(headerLayout) { v, insets ->
             val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
             val density = v.resources.displayMetrics.density
