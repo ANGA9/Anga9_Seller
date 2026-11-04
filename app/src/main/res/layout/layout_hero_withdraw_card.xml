@@ -25,7 +25,7 @@
                 android:layout_height="16dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_wallet"
-                app:tint="#2851C4"/>
+                app:tint="#1A6FD4"/>
         </FrameLayout>
 
         <Space
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="AVAILABLE"
-            android:textColor="#2851C4"
+            android:textColor="#1A6FD4"
             android:textSize="10sp"
             android:textStyle="bold"
             android:paddingHorizontal="8dp"
@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="₹0"
-        android:textColor="#1A1D23"
+        android:textColor="#0F172A"
         android:textSize="24sp"
         android:textStyle="bold" />
 
@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:text="Ready to withdraw"
-        android:textColor="#5B6472"
+        android:textColor="#64748B"
         android:textSize="12sp" />
 
     <!-- Withdraw Button -->

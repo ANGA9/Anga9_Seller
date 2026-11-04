@@ -111,19 +111,19 @@ class EarningsActivity : BaseActivity() {
 
     private fun setupGridCards() {
         // Pending: amber tint (#FFF7E8 bg, #D98E04 icon)
-        setupGridCard(gridPending, "PENDING CLEARANCE", R.drawable.ic_time, "#FFF7E8", "#D98E04")
+        setupGridCard(gridPending, "PENDING CLEARANCE", R.drawable.ic_time, "#EFF6FF", "#1A6FD4")
         tvPendingAmount = gridPending.findViewById(R.id.tvAmount)
 
         // Available: green tint (#F0FBF4 bg, #1E7A45 icon)
-        setupGridCard(gridAvailable, "AVAILABLE TO WITHDRAW", R.drawable.ic_wallet, "#F0FBF4", "#1E7A45")
+        setupGridCard(gridAvailable, "AVAILABLE TO WITHDRAW", R.drawable.ic_wallet, "#EFF6FF", "#1A6FD4")
         tvAvailableAmount = gridAvailable.findViewById(R.id.tvAmount)
 
         // Requested: purple tint (#F5EEFF bg, #7C3AED icon)
-        setupGridCard(gridRequested, "PAYOUT REQUESTED", R.drawable.ic_document, "#F5EEFF", "#7C3AED")
+        setupGridCard(gridRequested, "PAYOUT REQUESTED", R.drawable.ic_document, "#EFF6FF", "#1A6FD4")
         tvRequestedAmount = gridRequested.findViewById(R.id.tvAmount)
 
         // Paid: green tint (#F0FBF4 bg, #1E7A45 icon)
-        setupGridCard(gridPaid, "SUCCESSFULLY PAID", R.drawable.ic_check_circle, "#F0FBF4", "#1E7A45")
+        setupGridCard(gridPaid, "SUCCESSFULLY PAID", R.drawable.ic_check_circle, "#EFF6FF", "#1A6FD4")
         tvPaidAmount = gridPaid.findViewById(R.id.tvAmount)
     }
 

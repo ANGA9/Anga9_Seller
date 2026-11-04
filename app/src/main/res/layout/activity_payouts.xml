@@ -6,7 +6,8 @@
     android:id="@+id/swipeRefreshLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F7F8"
+    android:fitsSystemWindows="true"
+    android:background="#F8FAFC"
     tools:context=".ui.wallet.PayoutsActivity">
 
     <androidx.core.widget.NestedScrollView

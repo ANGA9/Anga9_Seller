@@ -65,15 +65,15 @@ class PayoutsActivity : BaseActivity() {
 
         // Setup Processing Grid Card
         binding.layoutProcessing.tvLabel.text = "PAYOUTS PROCESSING"
-        binding.layoutProcessing.flIconBg.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#FFF7E8"))
+        binding.layoutProcessing.flIconBg.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#EFF6FF"))
         binding.layoutProcessing.ivIcon.setImageResource(R.drawable.ic_warning_triangle) // Use an alert-circle like icon
-        binding.layoutProcessing.ivIcon.imageTintList = ColorStateList.valueOf(Color.parseColor("#D98E04"))
+        binding.layoutProcessing.ivIcon.imageTintList = ColorStateList.valueOf(Color.parseColor("#1A6FD4"))
 
         // Setup Transferred Grid Card
         binding.layoutTransferred.tvLabel.text = "TOTAL TRANSFERRED"
-        binding.layoutTransferred.flIconBg.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#F0FBF4"))
+        binding.layoutTransferred.flIconBg.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#EFF6FF"))
         binding.layoutTransferred.ivIcon.setImageResource(R.drawable.ic_check_circle)
-        binding.layoutTransferred.ivIcon.imageTintList = ColorStateList.valueOf(Color.parseColor("#1E7A45"))
+        binding.layoutTransferred.ivIcon.imageTintList = ColorStateList.valueOf(Color.parseColor("#1A6FD4"))
 
         binding.layoutHeroWithdraw.btnWithdraw.setOnClickListener {
             if (availableBalance > 0) {
@@ -163,7 +163,7 @@ class PayoutsActivity : BaseActivity() {
     private fun updateWithdrawButtonState() {
         val btn = binding.layoutHeroWithdraw.btnWithdraw
         if (availableBalance > 0) {
-            btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#2851C4"))
+            btn.backgroundTintList = ColorStateList.valueOf(Color.parseColor("#1A6FD4"))
             btn.setTextColor(Color.WHITE)
             btn.isClickable = true
             btn.isFocusable = true
