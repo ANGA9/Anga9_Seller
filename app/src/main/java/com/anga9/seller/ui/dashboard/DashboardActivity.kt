@@ -135,7 +135,7 @@ class DashboardActivity : BaseActivity() {
     // Top Products
     private lateinit var rvTopProducts: RecyclerView
     private lateinit var tvViewAllTopProducts: TextView
-    private lateinit var tvEmptyTopProducts: TextView
+    private lateinit var tvEmptyTopProducts: View
     private lateinit var topProductsAdapter: TopProductsAdapter
 
     private var currentPeriodLabel = "30d"
@@ -277,6 +277,17 @@ class DashboardActivity : BaseActivity() {
         rvRecentOrders = findViewById(R.id.rvRecentOrders)
         tvViewAllOrders = findViewById(R.id.tvViewAllOrders)
         layoutEmptyOrders = findViewById(R.id.layoutEmptyOrders)
+
+        layoutEmptyOrders.findViewById<ImageView>(R.id.ivEmptyIcon)?.apply {
+            setImageResource(R.drawable.ic_orders)
+            imageTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#1A6FD4"))
+        }
+        layoutEmptyOrders.findViewById<TextView>(R.id.tvEmptyHeading)?.text = "No recent orders"
+        layoutEmptyOrders.findViewById<TextView>(R.id.tvEmptyDesc)?.text = "New customer orders will appear here once placed."
+        layoutEmptyOrders.findViewById<com.google.android.material.button.MaterialButton>(R.id.btnEmptyAction)?.apply {
+            text = "View All Orders"
+            setOnClickListener { switchToTab(R.id.nav_orders) }
+        }
 
         // Top Products
         rvTopProducts = findViewById(R.id.rvTopProducts)

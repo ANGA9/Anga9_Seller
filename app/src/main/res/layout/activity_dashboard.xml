@@ -337,16 +337,38 @@
                                         android:nestedScrollingEnabled="false"
                                         tools:listitem="@layout/layout_top_product_item" />
 
-                                    <TextView
+                                    <LinearLayout
                                         android:id="@+id/tvEmptyTopProducts"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
                                         android:gravity="center"
-                                        android:paddingVertical="20dp"
-                                        android:text="Top products will appear once orders are placed."
-                                        android:textColor="#6B7280"
-                                        android:textSize="13sp"
-                                        android:visibility="gone" />
+                                        android:orientation="vertical"
+                                        android:paddingVertical="24dp"
+                                        android:visibility="gone">
+
+                                        <ImageView
+                                            android:layout_width="28dp"
+                                            android:layout_height="28dp"
+                                            android:src="@drawable/ic_award"
+                                            app:tint="#94A3B8"
+                                            android:layout_marginBottom="8dp" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:text="No top products yet"
+                                            android:textColor="#1E293B"
+                                            android:textSize="14sp"
+                                            android:textStyle="bold" />
+
+                                        <TextView
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:layout_marginTop="4dp"
+                                            android:text="Best selling products will appear here once orders are placed."
+                                            android:textColor="#64748B"
+                                            android:textSize="12sp" />
+                                    </LinearLayout>
                                 </LinearLayout>
                             </androidx.cardview.widget.CardView>
                         </LinearLayout>
