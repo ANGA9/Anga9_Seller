@@ -153,13 +153,6 @@ class MyProductsActivity : BaseActivity() {
         }
     }
 
-    override fun onResume() {
-        super.onResume()
-        if (::bottomNavigation.isInitialized) {
-            bottomNavigation.setSelectedItemId(R.id.nav_products, notifyListener = false)
-        }
-    }
-
     private fun initViews() {
         recyclerView = findViewById(R.id.recyclerViewProducts)
         swipeRefresh = findViewById(R.id.swipeRefresh)

@@ -17,6 +17,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.anga9.seller.BaseActivity
+import com.anga9.seller.ui.views.FlipkartBottomBar
+import com.anga9.seller.ui.dashboard.DashboardActivity
+import com.anga9.seller.MVVM.ui.products.MyProductsActivity
+import com.anga9.seller.ui.inventory.InventoryActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.appbar.AppBarLayout
 import com.anga9.seller.R
 import com.anga9.seller.data.repository.BrandRepository
 import com.anga9.seller.utils.Resource
@@ -42,6 +49,7 @@ class MyOrdersActivity : BaseActivity() {
     private lateinit var cardStoreContext: MaterialCardView
     private lateinit var tvViewingStore: TextView
     private lateinit var btnManageStore: TextView
+    private lateinit var bottomNavigation: FlipkartBottomBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +63,75 @@ class MyOrdersActivity : BaseActivity() {
         observeViewModel()
 
         viewModel.loadOrders()
+    }
+
+    
+    private fun setupWindowInsets() {
+        val appBarLayout = findViewById<AppBarLayout>(R.id.appBarLayout)
+        if (appBarLayout != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(appBarLayout) { view, insets ->
+                val sysBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                view.setPadding(
+                    view.paddingLeft,
+                    sysBarInsets.top,
+                    view.paddingRight,
+                    view.paddingBottom
+                )
+                insets
+            }
+        }
+    }
+
+    private fun setupBottomNavigation() {
+        bottomNavigation = findViewById(R.id.bottomNavigation)
+        ViewCompat.setOnApplyWindowInsetsListener(bottomNavigation) { view, insets ->
+            val sysBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(
+                view.paddingLeft,
+                view.paddingTop,
+                view.paddingRight,
+                sysBarInsets.bottom
+            )
+            insets
+        }
+        bottomNavigation.setSelectedItemId(R.id.nav_orders, notifyListener = false)
+        bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    startActivity(
+                        Intent(this, DashboardActivity::class.java)
+                            .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    )
+                    overridePendingTransition(0, 0)
+                    true
+                }
+                R.id.nav_orders -> true
+                R.id.nav_products -> {
+                    startActivity(
+                        Intent(this, MyProductsActivity::class.java)
+                            .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    )
+                    overridePendingTransition(0, 0)
+                    true
+                }
+                R.id.nav_inventory -> {
+                    startActivity(
+                        Intent(this, InventoryActivity::class.java)
+                            .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    )
+                    overridePendingTransition(0, 0)
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (::bottomNavigation.isInitialized) {
+            bottomNavigation.setSelectedItemId(R.id.nav_orders, notifyListener = false)
+        }
     }
 
     private fun initViews() {
@@ -72,7 +149,11 @@ class MyOrdersActivity : BaseActivity() {
         tvViewingStore = findViewById(R.id.tvViewingStore)
         btnManageStore = findViewById(R.id.btnManageStore)
 
-        findViewById<ImageView>(R.id.btnBack).setOnClickListener { finish() }
+        findViewById<ImageView>(R.id.btnBack).setOnClickListener {
+            startActivity(Intent(this, DashboardActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT))
+            overridePendingTransition(0, 0)
+            finish()
+        }
 
         swipeRefresh.setOnRefreshListener {
             viewModel.loadOrders()
