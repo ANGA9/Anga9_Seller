@@ -80,4 +80,11 @@
         app:elevation="4dp"
         app:tint="#FFFFFF" />
 
+
+    <!-- Flipkart-style Floating Bottom Navigation (4 Core Tabs) -->
+    <com.anga9.seller.ui.views.FlipkartBottomBar
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom" />
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
