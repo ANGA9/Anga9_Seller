@@ -62,63 +62,56 @@
                         android:paddingTop="16dp"
                         android:paddingBottom="24dp">
 
-                        <!-- Time Range Toggle (Segmented Pill Switch) -->
-                        <com.google.android.material.button.MaterialButtonToggleGroup
-                            android:id="@+id/toggleTimeRange"
+                        <!-- Time Range Filter Pills Row -->
+                        <LinearLayout
+                            android:id="@+id/layoutTimeRangePills"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="16dp"
-                            android:background="@drawable/bg_segmented_container"
-                            android:padding="3dp"
-                            app:singleSelection="true"
-                            app:checkedButton="@+id/btn30Days"
-                            app:selectionRequired="true">
+                            android:orientation="horizontal">
 
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btnToday"
+                            <TextView
+                                android:id="@+id/tabToday"
                                 android:layout_width="0dp"
-                                android:layout_height="36dp"
+                                android:layout_height="38dp"
                                 android:layout_weight="1"
+                                android:gravity="center"
+                                android:background="@drawable/shape_pill_unselected"
                                 android:text="Today"
-                                android:textAllCaps="false"
-                                android:textSize="13sp"
-                                android:textStyle="bold"
-                                android:insetTop="0dp"
-                                android:insetBottom="0dp"
-                                app:cornerRadius="20dp"
-                                app:strokeWidth="0dp"
-                                app:elevation="0dp" />
+                                android:textColor="#475569"
+                                android:textSize="13.5sp"
+                                android:clickable="true"
+                                android:focusable="true" />
 
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btn7Days"
+                            <TextView
+                                android:id="@+id/tab7Days"
                                 android:layout_width="0dp"
-                                android:layout_height="36dp"
+                                android:layout_height="38dp"
                                 android:layout_weight="1"
+                                android:layout_marginStart="8dp"
+                                android:gravity="center"
+                                android:background="@drawable/shape_pill_unselected"
                                 android:text="7 days"
-                                android:textAllCaps="false"
-                                android:textSize="13sp"
-                                android:textStyle="bold"
-                                android:insetTop="0dp"
-                                android:insetBottom="0dp"
-                                app:cornerRadius="20dp"
-                                app:strokeWidth="0dp"
-                                app:elevation="0dp" />
+                                android:textColor="#475569"
+                                android:textSize="13.5sp"
+                                android:clickable="true"
+                                android:focusable="true" />
 
-                            <com.google.android.material.button.MaterialButton
-                                android:id="@+id/btn30Days"
+                            <TextView
+                                android:id="@+id/tab30Days"
                                 android:layout_width="0dp"
-                                android:layout_height="36dp"
+                                android:layout_height="38dp"
                                 android:layout_weight="1"
+                                android:layout_marginStart="8dp"
+                                android:gravity="center"
+                                android:background="@drawable/shape_pill_selected"
                                 android:text="30 days"
-                                android:textAllCaps="false"
-                                android:textSize="13sp"
+                                android:textColor="#FFFFFF"
                                 android:textStyle="bold"
-                                android:insetTop="0dp"
-                                android:insetBottom="0dp"
-                                app:cornerRadius="20dp"
-                                app:strokeWidth="0dp"
-                                app:elevation="0dp" />
-                        </com.google.android.material.button.MaterialButtonToggleGroup>
+                                android:textSize="13.5sp"
+                                android:clickable="true"
+                                android:focusable="true" />
+                        </LinearLayout>
 
                         <!-- Stats Grid Row 1: Orders & Revenue -->
                         <LinearLayout

@@ -192,7 +192,7 @@ class InventoryFragment : Fragment() {
                 cardTotal.strokeWidth = strokeNormal
                 cardTotal.cardElevation = 0f
 
-                cardLowStock.setStrokeColor(android.content.res.ColorStateList.valueOf(Color.parseColor("#D97706")))
+                cardLowStock.setStrokeColor(android.content.res.ColorStateList.valueOf(Color.parseColor("#1A6FD4")))
                 cardLowStock.strokeWidth = strokeSelected
                 cardLowStock.cardElevation = 2 * density
 
@@ -211,7 +211,7 @@ class InventoryFragment : Fragment() {
                 cardLowStock.strokeWidth = strokeNormal
                 cardLowStock.cardElevation = 0f
 
-                cardOutOfStock.setStrokeColor(android.content.res.ColorStateList.valueOf(Color.parseColor("#DC2626")))
+                cardOutOfStock.setStrokeColor(android.content.res.ColorStateList.valueOf(Color.parseColor("#1A6FD4")))
                 cardOutOfStock.strokeWidth = strokeSelected
                 cardOutOfStock.cardElevation = 2 * density
             }
