@@ -28,10 +28,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.anga9.seller.R
-import com.anga9.seller.MVVM.data.model.SellerProduct
-import com.anga9.seller.MVVM.ui.adapter.SellerProductAdapter
-import com.anga9.seller.ui.bulk.BulkEditActivity
-import com.anga9.seller.ui.bulk.BulkUploadActivity
+import com.anga9.seller.data_models.SellerProduct
 import com.anga9.seller.ui.dashboard.DashboardActivity
 import com.anga9.seller.ui.notifications.NotificationsActivity
 import com.anga9.seller.utils.UiState

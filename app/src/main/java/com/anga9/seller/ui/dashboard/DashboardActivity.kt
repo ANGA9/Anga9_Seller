@@ -172,10 +172,30 @@ class DashboardActivity : BaseActivity() {
         handleNavIntent(intent)
     }
 
+    override fun onNewIntent(intent: Intent) {
+        super.onNewIntent(intent)
+        setIntent(intent)
+        handleNavIntent(intent)
+    }
+
+    private fun handleNavIntent(intent: Intent?) {
+        val tabId = intent?.getIntExtra(EXTRA_NAV_TAB, -1) ?: -1
+        if (tabId != -1) {
+            switchToTab(tabId)
+        }
+    }
+
     override fun onResume() {
         super.onResume()
-        bottomNavigation.selectedItemId = R.id.nav_home
-        viewModel.refresh()
+        if (activeTabId == R.id.nav_home) {
+            viewModel.refresh()
+        } else if (activeTabId == R.id.nav_orders && ordersFragment.isAdded) {
+            ordersFragment.refreshOrders()
+        } else if (activeTabId == R.id.nav_products && productsFragment.isAdded) {
+            productsFragment.refreshProducts()
+        } else if (activeTabId == R.id.nav_inventory && inventoryFragment.isAdded) {
+            inventoryFragment.refreshInventory()
+        }
     }
 
     private fun initViews() {
@@ -283,9 +303,7 @@ class DashboardActivity : BaseActivity() {
             isNestedScrollingEnabled = false
         }
 
-        topProductsAdapter = TopProductsAdapter {
-            startActivity(Intent(this, MyProductsActivity::class.java))
-        }
+        topProductsAdapter = TopProductsAdapter { switchToTab(R.id.nav_products) }
         rvTopProducts.apply {
             layoutManager = LinearLayoutManager(this@DashboardActivity)
             adapter = topProductsAdapter
@@ -399,21 +417,15 @@ class DashboardActivity : BaseActivity() {
             startActivity(Intent(this, AddProductWizardActivity::class.java))
         }
 
-        btnQuickOrders.setOnClickListener {
-            startActivity(Intent(this, MyOrdersActivity::class.java))
-        }
+        btnQuickOrders.setOnClickListener { switchToTab(R.id.nav_orders) }
 
         btnQuickSupport.setOnClickListener {
             startActivity(Intent(this, SupportHomeActivity::class.java))
         }
 
-        tvViewAllOrders.setOnClickListener {
-            startActivity(Intent(this, MyOrdersActivity::class.java))
-        }
+        tvViewAllOrders.setOnClickListener { switchToTab(R.id.nav_orders) }
 
-        tvViewAllTopProducts.setOnClickListener {
-            startActivity(Intent(this, MyProductsActivity::class.java))
-        }
+        tvViewAllTopProducts.setOnClickListener { switchToTab(R.id.nav_products) }
     }
 
     private fun setupBottomNavigation() {
@@ -429,23 +441,74 @@ class DashboardActivity : BaseActivity() {
         }
 
         bottomNavigation.setOnItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.nav_home -> true
-                R.id.nav_orders -> {
-                    startActivity(Intent(this, MyOrdersActivity::class.java))
-                    false
-                }
-                R.id.nav_products -> {
-                    startActivity(Intent(this, MyProductsActivity::class.java))
-                    false
-                }
-                R.id.nav_inventory -> {
-                    startActivity(Intent(this, InventoryActivity::class.java))
-                    false
-                }
-                else -> false
-            }
+            showTab(item.itemId)
+            true
         }
+    }
+
+    fun switchToTab(tabId: Int) {
+        bottomNavigation.setSelectedItemId(tabId, notifyListener = false)
+        showTab(tabId)
+    }
+
+    private fun showTab(tabId: Int) {
+        if (tabId == activeTabId) return
+
+        if (tabId == R.id.nav_home) {
+            tabFragmentContainer.animate()
+                .alpha(0f)
+                .setDuration(160)
+                .withEndAction {
+                    tabFragmentContainer.visibility = View.GONE
+                    val tx = supportFragmentManager.beginTransaction()
+                    listOf(ordersFragment, productsFragment, inventoryFragment).forEach {
+                        if (it.isAdded) tx.hide(it)
+                    }
+                    tx.commitAllowingStateLoss()
+                }
+                .start()
+
+            swipeRefresh.visibility = View.VISIBLE
+            swipeRefresh.alpha = 0f
+            swipeRefresh.animate()
+                .alpha(1f)
+                .setDuration(180)
+                .start()
+        } else {
+            swipeRefresh.animate()
+                .alpha(0f)
+                .setDuration(160)
+                .withEndAction {
+                    swipeRefresh.visibility = View.GONE
+                }
+                .start()
+
+            tabFragmentContainer.visibility = View.VISIBLE
+            tabFragmentContainer.alpha = 1f
+
+            val targetFragment = when (tabId) {
+                R.id.nav_orders -> ordersFragment
+                R.id.nav_products -> productsFragment
+                R.id.nav_inventory -> inventoryFragment
+                else -> ordersFragment
+            }
+
+            val tx = supportFragmentManager.beginTransaction()
+                .setCustomAnimations(R.anim.fade_in, R.anim.fade_out)
+
+            if (!targetFragment.isAdded) {
+                tx.add(R.id.tabFragmentContainer, targetFragment, targetFragment.javaClass.simpleName)
+            }
+
+            listOf(ordersFragment, productsFragment, inventoryFragment).forEach { frag ->
+                if (frag.isAdded) {
+                    if (frag == targetFragment) tx.show(frag) else tx.hide(frag)
+                }
+            }
+            tx.commitAllowingStateLoss()
+        }
+
+        activeTabId = tabId
     }
 
     private fun observeViewModel() {
