@@ -365,6 +365,12 @@
             android:visibility="gone" />
 
         <!-- Bottom Navigation (4 Core Tabs) -->
+                <FrameLayout
+            android:id="@+id/tabFragmentContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone" />
+
         <com.anga9.seller.ui.views.FlipkartBottomBar
             android:id="@+id/bottomNavigation"
             android:layout_width="match_parent"
