@@ -19,6 +19,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.core.widget.NestedScrollView
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.lifecycleScope
@@ -147,6 +148,8 @@ class DashboardActivity : BaseActivity() {
         prefs = getSharedPreferences(Constants.PREFS_NAME, MODE_PRIVATE)
         networkMonitor = com.anga9.seller.utils.NetworkMonitor(this)
 
+        window.statusBarColor = Color.WHITE
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = true
         initViews()
         setupDrawer()
         setupRecyclerViews()
@@ -200,6 +203,7 @@ class DashboardActivity : BaseActivity() {
 
     private fun initViews() {
         drawerLayout = findViewById(R.id.drawerLayout)
+        drawerLayout.setStatusBarBackgroundColor(Color.WHITE)
         bottomNavigation = findViewById(R.id.bottomNavigation)
         swipeRefresh = findViewById(R.id.swipeRefresh)
         homeContent = findViewById(R.id.homeContent)
