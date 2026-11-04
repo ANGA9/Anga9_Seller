@@ -79,14 +79,7 @@ class InventoryFragment : Fragment() {
         viewModel.fetchInventory()
     }
 
-    private fun {
-        ViewCompat.setOnApplyWindowInsetsListener(appBarLayout) { v, insets ->
-            val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
-            v.setPadding(v.paddingLeft, statusBar, v.paddingRight, v.paddingBottom)
-            insets
-        }
-        ViewCompat.requestApplyInsets(appBarLayout)
-    }
+    
 
     private fun initViews(root: View) {
         appBarLayout = root.findViewById(R.id.appBarLayout)

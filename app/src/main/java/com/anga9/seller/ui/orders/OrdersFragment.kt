@@ -75,16 +75,7 @@ class OrdersFragment : Fragment() {
         viewModel.loadOrders()
     }
 
-    private fun {
-        ViewCompat.setOnApplyWindowInsetsListener(headerLayout) { v, insets ->
-            val statusBar = insets.getInsets(WindowInsetsCompat.Type.statusBars()).top
-            val density = v.resources.displayMetrics.density
-            val vPad = (12 * density).toInt()
-            v.setPadding(v.paddingLeft, statusBar + vPad, v.paddingRight, vPad)
-            insets
-        }
-        ViewCompat.requestApplyInsets(headerLayout)
-    }
+    
 
     private fun initViews(root: View) {
         headerLayout = root.findViewById(R.id.headerLayout)
