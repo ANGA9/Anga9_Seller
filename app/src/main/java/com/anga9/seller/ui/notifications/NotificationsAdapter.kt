@@ -86,7 +86,7 @@ class NotificationsAdapter(
             // Read state
             if (notification.read) {
                 vUnreadDot.visibility = View.GONE
-                itemView.alpha = 0.6f
+                itemView.alpha = 0.65f
             } else {
                 vUnreadDot.visibility = View.VISIBLE
                 itemView.alpha = 1.0f
@@ -95,29 +95,38 @@ class NotificationsAdapter(
             itemView.setOnClickListener {
                 // Optimistic UI update
                 vUnreadDot.visibility = View.GONE
-                itemView.alpha = 0.6f
+                itemView.alpha = 0.65f
                 onNotificationClick(notification)
             }
         }
 
         private fun getRelativeTime(isoString: String): String {
-            if (isoString.isEmpty()) return ""
-            try {
-                val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
-                format.timeZone = TimeZone.getTimeZone("UTC")
-                val date = format.parse(isoString) ?: return ""
-                val now = System.currentTimeMillis()
-                val diff = now - date.time
-                
-                return when {
-                    diff < DateUtils.MINUTE_IN_MILLIS -> "Just now"
-                    diff < DateUtils.HOUR_IN_MILLIS -> "${diff / DateUtils.MINUTE_IN_MILLIS}m ago"
-                    diff < DateUtils.DAY_IN_MILLIS -> "${diff / DateUtils.HOUR_IN_MILLIS}h ago"
-                    else -> "${diff / DateUtils.DAY_IN_MILLIS}d ago"
-                }
-            } catch (e: Exception) {
-                return ""
+            if (isoString.isBlank()) return ""
+            val cleaned = if (isoString.contains(".")) isoString.substringBefore(".") + "Z" else isoString
+            val patterns = listOf(
+                "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'",
+                "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                "yyyy-MM-dd'T'HH:mm:ss.SSS",
+                "yyyy-MM-dd'T'HH:mm:ss"
+            )
+            for (pattern in patterns) {
+                try {
+                    val sdf = SimpleDateFormat(pattern, Locale.US).apply {
+                        timeZone = TimeZone.getTimeZone("UTC")
+                    }
+                    val date = sdf.parse(isoString) ?: sdf.parse(cleaned)
+                    if (date != null) {
+                        val diff = System.currentTimeMillis() - date.time
+                        return when {
+                            diff < DateUtils.MINUTE_IN_MILLIS -> "Just now"
+                            diff < DateUtils.HOUR_IN_MILLIS -> "${diff / DateUtils.MINUTE_IN_MILLIS}m ago"
+                            diff < DateUtils.DAY_IN_MILLIS -> "${diff / DateUtils.HOUR_IN_MILLIS}h ago"
+                            else -> "${diff / DateUtils.DAY_IN_MILLIS}d ago"
+                        }
+                    }
+                } catch (_: Exception) {}
             }
+            return ""
         }
     }
 }
