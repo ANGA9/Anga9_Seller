@@ -12,31 +12,37 @@ data class NotificationVisual(
 object NotificationVisuals {
 
     fun getVisualForType(type: String): NotificationVisual {
-        return when (type) {
-            "order_cancelled" -> NotificationVisual(
+        val normalized = type.lowercase().replace(".", "_")
+        return when {
+            normalized.contains("cancel") || normalized.contains("reject") || normalized.contains("fail") -> NotificationVisual(
                 iconResId = R.drawable.ic_baseline_close_24,
-                iconTintColor = Color.parseColor("#DC2626"), // red-600
-                badgeBgColor = Color.parseColor("#FEF2F2") // red-50
+                iconTintColor = Color.parseColor("#DC2626"), // Red
+                badgeBgColor = Color.parseColor("#FEF2F2") // Soft Red
             )
-            "order_new" -> NotificationVisual(
-                iconResId = R.drawable.ic_baseline_shopping_cart_24,
-                iconTintColor = Color.parseColor("#16A34A"), // green-600
-                badgeBgColor = Color.parseColor("#F0FDF4") // green-50
+            normalized.contains("order") || normalized.contains("placed") -> NotificationVisual(
+                iconResId = R.drawable.ic_orders,
+                iconTintColor = Color.parseColor("#1A6FD4"), // ANGA9 Royal Blue
+                badgeBgColor = Color.parseColor("#EFF6FF") // Soft Blue
             )
-            "dispute" -> NotificationVisual(
-                iconResId = R.drawable.ic_baseline_warning_24,
-                iconTintColor = Color.parseColor("#D97706"), // amber-600
-                badgeBgColor = Color.parseColor("#FFFBEB") // amber-50
+            normalized.contains("dispute") || normalized.contains("return") || normalized.contains("warning") -> NotificationVisual(
+                iconResId = R.drawable.ic_privacy_shield,
+                iconTintColor = Color.parseColor("#D97706"), // Amber
+                badgeBgColor = Color.parseColor("#FFFBEB") // Soft Amber
             )
-            "payout" -> NotificationVisual(
-                iconResId = R.drawable.ic_rupee_24,
-                iconTintColor = Color.parseColor("#2563EB"), // blue-600
-                badgeBgColor = Color.parseColor("#EFF6FF") // blue-50
+            normalized.contains("payout") || normalized.contains("payment") || normalized.contains("wallet") -> NotificationVisual(
+                iconResId = R.drawable.ic_wallet,
+                iconTintColor = Color.parseColor("#1A6FD4"), // Royal Blue
+                badgeBgColor = Color.parseColor("#EFF6FF") // Soft Blue
+            )
+            normalized.contains("product") || normalized.contains("approve") || normalized.contains("seller") -> NotificationVisual(
+                iconResId = R.drawable.ic_check_circle,
+                iconTintColor = Color.parseColor("#16A34A"), // Green
+                badgeBgColor = Color.parseColor("#F0FDF4") // Soft Green
             )
             else -> NotificationVisual(
-                iconResId = R.drawable.ic_baseline_notifications_24,
-                iconTintColor = Color.parseColor("#4B5563"), // gray-600
-                badgeBgColor = Color.parseColor("#F9FAFB") // gray-50
+                iconResId = R.drawable.ic_notifications,
+                iconTintColor = Color.parseColor("#1A6FD4"), // Royal Blue
+                badgeBgColor = Color.parseColor("#EFF6FF") // Soft Blue
             )
         }
     }

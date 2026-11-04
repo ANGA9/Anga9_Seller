@@ -4,77 +4,79 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:background="#F9FAFB"> <!-- Light gray background -->
+    android:background="#F8FAFC">
 
     <!-- Header -->
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:padding="16dp">
+        android:background="#FFFFFF"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingHorizontal="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp">
 
         <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:src="@drawable/ic_baseline_arrow_back_24"
-            app:tint="#111827"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="Back"
+            android:padding="6dp"
+            android:src="@drawable/ic_back"
+            app:tint="#111827" />
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:layout_marginStart="12dp"
+            android:layout_weight="1"
             android:text="Notifications"
             android:textColor="#111827"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/btnBack"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:textSize="19sp"
+            android:textStyle="bold" />
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnMarkAllRead"
             style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="36dp"
             android:text="Mark all read"
-            android:textColor="#374151"
+            android:textColor="#1A6FD4"
             android:textSize="12sp"
+            android:textStyle="bold"
             app:icon="@drawable/ic_baseline_verified_24"
-            app:iconTint="#374151"
+            app:iconTint="#1A6FD4"
             app:iconSize="14dp"
-            app:strokeColor="#E5E7EB"
-            app:cornerRadius="6dp"
-            android:minHeight="0dp"
+            app:strokeColor="#BFDBFE"
+            app:strokeWidth="1dp"
+            app:backgroundTint="#EFF6FF"
+            app:cornerRadius="18dp"
             android:insetTop="0dp"
             android:insetBottom="0dp"
-            android:paddingTop="6dp"
-            android:paddingBottom="6dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            android:paddingHorizontal="12dp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E5E7EB" />
+        android:background="#E2E8F0" />
 
     <!-- Filter Chips -->
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/white"
+        android:background="#FFFFFF"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
         android:paddingTop="12dp"
         android:paddingBottom="12dp"
-        android:scrollbars="none">
+        android:scrollbars="none"
+        android:overScrollMode="never">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -84,71 +86,66 @@
             <TextView
                 android:id="@+id/chipAll"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/bg_chip_selected"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
+                android:layout_height="32dp"
+                android:background="@drawable/shape_pill_selected"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
                 android:text="All"
-                android:textColor="@android:color/white"
-                android:textSize="14sp" />
+                android:textColor="#FFFFFF"
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/chipUnread"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="32dp"
                 android:layout_marginStart="8dp"
-                android:background="@drawable/bg_chip_unselected"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
+                android:background="@drawable/shape_pill_unselected"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
                 android:text="Unread"
-                android:textColor="#111827"
-                android:textSize="14sp" />
+                android:textColor="#64748B"
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/chipOrders"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="32dp"
                 android:layout_marginStart="8dp"
-                android:background="@drawable/bg_chip_unselected"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
+                android:background="@drawable/shape_pill_unselected"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
                 android:text="Orders"
-                android:textColor="#111827"
-                android:textSize="14sp" />
+                android:textColor="#64748B"
+                android:textSize="13sp"
+                android:textStyle="bold" />
                 
             <TextView
                 android:id="@+id/chipDisputes"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="32dp"
                 android:layout_marginStart="8dp"
-                android:background="@drawable/bg_chip_unselected"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
+                android:background="@drawable/shape_pill_unselected"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
                 android:text="Disputes"
-                android:textColor="#111827"
-                android:textSize="14sp" />
+                android:textColor="#64748B"
+                android:textSize="13sp"
+                android:textStyle="bold" />
                 
             <TextView
                 android:id="@+id/chipPayouts"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="32dp"
                 android:layout_marginStart="8dp"
-                android:background="@drawable/bg_chip_unselected"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:paddingTop="6dp"
-                android:paddingBottom="6dp"
+                android:background="@drawable/shape_pill_unselected"
+                android:gravity="center"
+                android:paddingHorizontal="16dp"
                 android:text="Payouts"
-                android:textColor="#111827"
-                android:textSize="14sp" />
+                android:textColor="#64748B"
+                android:textSize="13sp"
+                android:textStyle="bold" />
 
         </LinearLayout>
     </HorizontalScrollView>
@@ -156,7 +153,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E5E7EB" />
+        android:background="#E2E8F0" />
 
     <!-- Swipe Refresh Layout -->
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -186,20 +183,35 @@
                 android:gravity="center"
                 android:visibility="gone">
 
-                <ImageView
-                    android:layout_width="64dp"
-                    android:layout_height="64dp"
-                    android:src="@drawable/ic_baseline_notifications_24"
-                    app:tint="#D1D5DB" />
+                <FrameLayout
+                    android:layout_width="56dp"
+                    android:layout_height="56dp"
+                    android:background="@drawable/shape_empty_icon_bg">
+
+                    <ImageView
+                        android:layout_width="26dp"
+                        android:layout_height="26dp"
+                        android:layout_gravity="center"
+                        android:src="@drawable/ic_baseline_notifications_24"
+                        app:tint="#1A6FD4" />
+                </FrameLayout>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="You're all caught up"
-                    android:textColor="#4B5563"
+                    android:textColor="#0F172A"
                     android:textSize="16sp"
                     android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:text="New seller notifications will appear here"
+                    android:textColor="#64748B"
+                    android:textSize="13sp" />
 
             </LinearLayout>
             
@@ -208,6 +220,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:indeterminateTint="#1A6FD4"
                 android:visibility="gone"/>
 
         </FrameLayout>

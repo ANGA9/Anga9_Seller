@@ -137,11 +137,11 @@ class NotificationsActivity : BaseActivity() {
         val allChips = listOf(chipAll, chipUnread, chipOrders, chipDisputes, chipPayouts)
         for (chip in allChips) {
             if (chip == selectedChip) {
-                chip.setBackgroundResource(R.drawable.bg_chip_selected)
-                chip.setTextColor(ContextCompat.getColor(this, android.R.color.white))
+                chip.setBackgroundResource(R.drawable.shape_pill_selected)
+                chip.setTextColor(Color.WHITE)
             } else {
-                chip.setBackgroundResource(R.drawable.bg_chip_unselected)
-                chip.setTextColor(Color.parseColor("#111827"))
+                chip.setBackgroundResource(R.drawable.shape_pill_unselected)
+                chip.setTextColor(Color.parseColor("#64748B"))
             }
         }
     }
