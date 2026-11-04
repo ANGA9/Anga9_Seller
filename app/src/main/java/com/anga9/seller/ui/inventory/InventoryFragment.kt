@@ -164,26 +164,55 @@ class InventoryFragment : Fragment() {
     }
 
     private fun updateFilterUi() {
+        val density = resources.displayMetrics.density
+        val strokeSelected = (2 * density).toInt()
+        val strokeNormal = (1 * density).toInt()
+        val defaultBorder = Color.parseColor("#E2E8F0")
+
         when (activeFilter) {
             StockFilter.ALL -> {
                 tvActiveFilter.visibility = View.GONE
-                cardTotal.strokeWidth = 2
-                cardLowStock.strokeWidth = 1
-                cardOutOfStock.strokeWidth = 1
+                cardTotal.setStrokeColor(android.content.res.ColorStateList.valueOf(Color.parseColor("#1A6FD4")))
+                cardTotal.strokeWidth = strokeSelected
+                cardTotal.cardElevation = 2 * density
+
+                cardLowStock.setStrokeColor(android.content.res.ColorStateList.valueOf(defaultBorder))
+                cardLowStock.strokeWidth = strokeNormal
+                cardLowStock.cardElevation = 0f
+
+                cardOutOfStock.setStrokeColor(android.content.res.ColorStateList.valueOf(defaultBorder))
+                cardOutOfStock.strokeWidth = strokeNormal
+                cardOutOfStock.cardElevation = 0f
             }
             StockFilter.LOW_STOCK -> {
                 tvActiveFilter.visibility = View.VISIBLE
                 tvActiveFilter.text = "Showing Low Stock products • Tap to clear"
-                cardTotal.strokeWidth = 1
-                cardLowStock.strokeWidth = 3
-                cardOutOfStock.strokeWidth = 1
+                cardTotal.setStrokeColor(android.content.res.ColorStateList.valueOf(defaultBorder))
+                cardTotal.strokeWidth = strokeNormal
+                cardTotal.cardElevation = 0f
+
+                cardLowStock.setStrokeColor(android.content.res.ColorStateList.valueOf(Color.parseColor("#D97706")))
+                cardLowStock.strokeWidth = strokeSelected
+                cardLowStock.cardElevation = 2 * density
+
+                cardOutOfStock.setStrokeColor(android.content.res.ColorStateList.valueOf(defaultBorder))
+                cardOutOfStock.strokeWidth = strokeNormal
+                cardOutOfStock.cardElevation = 0f
             }
             StockFilter.OUT_OF_STOCK -> {
                 tvActiveFilter.visibility = View.VISIBLE
                 tvActiveFilter.text = "Showing Out of Stock products • Tap to clear"
-                cardTotal.strokeWidth = 1
-                cardLowStock.strokeWidth = 1
-                cardOutOfStock.strokeWidth = 3
+                cardTotal.setStrokeColor(android.content.res.ColorStateList.valueOf(defaultBorder))
+                cardTotal.strokeWidth = strokeNormal
+                cardTotal.cardElevation = 0f
+
+                cardLowStock.setStrokeColor(android.content.res.ColorStateList.valueOf(defaultBorder))
+                cardLowStock.strokeWidth = strokeNormal
+                cardLowStock.cardElevation = 0f
+
+                cardOutOfStock.setStrokeColor(android.content.res.ColorStateList.valueOf(Color.parseColor("#DC2626")))
+                cardOutOfStock.strokeWidth = strokeSelected
+                cardOutOfStock.cardElevation = 2 * density
             }
         }
     }
@@ -224,7 +253,11 @@ class InventoryFragment : Fragment() {
             layoutEmptyState.visibility = View.VISIBLE
             tvEmptyTitle.text = "No products found"
             tvEmptyDesc.text = "You haven't added any products to manage inventory."
+            btnEmptyAction.text = "+ Add Product"
             btnEmptyAction.visibility = View.VISIBLE
+            btnEmptyAction.setOnClickListener {
+                startActivity(Intent(requireContext(), AddProductWizardActivity::class.java))
+            }
         } else if (isFilterEmpty) {
             rvInventory.visibility = View.GONE
             layoutEmptyState.visibility = View.VISIBLE
@@ -234,7 +267,14 @@ class InventoryFragment : Fragment() {
             } else {
                 tvEmptyDesc.text = "No products match the selected filter."
             }
-            btnEmptyAction.visibility = View.GONE
+            btnEmptyAction.text = "Clear Filter"
+            btnEmptyAction.visibility = View.VISIBLE
+            btnEmptyAction.setOnClickListener {
+                activeFilter = StockFilter.ALL
+                etSearch.setText("")
+                updateFilterUi()
+                applyFilters()
+            }
         } else {
             rvInventory.visibility = View.VISIBLE
             layoutEmptyState.visibility = View.GONE
