@@ -164,11 +164,9 @@ class FlipkartBottomBar @JvmOverloads constructor(
     private fun handleTabClick(itemId: Int) {
         if (itemId == currentSelectedId) return
 
-        val handled = listener?.invoke(NavItem(itemId)) ?: true
-        if (handled) {
-            currentSelectedId = itemId
-            updateTabVisuals(animate = true)
-        }
+        currentSelectedId = itemId
+        updateTabVisuals(animate = true)
+        listener?.invoke(NavItem(itemId))
     }
 
     private fun updateTabVisuals(animate: Boolean = true) {
