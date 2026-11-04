@@ -5,45 +5,64 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/seller_bg_surface"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="0dp"
     app:strokeWidth="1dp"
-    app:strokeColor="@color/seller_border_light">
+    app:strokeColor="#E2E8F0">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="16dp">
+        android:padding="14dp">
 
         <TextView
             android:id="@+id/tvStatLabel"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
             tools:text="Orders"
-            android:textColor="@color/seller_text_secondary"
-            android:textSize="13sp"
+            android:textColor="#64748B"
+            android:textSize="12.5sp"
             android:fontFamily="sans-serif-medium"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/flStatIconBadge"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <FrameLayout
+            android:id="@+id/flStatIconBadge"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:background="@drawable/shape_empty_icon_bg"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/ivStatCardIcon"
+                android:layout_width="16dp"
+                android:layout_height="16dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_orders"
+                app:tint="#1A6FD4" />
+        </FrameLayout>
 
         <TextView
             android:id="@+id/tvStatValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="6dp"
             tools:text="142"
-            android:textColor="@color/seller_text_primary"
-            android:textSize="24sp"
+            android:textColor="#0F172A"
+            android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvStatLabel" />
 
         <LinearLayout
             android:id="@+id/llTrendContainer"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="6dp"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,8 +70,8 @@
 
             <ImageView
                 android:id="@+id/ivTrendIcon"
-                android:layout_width="16dp"
-                android:layout_height="16dp"
+                android:layout_width="14dp"
+                android:layout_height="14dp"
                 android:src="@drawable/ic_baseline_arrow_upward_24"
                 app:tint="@color/seller_success" />
 
@@ -62,8 +81,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="4dp"
                 tools:text="12% vs last period"
-                android:textColor="@color/seller_success"
-                android:textSize="12sp"
+                android:textColor="#64748B"
+                android:textSize="11.5sp"
                 android:fontFamily="sans-serif-medium" />
         </LinearLayout>
 
@@ -72,7 +91,7 @@
             android:id="@+id/flLoadingOverlay"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/seller_bg_surface"
+            android:background="#FFFFFF"
             android:visibility="gone"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

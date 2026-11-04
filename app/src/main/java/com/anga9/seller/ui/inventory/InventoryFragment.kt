@@ -51,7 +51,7 @@ class InventoryFragment : Fragment() {
     private lateinit var tvLowStockValue: TextView
     private lateinit var tvOutOfStockValue: TextView
 
-    private lateinit var layoutEmptyState: MaterialCardView
+    private lateinit var layoutEmptyState: View
     private lateinit var tvEmptyTitle: TextView
     private lateinit var tvEmptyDesc: TextView
     private lateinit var btnEmptyAction: MaterialButton
