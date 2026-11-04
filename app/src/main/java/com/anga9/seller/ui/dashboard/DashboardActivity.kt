@@ -10,7 +10,11 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
+import com.anga9.seller.ui.orders.OrdersFragment
+import com.anga9.seller.MVVM.ui.products.ProductsFragment
+import com.anga9.seller.ui.inventory.InventoryFragment
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import androidx.core.view.ViewCompat
@@ -55,6 +59,17 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class DashboardActivity : BaseActivity() {
+
+    companion object {
+        const val EXTRA_NAV_TAB = "EXTRA_NAV_TAB"
+    }
+
+    private lateinit var tabFragmentContainer: FrameLayout
+    private var activeTabId: Int = R.id.nav_home
+
+    private val ordersFragment by lazy { OrdersFragment() }
+    private val productsFragment by lazy { ProductsFragment() }
+    private val inventoryFragment by lazy { InventoryFragment() }
 
     private val viewModel: DashboardViewModel by viewModels()
     private lateinit var prefs: SharedPreferences
@@ -140,6 +155,21 @@ class DashboardActivity : BaseActivity() {
         observeViewModel()
 
         viewModel.loadDashboard()
+
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+                    drawerLayout.closeDrawer(GravityCompat.START)
+                } else if (activeTabId != R.id.nav_home) {
+                    switchToTab(R.id.nav_home)
+                } else {
+                    isEnabled = false
+                    onBackPressedDispatcher.onBackPressed()
+                }
+            }
+        })
+
+        handleNavIntent(intent)
     }
 
     override fun onResume() {
@@ -153,6 +183,7 @@ class DashboardActivity : BaseActivity() {
         bottomNavigation = findViewById(R.id.bottomNavigation)
         swipeRefresh = findViewById(R.id.swipeRefresh)
         homeContent = findViewById(R.id.homeContent)
+        tabFragmentContainer = findViewById(R.id.tabFragmentContainer)
 
         // Header
         val layoutHeader = findViewById<View>(R.id.layoutHeader)
