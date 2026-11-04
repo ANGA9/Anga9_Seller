@@ -18,6 +18,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.anga9.seller.BaseActivity
+import com.anga9.seller.ui.views.FlipkartBottomBar
+import com.anga9.seller.ui.dashboard.DashboardActivity
+import com.anga9.seller.ui.orders.MyOrdersActivity
+import com.anga9.seller.ui.inventory.InventoryActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import com.google.android.material.appbar.AppBarLayout
 import com.anga9.seller.R
 import com.anga9.seller.utils.TokenManager
 import com.anga9.seller.data_models.SellerProduct
@@ -63,6 +70,7 @@ class MyProductsActivity : BaseActivity() {
     private var tvOfflineBanner: View? = null
     
     private lateinit var fabAddProduct: FloatingActionButton
+    private lateinit var bottomNavigation: FlipkartBottomBar
 
     private lateinit var adapter: SellerProductAdapter
     private var currentFilter = "all"
@@ -81,6 +89,75 @@ class MyProductsActivity : BaseActivity() {
         observeViewModel()
 
         viewModel.loadProducts(currentFilter)
+    }
+
+    
+    private fun setupWindowInsets() {
+        val appBarLayout = findViewById<AppBarLayout>(R.id.appBarLayout)
+        if (appBarLayout != null) {
+            ViewCompat.setOnApplyWindowInsetsListener(appBarLayout) { view, insets ->
+                val sysBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+                view.setPadding(
+                    view.paddingLeft,
+                    sysBarInsets.top,
+                    view.paddingRight,
+                    view.paddingBottom
+                )
+                insets
+            }
+        }
+    }
+
+    private fun setupBottomNavigation() {
+        bottomNavigation = findViewById(R.id.bottomNavigation)
+        ViewCompat.setOnApplyWindowInsetsListener(bottomNavigation) { view, insets ->
+            val sysBarInsets = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            view.setPadding(
+                view.paddingLeft,
+                view.paddingTop,
+                view.paddingRight,
+                sysBarInsets.bottom
+            )
+            insets
+        }
+        bottomNavigation.setSelectedItemId(R.id.nav_products, notifyListener = false)
+        bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.nav_home -> {
+                    startActivity(
+                        Intent(this, DashboardActivity::class.java)
+                            .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    )
+                    overridePendingTransition(0, 0)
+                    true
+                }
+                R.id.nav_orders -> {
+                    startActivity(
+                        Intent(this, MyOrdersActivity::class.java)
+                            .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    )
+                    overridePendingTransition(0, 0)
+                    true
+                }
+                R.id.nav_products -> true
+                R.id.nav_inventory -> {
+                    startActivity(
+                        Intent(this, InventoryActivity::class.java)
+                            .addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT)
+                    )
+                    overridePendingTransition(0, 0)
+                    true
+                }
+                else -> false
+            }
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (::bottomNavigation.isInitialized) {
+            bottomNavigation.setSelectedItemId(R.id.nav_products, notifyListener = false)
+        }
     }
 
     private fun initViews() {
@@ -116,7 +193,11 @@ class MyProductsActivity : BaseActivity() {
         tvOfflineBanner = findViewById(R.id.layoutOfflineBanner) ?: findViewById(R.id.tvOfflineBanner)
         fabAddProduct = findViewById(R.id.fabAddProduct)
 
-        btnBack.setOnClickListener { finish() }
+        btnBack.setOnClickListener {
+            startActivity(Intent(this, DashboardActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT))
+            overridePendingTransition(0, 0)
+            finish()
+        }
 
         btnNotifications.setOnClickListener {
             startActivity(Intent(this, com.anga9.seller.ui.notifications.NotificationsActivity::class.java))
