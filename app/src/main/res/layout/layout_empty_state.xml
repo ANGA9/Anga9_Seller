@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/emptyStateContainer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,11 +16,12 @@
         android:background="@drawable/shape_empty_icon_bg">
 
         <ImageView
+            android:id="@+id/ivEmptyIcon"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_package" 
-            android:tint="#2851C4" />
+            android:src="@drawable/ic_package"
+            app:tint="#1A6FD4" />
     </FrameLayout>
 
     <TextView
@@ -28,34 +30,34 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="No products yet"
-        android:textColor="#1A1D23"
-        android:textSize="15sp"
+        android:textColor="#1E293B"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvEmptyDesc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="6dp"
         android:gravity="center"
-        android:lineSpacingMultiplier="1.5"
+        android:lineSpacingMultiplier="1.3"
         android:text="Start by adding your first product. Once approved, it will be listed on the ANGA9 marketplace."
-        android:textColor="#9AA1AC"
-        android:textSize="12sp" />
+        android:textColor="#64748B"
+        android:textSize="13sp" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnEmptyAction"
         android:layout_width="wrap_content"
-        android:layout_height="38dp"
-        android:layout_marginTop="24dp"
-        android:backgroundTint="#2851C4"
+        android:layout_height="40dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="#1A6FD4"
         android:insetTop="0dp"
         android:insetBottom="0dp"
         android:text="+ Add your first product"
         android:textAllCaps="false"
         android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        app:cornerRadius="8dp"
-        xmlns:app="http://schemas.android.com/apk/res-auto" />
+        android:textSize="13.5sp"
+        app:cornerRadius="20dp"
+        app:elevation="0dp" />
 
 </LinearLayout>

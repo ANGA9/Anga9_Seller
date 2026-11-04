@@ -3,6 +3,7 @@ package com.anga9.seller.ui.orders
 import android.content.Context.MODE_PRIVATE
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Typeface
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.Editable
@@ -18,8 +19,6 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.text.HtmlCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -31,6 +30,7 @@ import com.anga9.seller.data.repository.BrandRepository
 import com.anga9.seller.ui.dashboard.DashboardActivity
 import com.anga9.seller.utils.Resource
 import com.anga9.seller.utils.TokenManager
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.launch
 
@@ -41,7 +41,6 @@ class OrdersFragment : Fragment() {
     private lateinit var rvOrders: RecyclerView
     private lateinit var swipeRefresh: SwipeRefreshLayout
     private lateinit var progressBar: ProgressBar
-    private lateinit var tvEmpty: TextView
     private lateinit var svStatusChips: HorizontalScrollView
     private lateinit var llStatusChips: LinearLayout
     private lateinit var vGradientRight: View
@@ -53,6 +52,24 @@ class OrdersFragment : Fragment() {
     private lateinit var cardStoreContext: MaterialCardView
     private lateinit var tvViewingStore: TextView
     private lateinit var btnManageStore: TextView
+
+    // Empty State Views
+    private lateinit var layoutEmptyOrders: LinearLayout
+    private lateinit var tvEmptyTitle: TextView
+    private lateinit var tvEmptySubtitle: TextView
+    private lateinit var btnEmptyAction: MaterialButton
+
+    private var selectedStatus = "all"
+    private var searchQuery = ""
+
+    private val statusLabels = mapOf(
+        "all" to "All Orders",
+        "confirmed" to "Confirmed",
+        "processing" to "Processing",
+        "shipped" to "Shipped",
+        "delivered" to "Delivered",
+        "cancelled" to "Cancelled"
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,14 +92,11 @@ class OrdersFragment : Fragment() {
         viewModel.loadOrders()
     }
 
-    
-
     private fun initViews(root: View) {
         headerLayout = root.findViewById(R.id.headerLayout)
         rvOrders = root.findViewById(R.id.rvOrders)
         swipeRefresh = root.findViewById(R.id.swipeRefresh)
         progressBar = root.findViewById(R.id.progressBar)
-        tvEmpty = root.findViewById(R.id.tvEmpty)
         svStatusChips = root.findViewById(R.id.svStatusChips)
         llStatusChips = root.findViewById(R.id.llStatusChips)
         vGradientRight = root.findViewById(R.id.vGradientRight)
@@ -92,6 +106,11 @@ class OrdersFragment : Fragment() {
         cardStoreContext = root.findViewById(R.id.cardStoreContext)
         tvViewingStore = root.findViewById(R.id.tvViewingStore)
         btnManageStore = root.findViewById(R.id.btnManageStore)
+
+        layoutEmptyOrders = root.findViewById(R.id.layoutEmptyOrders)
+        tvEmptyTitle = root.findViewById(R.id.tvEmptyTitle)
+        tvEmptySubtitle = root.findViewById(R.id.tvEmptySubtitle)
+        btnEmptyAction = root.findViewById(R.id.btnEmptyAction)
 
         root.findViewById<ImageView>(R.id.btnBack).setOnClickListener {
             (activity as? DashboardActivity)?.switchToTab(R.id.nav_home)
@@ -132,17 +151,17 @@ class OrdersFragment : Fragment() {
                     val brand = brands.find { it.id == activeId } ?: brands.firstOrNull()
                     val brandName = brand?.storeName ?: "FireOn Store"
                     cardStoreContext.visibility = View.VISIBLE
-                    tvViewingStore.text = HtmlCompat.fromHtml("Viewing: <b>$brandName</b>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+                    tvViewingStore.text = HtmlCompat.fromHtml("Store: <b>$brandName</b>", HtmlCompat.FROM_HTML_MODE_LEGACY)
                 } else {
                     val prefs = ctx.getSharedPreferences("app_prefs", MODE_PRIVATE)
                     val storeName = prefs.getString("store_name", null)
                         ?: prefs.getString("brand_name", "FireOn Store")
                     cardStoreContext.visibility = View.VISIBLE
-                    tvViewingStore.text = HtmlCompat.fromHtml("Viewing: <b>$storeName</b>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+                    tvViewingStore.text = HtmlCompat.fromHtml("Store: <b>$storeName</b>", HtmlCompat.FROM_HTML_MODE_LEGACY)
                 }
             } catch (e: Exception) {
                 cardStoreContext.visibility = View.VISIBLE
-                tvViewingStore.text = HtmlCompat.fromHtml("Viewing: <b>FireOn Store</b>", HtmlCompat.FROM_HTML_MODE_LEGACY)
+                tvViewingStore.text = HtmlCompat.fromHtml("Store: <b>FireOn Store</b>", HtmlCompat.FROM_HTML_MODE_LEGACY)
             }
         }
     }
@@ -150,26 +169,26 @@ class OrdersFragment : Fragment() {
     private fun setupTabs() {
         val ctx = context ?: return
         val statuses = listOf("all", "confirmed", "processing", "shipped", "delivered", "cancelled")
-        var selectedStatus = "all"
+        val density = resources.displayMetrics.density
 
         fun updateChips() {
             llStatusChips.removeAllViews()
             for (status in statuses) {
-                val style = OrderStatusConfig.config[status]!!
+                val label = statusLabels[status] ?: status.replaceFirstChar { it.uppercase() }
                 val chip = LayoutInflater.from(ctx).inflate(R.layout.item_filter_chip, llStatusChips, false) as TextView
-                chip.text = style.label
+                chip.text = label
 
                 val bg = GradientDrawable()
-                bg.cornerRadius = 64f
+                bg.cornerRadius = 20 * density
                 if (status == selectedStatus) {
-                    bg.setColor(Color.parseColor("#111318"))
+                    bg.setColor(Color.parseColor("#1A6FD4"))
                     chip.setTextColor(Color.WHITE)
+                    chip.setTypeface(null, Typeface.BOLD)
                 } else {
-                    bg.setColor(style.getBgColor())
-                    chip.setTextColor(style.getTextColor())
-                    if (style.border != null) {
-                        bg.setStroke(2, style.getBorderColor())
-                    }
+                    bg.setColor(Color.parseColor("#F1F5F9"))
+                    bg.setStroke((1 * density).toInt(), Color.parseColor("#E2E8F0"))
+                    chip.setTextColor(Color.parseColor("#475569"))
+                    chip.setTypeface(null, Typeface.NORMAL)
                 }
                 chip.background = bg
 
@@ -204,7 +223,8 @@ class OrdersFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable?) {
-                viewModel.searchOrders(s?.toString() ?: "")
+                searchQuery = s?.toString()?.trim() ?: ""
+                viewModel.searchOrders(searchQuery)
             }
         })
     }
@@ -212,7 +232,7 @@ class OrdersFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.allOrders.observe(viewLifecycleOwner) { all ->
             val totalCount = all?.size ?: 0
-            tvTotalOrdersCount.text = totalCount.toString()
+            tvTotalOrdersCount.text = "$totalCount Orders"
         }
 
         viewModel.filteredOrders.observe(viewLifecycleOwner) { result ->
@@ -220,28 +240,70 @@ class OrdersFragment : Fragment() {
             when (result) {
                 is Resource.Loading -> {
                     progressBar.visibility = View.VISIBLE
-                    tvEmpty.visibility = View.GONE
+                    layoutEmptyOrders.visibility = View.GONE
                 }
                 is Resource.Success -> {
                     progressBar.visibility = View.GONE
                     val list = result.data ?: emptyList()
                     if (list.isEmpty()) {
-                        tvEmpty.visibility = View.VISIBLE
                         adapter.submitList(emptyList())
+                        showEmptyState()
                     } else {
-                        tvEmpty.visibility = View.GONE
+                        layoutEmptyOrders.visibility = View.GONE
+                        rvOrders.visibility = View.VISIBLE
                         adapter.submitList(ArrayList(list))
                     }
                 }
                 is Resource.Error -> {
                     progressBar.visibility = View.GONE
                     if (adapter.currentList.isEmpty()) {
-                        tvEmpty.visibility = View.VISIBLE
-                        tvEmpty.text = "No internet connection\nPull down to retry"
+                        layoutEmptyOrders.visibility = View.VISIBLE
+                        rvOrders.visibility = View.GONE
+                        tvEmptyTitle.text = "Connection issue"
+                        tvEmptySubtitle.text = "Unable to load orders right now.\nPull down to retry."
+                        btnEmptyAction.text = "Retry"
+                        btnEmptyAction.visibility = View.VISIBLE
+                        btnEmptyAction.setOnClickListener { viewModel.loadOrders() }
                     }
                     val msg = result.message ?: "Unable to load orders"
                     Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
                 }
+            }
+        }
+    }
+
+    private fun showEmptyState() {
+        rvOrders.visibility = View.GONE
+        layoutEmptyOrders.visibility = View.VISIBLE
+
+        val allCount = viewModel.allOrders.value?.size ?: 0
+
+        if (allCount == 0) {
+            tvEmptyTitle.text = "No orders yet"
+            tvEmptySubtitle.text = "When customers purchase your products, incoming orders will appear here for fulfillment."
+            btnEmptyAction.text = "Manage Products →"
+            btnEmptyAction.visibility = View.VISIBLE
+            btnEmptyAction.setOnClickListener {
+                (activity as? DashboardActivity)?.switchToTab(R.id.nav_products)
+            }
+        } else if (searchQuery.isNotEmpty()) {
+            tvEmptyTitle.text = "No matching orders"
+            tvEmptySubtitle.text = "No orders match \"$searchQuery\". Try checking the spelling or search with another order ID."
+            btnEmptyAction.text = "Clear Search"
+            btnEmptyAction.visibility = View.VISIBLE
+            btnEmptyAction.setOnClickListener {
+                etSearch.setText("")
+            }
+        } else {
+            val label = statusLabels[selectedStatus] ?: selectedStatus
+            tvEmptyTitle.text = "No $label orders"
+            tvEmptySubtitle.text = "There are currently no orders in ${label.lowercase()} status."
+            btnEmptyAction.text = "View All Orders"
+            btnEmptyAction.visibility = View.VISIBLE
+            btnEmptyAction.setOnClickListener {
+                selectedStatus = "all"
+                setupTabs()
+                viewModel.setStatusFilter("all")
             }
         }
     }
@@ -253,4 +315,3 @@ class OrdersFragment : Fragment() {
         }
     }
 }
-

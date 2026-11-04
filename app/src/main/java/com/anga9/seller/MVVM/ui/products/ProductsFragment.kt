@@ -189,7 +189,7 @@ class ProductsFragment : Fragment() {
                     tab.setTypeface(null, Typeface.BOLD)
                 } else {
                     tab.setBackgroundResource(R.drawable.shape_pill_unselected)
-                    tab.setTextColor(Color.parseColor("#5B6472"))
+                    tab.setTextColor(Color.parseColor("#475569"))
                     tab.setTypeface(null, Typeface.NORMAL)
                 }
             }
@@ -324,9 +324,11 @@ class ProductsFragment : Fragment() {
                                 if (state.data.isEmpty()) {
                                     emptyStateContainer.visibility = View.VISIBLE
                                     recyclerView.visibility = View.GONE
+                                    fabAddProduct.visibility = View.GONE
                                 } else {
                                     emptyStateContainer.visibility = View.GONE
                                     recyclerView.visibility = View.VISIBLE
+                                    fabAddProduct.visibility = View.VISIBLE
                                 }
                             }
                             is UiState.Error -> {
