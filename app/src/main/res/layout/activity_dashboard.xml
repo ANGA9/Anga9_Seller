@@ -412,6 +412,9 @@
     <!-- Navigation Drawer -->
     <include
         android:id="@+id/layoutDrawer"
-        layout="@layout/layout_seller_drawer" />
+        layout="@layout/layout_seller_drawer"
+        android:layout_width="@dimen/drawer_width"
+        android:layout_height="match_parent"
+        android:layout_gravity="start" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

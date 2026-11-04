@@ -5,6 +5,7 @@
     android:layout_width="@dimen/drawer_width"
     android:layout_height="match_parent"
     android:layout_gravity="start"
+    android:fitsSystemWindows="true"
     android:background="#FFFFFF"
     android:clickable="true"
     android:focusable="true"
@@ -15,23 +16,24 @@
         android:id="@+id/drawerHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#F9FAFB"
+        android:background="#FFFFFF"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?attr/selectableItemBackground"
         android:orientation="horizontal"
         android:gravity="center_vertical"
-        android:paddingHorizontal="20dp"
-        android:paddingTop="48dp"
-        android:paddingBottom="20dp">
+        android:paddingHorizontal="18dp"
+        android:paddingTop="18dp"
+        android:paddingBottom="16dp">
 
         <com.google.android.material.card.MaterialCardView
             android:layout_width="48dp"
             android:layout_height="48dp"
-            app:cardBackgroundColor="#EEF2FF"
+            app:cardBackgroundColor="#EFF6FF"
             app:cardCornerRadius="24dp"
             app:cardElevation="0dp"
-            app:strokeWidth="0dp">
+            app:strokeWidth="1.5dp"
+            app:strokeColor="#DBEAFE">
 
             <TextView
                 android:id="@+id/tvDrawerInitials"
@@ -41,7 +43,7 @@
                 android:textColor="#1A6FD4"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                tools:text="RS" />
+                tools:text="SC" />
         </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
@@ -63,16 +65,16 @@
                     android:layout_height="wrap_content"
                     android:ellipsize="end"
                     android:maxLines="1"
-                    android:textColor="#1A1D23"
+                    android:textColor="#0F172A"
                     android:textSize="16sp"
                     android:textStyle="bold"
-                    tools:text="Ravi Stores" />
+                    tools:text="SkyLine Clothing" />
 
                 <ImageView
                     android:id="@+id/ivDrawerVerified"
                     android:layout_width="16dp"
                     android:layout_height="16dp"
-                    android:layout_marginStart="4dp"
+                    android:layout_marginStart="5dp"
                     android:src="@drawable/ic_baseline_verified_24"
                     app:tint="#16A34A"
                     android:visibility="gone"
@@ -84,23 +86,31 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2dp"
-                android:textColor="#6B7280"
+                android:textColor="#64748B"
                 android:textSize="12sp"
-                tools:text="ID: SELL-4920" />
+                tools:text="ID: 9F8879D2" />
         </LinearLayout>
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/ic_baseline_chevron_right_24"
+            app:tint="#94A3B8" />
 
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E5E7EB" />
+        android:background="#E2E8F0" />
 
-    <!-- Drawer Navigation List -->
+    <!-- Drawer Navigation List (Scrollable middle container) -->
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
+        android:overScrollMode="never"
+        android:scrollbars="none"
         android:fillViewport="true">
 
         <LinearLayout
@@ -109,165 +119,189 @@
             android:orientation="vertical"
             android:paddingVertical="8dp">
 
-            <!-- Section 1: Financials & Growth -->
+            <!-- Section 1 Header: Operations -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="22dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="6dp"
+                android:text="OPERATIONS"
+                android:textColor="#94A3B8"
+                android:textSize="11sp"
+                android:letterSpacing="0.05"
+                android:textStyle="bold" />
+
+            <!-- Row 1: Earnings -->
             <LinearLayout
                 android:id="@+id/rowDrawerEarnings"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackground"
+                android:layout_height="44dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@drawable/bg_drawer_item"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="20dp">
+                android:paddingHorizontal="14dp">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_wallet"
-                    app:tint="#4B5563" />
+                    app:tint="#475569" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="14dp"
                     android:text="Earnings"
-                    android:textColor="#1A1D23"
+                    android:textColor="#0F172A"
                     android:textSize="14sp"
                     android:fontFamily="sans-serif-medium" />
             </LinearLayout>
 
+            <!-- Row 2: Payouts -->
             <LinearLayout
                 android:id="@+id/rowDrawerPayouts"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackground"
+                android:layout_height="44dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@drawable/bg_drawer_item"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="20dp">
+                android:paddingHorizontal="14dp">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_bank"
-                    app:tint="#4B5563" />
+                    app:tint="#475569" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="14dp"
                     android:text="Payouts"
-                    android:textColor="#1A1D23"
+                    android:textColor="#0F172A"
                     android:textSize="14sp"
                     android:fontFamily="sans-serif-medium" />
             </LinearLayout>
 
+            <!-- Row 3: Ad Campaigns -->
             <LinearLayout
                 android:id="@+id/rowDrawerAds"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackground"
+                android:layout_height="44dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@drawable/bg_drawer_item"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="20dp">
+                android:paddingHorizontal="14dp">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_megaphone"
-                    app:tint="#4B5563" />
+                    app:tint="#475569" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="14dp"
                     android:text="Ad Campaigns"
-                    android:textColor="#1A1D23"
+                    android:textColor="#0F172A"
                     android:textSize="14sp"
                     android:fontFamily="sans-serif-medium" />
             </LinearLayout>
 
+            <!-- Row 4: Disputes & Claims -->
             <LinearLayout
                 android:id="@+id/rowDrawerDisputes"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackground"
+                android:layout_height="44dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@drawable/bg_drawer_item"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="20dp">
+                android:paddingHorizontal="14dp">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_error_alert"
-                    app:tint="#4B5563" />
+                    app:tint="#475569" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="14dp"
                     android:text="Disputes &amp; Claims"
-                    android:textColor="#1A1D23"
+                    android:textColor="#0F172A"
                     android:textSize="14sp"
                     android:fontFamily="sans-serif-medium" />
             </LinearLayout>
 
+            <!-- Row 5: Deals & Discounts -->
             <LinearLayout
                 android:id="@+id/rowDrawerDeals"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackground"
+                android:layout_height="44dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@drawable/bg_drawer_item"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="20dp">
+                android:paddingHorizontal="14dp">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_tag"
-                    app:tint="#4B5563" />
+                    app:tint="#475569" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="14dp"
                     android:text="Deals &amp; Discounts"
-                    android:textColor="#1A1D23"
+                    android:textColor="#0F172A"
                     android:textSize="14sp"
                     android:fontFamily="sans-serif-medium" />
             </LinearLayout>
 
+            <!-- Row 6: Buyer Reviews -->
             <LinearLayout
                 android:id="@+id/rowDrawerReviews"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackground"
+                android:layout_height="44dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@drawable/bg_drawer_item"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="20dp">
+                android:paddingHorizontal="14dp">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_star_filled"
-                    app:tint="#4B5563" />
+                    app:tint="#475569" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="14dp"
                     android:text="Buyer Reviews"
-                    android:textColor="#1A1D23"
+                    android:textColor="#0F172A"
                     android:textSize="14sp"
                     android:fontFamily="sans-serif-medium" />
             </LinearLayout>
@@ -276,154 +310,192 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginVertical="8dp"
-                android:background="#F3F4F6" />
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="10dp"
+                android:background="#F1F5F9" />
 
-            <!-- Section 2: Store & Settings -->
+            <!-- Section 2 Header: Store & Preferences -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingHorizontal="22dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="6dp"
+                android:text="PREFERENCES &amp; SUPPORT"
+                android:textColor="#94A3B8"
+                android:textSize="11sp"
+                android:letterSpacing="0.05"
+                android:textStyle="bold" />
+
+            <!-- Row 7: Storefront -->
             <LinearLayout
                 android:id="@+id/rowDrawerStorefront"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackground"
+                android:layout_height="44dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@drawable/bg_drawer_item"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="20dp">
+                android:paddingHorizontal="14dp">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_more_storefront"
-                    app:tint="#4B5563" />
+                    app:tint="#475569" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="14dp"
                     android:text="Storefront"
-                    android:textColor="#1A1D23"
+                    android:textColor="#0F172A"
                     android:textSize="14sp"
                     android:fontFamily="sans-serif-medium" />
             </LinearLayout>
 
+            <!-- Row 8: Help & Support -->
             <LinearLayout
                 android:id="@+id/rowDrawerSupport"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackground"
+                android:layout_height="44dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@drawable/bg_drawer_item"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="20dp">
+                android:paddingHorizontal="14dp">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_baseline_help_outline_24"
-                    app:tint="#4B5563" />
+                    app:tint="#475569" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="14dp"
                     android:text="Help &amp; Support"
-                    android:textColor="#1A1D23"
+                    android:textColor="#0F172A"
                     android:textSize="14sp"
                     android:fontFamily="sans-serif-medium" />
             </LinearLayout>
 
+            <!-- Row 9: Business Profile & KYC -->
             <LinearLayout
                 android:id="@+id/rowDrawerProfile"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackground"
+                android:layout_height="44dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@drawable/bg_drawer_item"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="20dp">
+                android:paddingHorizontal="14dp">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_profile"
-                    app:tint="#4B5563" />
+                    app:tint="#475569" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="14dp"
                     android:text="Business Profile &amp; KYC"
-                    android:textColor="#1A1D23"
+                    android:textColor="#0F172A"
                     android:textSize="14sp"
                     android:fontFamily="sans-serif-medium" />
             </LinearLayout>
 
+            <!-- Row 10: Data & Privacy -->
             <LinearLayout
                 android:id="@+id/rowDrawerPrivacy"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackground"
+                android:layout_height="44dp"
+                android:layout_marginHorizontal="8dp"
+                android:background="@drawable/bg_drawer_item"
                 android:clickable="true"
                 android:focusable="true"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingHorizontal="20dp">
+                android:paddingHorizontal="14dp">
 
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
                     android:src="@drawable/ic_privacy_shield"
-                    app:tint="#4B5563" />
+                    app:tint="#475569" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="14dp"
                     android:text="Data &amp; Privacy"
-                    android:textColor="#1A1D23"
+                    android:textColor="#0F172A"
                     android:textSize="14sp"
                     android:fontFamily="sans-serif-medium" />
             </LinearLayout>
 
-            <!-- Divider -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginVertical="8dp"
-                android:background="#F3F4F6" />
-
-            <!-- Section 3: Danger / Logout -->
-            <LinearLayout
-                android:id="@+id/rowDrawerLogout"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:background="?attr/selectableItemBackground"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                android:paddingHorizontal="20dp">
-
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:src="@drawable/ic_more_logout"
-                    app:tint="#D8342A" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="Log out"
-                    android:textColor="#D8342A"
-                    android:textSize="14sp"
-                    android:textStyle="bold" />
-            </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
+
+    <!-- Drawer Bottom Footer (Anchored at the bottom) -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="#FFFFFF">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#E2E8F0" />
+
+        <LinearLayout
+            android:id="@+id/rowDrawerLogout"
+            android:layout_width="match_parent"
+            android:layout_height="46dp"
+            android:layout_marginHorizontal="8dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/bg_drawer_item"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingHorizontal="14dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/ic_more_logout"
+                app:tint="#DC2626" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="14dp"
+                android:text="Log out"
+                android:textColor="#DC2626"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="12dp"
+            android:gravity="center"
+            android:text="ANGA9 Seller Hub • v1.0.4"
+            android:textColor="#94A3B8"
+            android:textSize="11sp" />
+    </LinearLayout>
 
 </LinearLayout>
