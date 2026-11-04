@@ -8,7 +8,7 @@
     app:cardCornerRadius="12dp"
     app:cardElevation="0dp"
     app:strokeWidth="1dp"
-    app:strokeColor="#E5E7EB"
+    app:strokeColor="#E2E8F0"
     android:layout_margin="16dp">
 
     <LinearLayout
@@ -28,14 +28,14 @@
                 android:layout_width="32dp"
                 android:layout_height="32dp"
                 android:background="@drawable/bg_rounded_8dp"
-                android:backgroundTint="#EEF3FF">
+                android:backgroundTint="#EFF6FF">
                 
                 <ImageView
                     android:layout_width="16dp"
                     android:layout_height="16dp"
                     android:layout_gravity="center"
                     android:src="@drawable/ic_trending_up"
-                    app:tint="#2851C4" />
+                    app:tint="#1A6FD4" />
             </FrameLayout>
 
             <TextView
@@ -43,7 +43,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:text="TOTAL EARNINGS"
-                android:textColor="#5B6472"
+                android:textColor="#64748B"
                 android:textSize="12sp"
                 android:textAllCaps="true"
                 android:letterSpacing="0.05" />
@@ -54,8 +54,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
-            tools:text="₹1,24,500"
-            android:textColor="#1A1D23"
+            tools:text="₹0"
+            android:textColor="#0F172A"
             android:textSize="26sp"
             android:textStyle="bold" />
 
