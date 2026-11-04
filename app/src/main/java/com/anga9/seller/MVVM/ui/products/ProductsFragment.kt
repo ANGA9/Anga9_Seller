@@ -451,7 +451,7 @@ class ProductsFragment : Fragment() {
     }
 
     fun refreshProducts() {
-        if (::viewModel.isInitialized) {
+        if (isAdded) {
             viewModel.loadProducts(currentFilter)
         }
     }

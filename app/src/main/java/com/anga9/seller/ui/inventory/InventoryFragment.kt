@@ -21,7 +21,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.anga9.seller.MVVM.ui.products.AddProductWizardActivity
 import com.anga9.seller.R
-import com.anga9.seller.data.model.InventoryRow
 import com.anga9.seller.ui.dashboard.DashboardActivity
 import com.anga9.seller.utils.UiState
 import com.google.android.material.appbar.AppBarLayout
@@ -320,7 +319,7 @@ class InventoryFragment : Fragment() {
     }
 
     fun refreshInventory() {
-        if (::viewModel.isInitialized) {
+        if (isAdded) {
             viewModel.fetchInventory()
         }
     }
