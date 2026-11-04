@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#F7F7F8"
+    android:fitsSystemWindows="true"
+    android:background="#F8FAFC"
     android:orientation="vertical">
 
     <!-- ── HEADER ── -->
@@ -27,28 +28,15 @@
             android:src="@drawable/ic_back"
             app:tint="#1A1D23" />
 
-        <LinearLayout
+        <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="12dp"
             android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Business Profile"
-                android:textColor="#1A1D23"
-                android:textSize="16sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Manage your legal entity details"
-                android:textColor="#5B6472"
-                android:textSize="12sp" />
-        </LinearLayout>
+            android:text="Business Profile &amp; KYC"
+            android:textColor="#111827"
+            android:textSize="19sp"
+            android:textStyle="bold" />
 
         <!-- Verification Status Pill -->
         <LinearLayout
@@ -86,7 +74,7 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="#E5E7EB" />
+        android:background="#E2E8F0" />
 
     <!-- Loading Bar -->
     <ProgressBar
@@ -95,7 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="3dp"
         android:indeterminate="true"
-        android:indeterminateTint="#2851C4"
+        android:indeterminateTint="#1A6FD4"
         android:visibility="gone" />
 
     <!-- ── SCROLLABLE FORM ── -->
@@ -142,7 +130,7 @@
                 app:cardBackgroundColor="#FFFFFF"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
-                app:strokeColor="#E5E7EB"
+                app:strokeColor="#E2E8F0"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -331,7 +319,7 @@
                 app:cardBackgroundColor="#FFFFFF"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
-                app:strokeColor="#E5E7EB"
+                app:strokeColor="#E2E8F0"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -476,7 +464,7 @@
                 app:cardBackgroundColor="#FFFFFF"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
-                app:strokeColor="#E5E7EB"
+                app:strokeColor="#E2E8F0"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -627,7 +615,7 @@
                 app:cardBackgroundColor="#FFFFFF"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="0dp"
-                app:strokeColor="#E5E7EB"
+                app:strokeColor="#E2E8F0"
                 app:strokeWidth="1dp">
 
                 <LinearLayout
@@ -833,7 +821,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Save profile"
-                    android:textColor="#2851C4"
+                    android:textColor="#1A6FD4"
                     android:textSize="12.5sp"
                     android:textStyle="bold" />
 
@@ -843,7 +831,7 @@
                     android:layout_marginTop="3dp"
                     android:lineSpacingMultiplier="1.2"
                     android:text="Ensure your business and banking details match your KYC documents to avoid payout delays."
-                    android:textColor="#2851C4"
+                    android:textColor="#1A6FD4"
                     android:textSize="11.5sp" />
             </LinearLayout>
 
@@ -857,7 +845,7 @@
                     android:id="@+id/btnSaveChanges"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
-                    android:backgroundTint="#2851C4"
+                    android:backgroundTint="#1A6FD4"
                     android:insetTop="0dp"
                     android:insetBottom="0dp"
                     android:text="Save changes"

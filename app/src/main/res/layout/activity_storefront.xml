@@ -71,7 +71,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:background="#E5E7EB" />
+                android:background="#E2E8F0" />
         </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
@@ -96,7 +96,7 @@
                 app:cardBackgroundColor="#FFFFFF"
                 app:cardCornerRadius="16dp"
                 app:cardElevation="0dp"
-                app:strokeColor="#E5E7EB"
+                app:strokeColor="#E2E8F0"
                 app:strokeWidth="1dp"
                 android:layout_marginBottom="16dp">
 
@@ -189,10 +189,10 @@
                 android:layout_height="56dp"
                 android:text="Preview storefront"
                 android:textAllCaps="false"
-                android:textColor="#2851C4"
+                android:textColor="#1A6FD4"
                 android:textStyle="bold"
                 app:cornerRadius="12dp"
-                app:strokeColor="#E5E7EB"
+                app:strokeColor="#E2E8F0"
                 android:layout_marginBottom="24dp" />
 
             <!-- Visuals & Profile Section -->
@@ -268,7 +268,7 @@
                     android:layout_width="36dp"
                     android:layout_height="36dp"
                     android:layout_gravity="center"
-                    android:indeterminateTint="#2851C4"
+                    android:indeterminateTint="#1A6FD4"
                     android:visibility="gone"/>
             </FrameLayout>
 
@@ -469,7 +469,7 @@
             android:textStyle="bold"
             android:textSize="16sp"
             app:cornerRadius="12dp"
-            app:backgroundTint="#2851C4" />
+            app:backgroundTint="#1A6FD4" />
             
         <ProgressBar
             android:id="@+id/progressSave"
@@ -501,7 +501,7 @@
             <ProgressBar
                 android:layout_width="48dp"
                 android:layout_height="48dp"
-                android:indeterminateTint="#2851C4"
+                android:indeterminateTint="#1A6FD4"
                 android:layout_marginBottom="16dp"/>
                 
             <TextView

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:background="#F8FAFC"
     android:orientation="vertical">
 
@@ -14,43 +15,31 @@
         android:background="#FFFFFF"
         android:gravity="center_vertical"
         android:orientation="horizontal"
-        android:paddingHorizontal="8dp"
-        android:paddingVertical="10dp">
+        android:paddingHorizontal="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp">
 
         <ImageView
             android:id="@+id/btnBack"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:clickable="true"
             android:focusable="true"
-            android:padding="8dp"
+            android:padding="6dp"
             android:src="@drawable/ic_back"
+            android:contentDescription="Back"
             app:tint="#111827" />
 
-        <LinearLayout
+        <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="4dp"
+            android:layout_marginStart="12dp"
             android:layout_weight="1"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Data &amp; Privacy"
-                android:textColor="#111827"
-                android:textSize="17sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Privacy, permissions &amp; store closure"
-                android:textColor="#6B7280"
-                android:textSize="12sp" />
-
-        </LinearLayout>
+            android:text="Data &amp; Privacy"
+            android:textColor="#111827"
+            android:textSize="19sp"
+            android:textStyle="bold" />
 
     </LinearLayout>
 
@@ -108,7 +97,7 @@
                                 android:layout_height="20dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_privacy_shield"
-                                app:tint="#2563EB" />
+                                app:tint="#1A6FD4" />
                         </FrameLayout>
 
                         <LinearLayout
@@ -194,7 +183,7 @@
                         android:focusable="true"
                         android:paddingVertical="4dp"
                         android:text="Read full Seller Privacy Policy →"
-                        android:textColor="#2563EB"
+                        android:textColor="#1A6FD4"
                         android:textSize="13.5sp"
                         android:textStyle="bold" />
 
@@ -235,7 +224,7 @@
                                 android:layout_height="20dp"
                                 android:layout_gravity="center"
                                 android:src="@drawable/ic_phone_device"
-                                app:tint="#2563EB" />
+                                app:tint="#1A6FD4" />
                         </FrameLayout>
 
                         <LinearLayout

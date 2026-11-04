@@ -31,6 +31,10 @@ class SupportHomeActivity : BaseActivity() {
     }
 
     private fun setupClickListeners() {
+        binding.btnBack.setOnClickListener {
+            finish()
+        }
+
         binding.cvRaiseTicket.setOnClickListener {
             startActivity(Intent(this, RaiseTicketActivity::class.java))
         }

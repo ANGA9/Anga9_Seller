@@ -37,7 +37,7 @@ class ReviewsActivity : BaseActivity() {
 
     private fun setupHeader() {
         binding.header.tvHeaderTitle.text = "Customer Reviews"
-        binding.header.tvHeaderSubtitle.text = "See what customers are saying about your products"
+        binding.header.tvHeaderSubtitle.visibility = View.GONE
         binding.header.btnBackStacked.setOnClickListener { finish() }
     }
 
