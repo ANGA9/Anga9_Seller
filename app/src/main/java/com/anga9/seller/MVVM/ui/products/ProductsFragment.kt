@@ -54,8 +54,8 @@ class ProductsFragment : Fragment() {
 
     // Sub-header views
     private lateinit var tvTotalCount: TextView
-    private lateinit var btnQuality: TextView
-    private lateinit var btnBulkUpload: TextView
+    private lateinit var btnQuality: View
+    private lateinit var btnBulkUpload: View
 
     // Filter tabs
     private lateinit var tabAll: TextView
