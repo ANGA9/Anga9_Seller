@@ -62,48 +62,62 @@
                         android:paddingTop="16dp"
                         android:paddingBottom="24dp">
 
-                        <!-- Time Range Toggle -->
+                        <!-- Time Range Toggle (Segmented Pill Switch) -->
                         <com.google.android.material.button.MaterialButtonToggleGroup
                             android:id="@+id/toggleTimeRange"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="16dp"
+                            android:background="@drawable/bg_segmented_container"
+                            android:padding="3dp"
                             app:singleSelection="true"
                             app:checkedButton="@+id/btn30Days"
                             app:selectionRequired="true">
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btnToday"
-                                style="?attr/materialButtonOutlinedStyle"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="36dp"
                                 android:layout_weight="1"
                                 android:text="Today"
                                 android:textAllCaps="false"
-                                android:textColor="@color/seller_text_primary"
-                                app:strokeColor="@color/seller_border" />
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                app:cornerRadius="20dp"
+                                app:strokeWidth="0dp"
+                                app:elevation="0dp" />
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btn7Days"
-                                style="?attr/materialButtonOutlinedStyle"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="36dp"
                                 android:layout_weight="1"
                                 android:text="7 days"
                                 android:textAllCaps="false"
-                                android:textColor="@color/seller_text_primary"
-                                app:strokeColor="@color/seller_border" />
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                app:cornerRadius="20dp"
+                                app:strokeWidth="0dp"
+                                app:elevation="0dp" />
 
                             <com.google.android.material.button.MaterialButton
                                 android:id="@+id/btn30Days"
-                                style="?attr/materialButtonOutlinedStyle"
                                 android:layout_width="0dp"
-                                android:layout_height="wrap_content"
+                                android:layout_height="36dp"
                                 android:layout_weight="1"
                                 android:text="30 days"
                                 android:textAllCaps="false"
-                                android:textColor="@color/seller_text_primary"
-                                app:strokeColor="@color/seller_border" />
+                                android:textSize="13sp"
+                                android:textStyle="bold"
+                                android:insetTop="0dp"
+                                android:insetBottom="0dp"
+                                app:cornerRadius="20dp"
+                                app:strokeWidth="0dp"
+                                app:elevation="0dp" />
                         </com.google.android.material.button.MaterialButtonToggleGroup>
 
                         <!-- Stats Grid Row 1: Orders & Revenue -->

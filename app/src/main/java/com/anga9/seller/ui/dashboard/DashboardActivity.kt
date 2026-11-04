@@ -250,10 +250,12 @@ class DashboardActivity : BaseActivity() {
         cardActiveProductsStat = findViewById(R.id.cardActiveProductsStat)
         cardToFulfillStat = findViewById(R.id.cardToFulfillStat)
 
-        setupStatCardInitial(cardOrdersStat, "Orders")
-        setupStatCardInitial(cardRevenueStat, "Revenue")
-        setupStatCardInitial(cardActiveProductsStat, "Active Products")
-        setupStatCardInitial(cardToFulfillStat, "To Fulfill")
+        setupStatCardInitial(cardOrdersStat, "Total Orders", R.drawable.ic_orders, Color.parseColor("#1A6FD4"), Color.parseColor("#EFF6FF"))
+        setupStatCardInitial(cardRevenueStat, "Total Revenue", R.drawable.ic_rupee_24, Color.parseColor("#059669"), Color.parseColor("#ECFDF5"))
+        setupStatCardInitial(cardActiveProductsStat, "Active Products", R.drawable.ic_package, Color.parseColor("#4F46E5"), Color.parseColor("#EEF2FF"))
+        setupStatCardInitial(cardToFulfillStat, "Orders to Fulfill", R.drawable.ic_time, Color.parseColor("#D97706"), Color.parseColor("#FFFBEB"))
+
+        updateTimeRangeToggleStyle(toggleTimeRange.checkedButtonId.takeIf { it != View.NO_ID } ?: R.id.btn30Days)
 
         // Revenue Trend
         sparklineRevenueTrend = findViewById(R.id.sparklineRevenueTrend)
@@ -295,8 +297,37 @@ class DashboardActivity : BaseActivity() {
         tvEmptyTopProducts = findViewById(R.id.tvEmptyTopProducts)
     }
 
-    private fun setupStatCardInitial(cardView: View, label: String) {
+    private fun setupStatCardInitial(cardView: View, label: String, iconRes: Int, iconColor: Int, badgeBgColor: Int) {
         cardView.findViewById<TextView>(R.id.tvStatLabel)?.text = label
+        cardView.findViewById<ImageView>(R.id.ivStatCardIcon)?.apply {
+            setImageResource(iconRes)
+            imageTintList = android.content.res.ColorStateList.valueOf(iconColor)
+        }
+        val badge = cardView.findViewById<FrameLayout>(R.id.flStatIconBadge)
+        val bg = android.graphics.drawable.GradientDrawable().apply {
+            shape = android.graphics.drawable.GradientDrawable.OVAL
+            setColor(badgeBgColor)
+        }
+        badge?.background = bg
+    }
+
+    private fun updateTimeRangeToggleStyle(checkedId: Int) {
+        val buttons = listOf(
+            findViewById<MaterialButton>(R.id.btnToday),
+            findViewById<MaterialButton>(R.id.btn7Days),
+            findViewById<MaterialButton>(R.id.btn30Days)
+        )
+        buttons.forEach { btn ->
+            if (btn != null) {
+                if (btn.id == checkedId) {
+                    btn.backgroundTintList = android.content.res.ColorStateList.valueOf(Color.parseColor("#1A6FD4"))
+                    btn.setTextColor(Color.WHITE)
+                } else {
+                    btn.backgroundTintList = android.content.res.ColorStateList.valueOf(Color.TRANSPARENT)
+                    btn.setTextColor(Color.parseColor("#64748B"))
+                }
+            }
+        }
     }
 
     private fun setupQuickAction(tileView: View, label: String, iconRes: Int) {
@@ -407,6 +438,7 @@ class DashboardActivity : BaseActivity() {
 
         toggleTimeRange.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (isChecked) {
+                updateTimeRangeToggleStyle(checkedId)
                 when (checkedId) {
                     R.id.btnToday -> {
                         currentPeriodLabel = "today"

@@ -5,11 +5,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardBackgroundColor="@color/seller_bg_surface"
-    app:cardCornerRadius="12dp"
-    app:cardElevation="2dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="14dp"
+    app:cardElevation="0dp"
     app:strokeWidth="1dp"
-    app:strokeColor="@color/seller_border_light">
+    app:strokeColor="#E2E8F0">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -21,8 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Earnings balance"
-            android:textColor="@color/seller_text_secondary"
-            android:textSize="13sp"
+            android:textColor="#64748B"
+            android:textSize="12.5sp"
             android:fontFamily="sans-serif-medium"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -33,8 +33,8 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             tools:text="₹64,200"
-            android:textColor="@color/seller_text_primary"
-            android:textSize="24sp"
+            android:textColor="#0F172A"
+            android:textSize="22sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvWalletLabel" />
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             tools:text="Next payout: 15 Aug"
-            android:textColor="@color/seller_text_muted"
+            android:textColor="#94A3B8"
             android:textSize="12sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tvWalletBalance" />
@@ -53,12 +53,13 @@
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btnWithdraw"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:text="Withdraw"
             android:textAllCaps="false"
-            app:cornerRadius="8dp"
-            android:textSize="14sp"
-            app:backgroundTint="@color/seller_primary"
+            app:cornerRadius="20dp"
+            app:elevation="0dp"
+            android:textSize="13.5sp"
+            app:backgroundTint="#1A6FD4"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
